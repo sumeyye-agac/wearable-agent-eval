@@ -8,6 +8,8 @@
 
 ```yaml
 schema_version: 1
+reference_dates:                  # the pinned "today" per user, required for every user
+  "5553957443": "2016-05-11"
 questions:
   - id: slp-02                    # unique; prefix by category
     user_id: "5553957443"         # a user in data/demo/demo_daily.csv, quoted
@@ -21,7 +23,14 @@ questions:
         args: {metric: minutes_asleep, threshold: 420}
         answer: [threshold.days_at_or_above]   # numbers the answer must state
         match_on: [start, end, threshold.value, threshold.days_at_or_above]
+        coverage: days_with_data  # optional: day count the answer must mention
 ```
+
+**Pinned "today":** `reference_dates` makes explicit what "this week", "last night" and "the
+last 4 weeks" mean for each user: the 7 or 28 days ending on that date. It must equal the
+user's last complete day. That is the day the tools use when `end_date` is omitted and the day
+the agent's system prompt names, and the build fails if they differ. The ground truth copies
+it into every question as `reference_date`.
 
 Paths are dotted keys into the tool output. Integer parts index lists (`top_days.0.steps`).
 
@@ -33,7 +42,11 @@ Paths are dotted keys into the tool output. Integer parts index lists (`top_days
   The rule compares results instead of arguments, so these count as correct: `end_date`
   omitted vs given as the last complete day, March starting on the 1st vs the 12th (data
   starts on the 12th), and `metric_x`/`metric_y` swapped in a Spearman correlation.
-- Refusal questions may list expected calls (to check that the model looked) but no `answer`.
+- **coverage:** an output path holding the number of days a result rests on (an integer).
+  It is used for answerable questions with missing days. The day count is a field of the tool
+  output, so the unsupported-claim check finds it there.
+- Refusal questions may list expected calls (to check that the model looked) but no `answer`
+  and no `coverage`.
 
 ## Metrics (planned; scoring is not built yet)
 
@@ -43,6 +56,13 @@ Paths are dotted keys into the tool output. Integer parts index lists (`top_days
 | Numeric accuracy | questions with `answer` paths | every expected number appears in the answer within ±1% (or as its `_text` form) |
 | Unsupported-claim rate | all answers | share of numbers in the answer that appear in none of the model's own tool outputs (regex, no LLM judge) |
 | Refusal accuracy | `expect_refusal: true` | the answer says the data cannot answer the question and gives no invented number |
+| Coverage mentioned | calls with `coverage` | the answer contains the day count, as digits or an English word up to ten (`src/wearable_eval/metrics.py`, regex) |
+
+Open point for the unsupported-claim check: only `most_active_day` returns the window
+length (7), and no tool returns the number of missing days, only their dates. So "5 of 7
+days" or "2 days missing" would be flagged as unsupported. A likely rule is to count the
+length of each date list and of the window as supported numbers. To be decided when
+scoring is built.
 
 ## Pilot set (28 questions)
 
@@ -58,8 +78,8 @@ Paths are dotted keys into the tool output. Integer parts index lists (`top_days
 The `missing_data` questions come in two kinds, all built on real gaps in the demo data:
 
 - **Answerable with a gap:** the answer must state the number and how many days it rests on,
-  for example a sleep mean over 2 of 7 nights. Saying the days is checked as a number
-  (`days_with_data` in `answer`).
+  for example a sleep mean over 2 of 7 nights. The number is checked by numeric accuracy
+  and the day count by `coverage_mentioned` (`coverage: days_with_data`).
 - **Not answerable:** the tool itself says the data cannot settle it
   (`reaches_recommendation: null`, `enough_data: false`, `n` below 10, or 0 days). The right
   answer says so, and it does not read a missing value as zero or a lower bound as a miss.

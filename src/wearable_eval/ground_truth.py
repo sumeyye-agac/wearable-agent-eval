@@ -13,6 +13,7 @@ import pandas as pd
 
 from wearable.registry import run_tool
 from wearable.schema import to_daily_frame
+from wearable.tools import last_complete_day
 from wearable_eval.questions import SCHEMA_VERSION, Question
 
 NUMERIC_TOLERANCE = 0.01  # relative; numeric accuracy accepts a stated number within 1%
@@ -71,14 +72,39 @@ def build_question(q: Question, df: pd.DataFrame) -> dict[str, Any]:
         except KeyError as err:
             raise ValueError(f"Question {q.id}: path {err.args[0]} is not in the output "
                              f"of {call.tool} (call {i}).") from None
+        coverage = None
+        if call.coverage:
+            try:
+                count = resolve(output, call.coverage)
+            except KeyError:
+                raise ValueError(f"Question {q.id}: coverage path {call.coverage} is not in "
+                                 f"the output of {call.tool} (call {i}).") from None
+            if isinstance(count, bool) or not isinstance(count, int):
+                raise ValueError(f"Question {q.id}: coverage path {call.coverage} is "
+                                 f"{count!r}, not a day count.")
+            coverage = {"path": call.coverage, "value": count}
         calls.append({"tool": call.tool, "args": call.args, "match_on": match_on,
-                      "answer": answer, "output": output})
+                      "answer": answer, "coverage": coverage, "output": output})
     return {"id": q.id, "user_id": q.user_id, "category": q.category,
-            "question": q.question, "expect_refusal": q.expect_refusal, "tags": q.tags,
+            "question": q.question, "reference_date": q.reference_date,
+            "expect_refusal": q.expect_refusal, "tags": q.tags,
             "expected_calls": calls}
 
 
+def check_reference_date(q: Question, df: pd.DataFrame) -> None:
+    """The tools resolve "this week" (an omitted end_date) and the presets to the user's
+    last complete day, and the agent's system prompt names that day. The pinned date in
+    questions.yaml must be that same day, or the ground truth would not mean what the
+    question says."""
+    anchor = last_complete_day(df).strftime("%Y-%m-%d")
+    if q.reference_date != anchor:
+        raise ValueError(f"Question {q.id}: reference date {q.reference_date} for user "
+                         f"{q.user_id} is not the tools' anchor {anchor}.")
+
+
 def build(questions: list[Question], users: dict[str, pd.DataFrame]) -> dict[str, Any]:
+    for q in questions:
+        check_reference_date(q, users[q.user_id])
     return {
         "schema_version": SCHEMA_VERSION,
         "numeric_tolerance": NUMERIC_TOLERANCE,

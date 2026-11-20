@@ -6,9 +6,15 @@
 #   6962181067  most complete: sleep every night, heart rate from 2016-03-30
 #   5553957443  steps/active minutes missing 2016-03-19..20, sleep missing 2016-03-18..21
 #   5577150313  steps missing 2016-05-07..08, sleep missing 2016-05-05..09
-# "This week" is the 7 days ending on the user's last complete day.
-
 schema_version: 1
+
+# The pinned "today" per user. "This week" is the 7 days ending on it, "last 4 weeks" the 28
+# days ending on it. It is each user's last complete day; the build fails if it is not,
+# because the tools and the agent's system prompt use that day.
+reference_dates:
+  "6962181067": "2016-05-11"
+  "5553957443": "2016-05-11"
+  "5577150313": "2016-05-10"
 questions:
 
   # --- activity -------------------------------------------------------------------------
@@ -224,7 +230,8 @@ questions:
     expected_calls:
       - tool: weekly_summary
         args: {metric: steps, end_date: "2016-03-21"}
-        answer: [total, days_with_data]
+        answer: [total]
+        coverage: days_with_data
         match_on: [start, end, total, days_with_data]
 
   - id: act-07
@@ -236,7 +243,8 @@ questions:
     expected_calls:
       - tool: most_active_day
         args: {start_date: "2016-05-04", end_date: "2016-05-10"}
-        answer: [most_active.steps, days_with_data]
+        answer: [most_active.steps]
+        coverage: days_with_data
         match_on: [start, end, most_active.date, most_active.steps]
 
   - id: slp-05
@@ -248,7 +256,8 @@ questions:
     expected_calls:
       - tool: weekly_summary
         args: {metric: minutes_asleep, end_date: "2016-05-09"}
-        answer: [mean, days_with_data]
+        answer: [mean]
+        coverage: days_with_data
         match_on: [start, end, mean, days_with_data]
 
   - id: slp-06
@@ -260,7 +269,8 @@ questions:
     expected_calls:
       - tool: weekly_summary
         args: {metric: minutes_asleep, end_date: "2016-03-25", threshold: 420}
-        answer: [threshold.days_at_or_above, days_with_data]
+        answer: [threshold.days_at_or_above]
+        coverage: days_with_data
         match_on: [start, end, threshold.value, threshold.days_at_or_above]
 
   # --- missing data: cannot be answered from what was recorded ---------------------------

@@ -12,6 +12,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+import re
+
 import yaml
 
 from wearable.registry import TOOL_SPECS
@@ -19,6 +21,7 @@ from wearable.registry import TOOL_SPECS
 SCHEMA_VERSION = 1
 CATEGORIES = ("activity", "sleep", "heart_rate", "trend", "comparison", "unanswerable")
 _ARGUMENTS = {s["name"]: set(s["input_schema"]["properties"]) for s in TOOL_SPECS}
+_ISO_DATE = re.compile(r"\d{4}-\d{2}-\d{2}")
 _REQUIRED = {s["name"]: set(s["input_schema"]["required"]) for s in TOOL_SPECS}
 
 
@@ -28,6 +31,7 @@ class ExpectedCall:
     args: dict[str, Any]
     answer: list[str]      # output paths whose numbers the answer must state
     match_on: list[str]    # output paths a model's call must reproduce to count as this call
+    coverage: str | None = None  # output path of the day count the answer must mention
 
 
 @dataclass(frozen=True)
@@ -36,6 +40,7 @@ class Question:
     user_id: str
     category: str
     question: str
+    reference_date: str    # the pinned "today": "this week" is the 7 days ending on it
     expected_calls: list[ExpectedCall] = field(default_factory=list)
     expect_refusal: bool = False
     note: str | None = None
@@ -47,7 +52,7 @@ def _fail(qid: str, message: str) -> None:
 
 
 def _call(qid: str, raw: dict[str, Any]) -> ExpectedCall:
-    unknown = set(raw) - {"tool", "args", "answer", "match_on"}
+    unknown = set(raw) - {"tool", "args", "answer", "match_on", "coverage"}
     if unknown:
         _fail(qid, f"unknown key(s) in expected call: {', '.join(sorted(unknown))}")
     tool = raw.get("tool")
@@ -64,13 +69,20 @@ def _call(qid: str, raw: dict[str, Any]) -> ExpectedCall:
     match_on = list(raw.get("match_on") or answer)
     if not match_on:
         _fail(qid, f"expected call {tool} needs answer or match_on paths")
-    return ExpectedCall(tool, dict(args), answer, match_on)
+    coverage = raw.get("coverage")
+    if coverage is not None and (not isinstance(coverage, str) or not coverage):
+        _fail(qid, f"coverage in expected call {tool} must be an output path")
+    return ExpectedCall(tool, dict(args), answer, match_on, coverage)
 
 
 def parse_questions(data: dict[str, Any], users: set[str] | None = None) -> list[Question]:
     """Turn the loaded YAML into Question objects, raising ValueError on any problem."""
     if data.get("schema_version") != SCHEMA_VERSION:
         raise ValueError(f"schema_version must be {SCHEMA_VERSION}.")
+    reference_dates = {str(k): str(v) for k, v in (data.get("reference_dates") or {}).items()}
+    for uid, day in reference_dates.items():
+        if not _ISO_DATE.fullmatch(day):
+            raise ValueError(f"reference_dates: {day!r} for user {uid} is not YYYY-MM-DD.")
     out: list[Question] = []
     seen: set[str] = set()
     for raw in data.get("questions") or []:
@@ -87,6 +99,8 @@ def parse_questions(data: dict[str, Any], users: set[str] | None = None) -> list
         user_id = str(raw.get("user_id"))
         if users is not None and user_id not in users:
             _fail(qid, f"user {user_id} is not in the demo data")
+        if user_id not in reference_dates:
+            _fail(qid, f"user {user_id} has no entry in reference_dates")
         if not str(raw.get("question") or "").strip():
             _fail(qid, "empty question")
         calls = [_call(qid, c) for c in raw.get("expected_calls") or []]
@@ -98,8 +112,11 @@ def parse_questions(data: dict[str, Any], users: set[str] | None = None) -> list
         tags = raw.get("tags") or []
         if not isinstance(tags, list) or not all(isinstance(t, str) and t for t in tags):
             _fail(qid, "tags must be a list of non-empty strings")
-        out.append(Question(qid, user_id, raw["category"], raw["question"].strip(), calls,
-                            refusal, raw.get("note"), list(tags)))
+        if refusal and any(c.coverage for c in calls):
+            _fail(qid, "a refusal question cannot require a day count")
+        out.append(Question(qid, user_id, raw["category"], raw["question"].strip(),
+                            reference_dates[user_id], calls, refusal, raw.get("note"),
+                            list(tags)))
     if not out:
         raise ValueError("The question set is empty.")
     return out

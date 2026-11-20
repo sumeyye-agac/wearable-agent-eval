@@ -16,7 +16,7 @@ Work in progress. No results yet.
 | Path | Contents |
 | --- | --- |
 | `src/wearable/` | Tools, schema and agent loop, copied unchanged from ask-your-wearable |
-| `src/wearable_eval/` | Question loading and ground truth |
+| `src/wearable_eval/` | Question loading, ground truth and text metrics |
 | `eval/` | Question set and generated ground truth ([format](eval/README.md)) |
 | `data/demo/` | Daily table for 3 demo users |
 | `android/` | On-device app (not started) |

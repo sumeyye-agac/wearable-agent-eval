@@ -88,7 +88,9 @@ def _one(**overrides):
          "expected_calls": [{"tool": "weekly_summary", "args": {"metric": "minutes_asleep"},
                              "answer": ["mean"]}]}
     q.update(overrides)
-    return {"schema_version": 1, "questions": [q]}
+    return {"schema_version": 1, "questions": [q],
+            "reference_dates": {"1": "2024-01-14", "999": "2024-01-14",
+                                "6962181067": "2016-05-11"}}
 
 
 @pytest.mark.parametrize("overrides, message", [
@@ -125,3 +127,37 @@ def test_build_rejects_a_path_not_in_the_output(users):
 def test_ground_truth_file_is_valid_json():
     data = json.loads((REPO / "eval/ground_truth.json").read_text(encoding="utf-8"))
     assert data["numeric_tolerance"] == 0.01
+
+
+def test_reference_dates_are_the_tools_anchor_and_in_the_prompt(questions, users):
+    # The pinned "today" must be what the tools and the agent's system prompt use.
+    from wearable.agent import system_prompt
+    for q in questions:
+        assert f"anchored on the last complete day, {q.reference_date}" in \
+            system_prompt(users[q.user_id]), q.id
+
+
+def test_build_rejects_a_wrong_reference_date(users):
+    data = _one(user_id="6962181067")
+    data["reference_dates"] = {"6962181067": "2016-05-12"}
+    with pytest.raises(ValueError, match="not the tools' anchor 2016-05-11"):
+        build(parse_questions(data), users)
+
+
+def test_parse_requires_a_reference_date_for_every_user():
+    data = _one()
+    data["reference_dates"] = {}
+    with pytest.raises(ValueError, match="no entry in reference_dates"):
+        parse_questions(data, users={"1"})
+
+
+def test_coverage_questions_carry_the_day_count_in_the_tool_output(questions, users):
+    # The day count is a field of the tool output, so a number like "5 days" in an answer
+    # is supported by the tool result, not invented.
+    gt = {q["id"]: q for q in build(questions, users)["questions"]}
+    expected = {"act-06": 5, "act-07": 5, "slp-05": 2, "slp-06": 6}
+    with_coverage = {q["id"]: c["coverage"]["value"] for q in gt.values()
+                     for c in q["expected_calls"] if c["coverage"]}
+    assert with_coverage == expected
+    for qid, count in expected.items():
+        assert gt[qid]["expected_calls"][0]["output"]["days_with_data"] == count
