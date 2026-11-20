@@ -55,6 +55,25 @@ def test_ground_truth_matches_known_values(questions, users):
     assert una04["combined.reaches_recommendation"] is None
 
 
+def test_missing_data_cases_really_miss_data(questions, users):
+    # A missing_data question must rest on a tool result that shows the gap; if the data or
+    # a tool changed so the gap disappeared, the question would test nothing.
+    gt = {q["id"]: q for q in build(questions, users)["questions"]}
+    tagged = [q for q in questions if "missing_data" in q.tags]
+    assert len(tagged) >= 10
+    for q in tagged:
+        out = gt[q.id]["expected_calls"][0]["output"]
+        gap = (out.get("days_with_data", 7) < 7
+               or out.get("enough_data") is False
+               or (out.get("period_b") or {}).get("days_with_data", 7) < 3
+               or out.get("n", 99) < 10)
+        assert gap, q.id
+    assert gt["slp-05"]["expected_calls"][0]["output"]["days_with_data"] == 2
+    assert gt["una-06"]["expected_calls"][0]["output"]["enough_data"] is False
+    assert gt["una-07"]["expected_calls"][0]["output"]["n"] == 0
+    assert gt["una-08"]["expected_calls"][0]["output"]["mean"] is None
+
+
 def test_resolve_follows_lists_and_rejects_missing_paths():
     output = {"top_days": [{"steps": 5}, {"steps": 3}]}
     assert resolve(output, "top_days.1.steps") == 3
@@ -82,6 +101,7 @@ def _one(**overrides):
     ({"expected_calls": [{"tool": "weekly_summary", "args": {"metric": "steps"}}]},
      "needs answer or match_on"),
     ({"expect_refusal": True}, "refusal question cannot require numbers"),
+    ({"tags": "missing_data"}, "tags must be a list"),
 ])
 def test_parse_rejects_invalid_questions(overrides, message):
     with pytest.raises(ValueError, match=message):

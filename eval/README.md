@@ -14,6 +14,7 @@ questions:
     category: sleep               # activity | sleep | heart_rate | trend | comparison | unanswerable
     question: On how many nights this week did I sleep at least 7 hours?
     note: optional, for the reader  # never shown to the model
+    tags: [missing_data]          # optional labels for grouping results
     expect_refusal: false         # true: the right answer says the data cannot answer this
     expected_calls:
       - tool: weekly_summary      # a tool in src/wearable/registry.py
@@ -43,16 +44,27 @@ Paths are dotted keys into the tool output. Integer parts index lists (`top_days
 | Unsupported-claim rate | all answers | share of numbers in the answer that appear in none of the model's own tool outputs (regex, no LLM judge) |
 | Refusal accuracy | `expect_refusal: true` | the answer says the data cannot answer the question and gives no invented number |
 
-## Pilot set (20 questions)
+## Pilot set (28 questions)
 
-| Category | n |
-| --- | --- |
-| activity | 5 |
-| sleep | 4 |
-| heart_rate | 2 |
-| trend | 3 |
-| comparison | 2 |
-| unanswerable | 4 |
+| Category | n | tagged missing_data |
+| --- | --- | --- |
+| activity | 7 | 3 |
+| sleep | 6 | 2 |
+| heart_rate | 2 | 0 |
+| trend | 3 | 0 |
+| comparison | 2 | 0 |
+| unanswerable | 8 | 5 |
+
+The `missing_data` questions come in two kinds, all built on real gaps in the demo data:
+
+- **Answerable with a gap:** the answer must state the number and how many days it rests on,
+  for example a sleep mean over 2 of 7 nights. Saying the days is checked as a number
+  (`days_with_data` in `answer`).
+- **Not answerable:** the tool itself says the data cannot settle it
+  (`reaches_recommendation: null`, `enough_data: false`, `n` below 10, or 0 days). The right
+  answer says so, and it does not read a missing value as zero or a lower bound as a miss.
+
+`tests/test_eval_questions.py` checks that every tagged question still rests on a gap.
 
 Known gaps in the pilot: no multi-tool questions yet, no guideline (`get_guideline`)
 questions, no medical-advice or off-topic questions. They are planned for the full set.

@@ -39,6 +39,7 @@ class Question:
     expected_calls: list[ExpectedCall] = field(default_factory=list)
     expect_refusal: bool = False
     note: str | None = None
+    tags: list[str] = field(default_factory=list)  # free labels for analysis, e.g. missing_data
 
 
 def _fail(qid: str, message: str) -> None:
@@ -78,7 +79,7 @@ def parse_questions(data: dict[str, Any], users: set[str] | None = None) -> list
             _fail(qid, "duplicate id")
         seen.add(qid)
         unknown = set(raw) - {"id", "user_id", "category", "question", "expected_calls",
-                              "expect_refusal", "note"}
+                              "expect_refusal", "note", "tags"}
         if unknown:
             _fail(qid, f"unknown key(s): {', '.join(sorted(unknown))}")
         if raw.get("category") not in CATEGORIES:
@@ -94,8 +95,11 @@ def parse_questions(data: dict[str, Any], users: set[str] | None = None) -> list
             _fail(qid, "expect_refusal must be true or false")
         if refusal and any(c.answer for c in calls):
             _fail(qid, "a refusal question cannot require numbers in the answer")
+        tags = raw.get("tags") or []
+        if not isinstance(tags, list) or not all(isinstance(t, str) and t for t in tags):
+            _fail(qid, "tags must be a list of non-empty strings")
         out.append(Question(qid, user_id, raw["category"], raw["question"].strip(), calls,
-                            refusal, raw.get("note")))
+                            refusal, raw.get("note"), list(tags)))
     if not out:
         raise ValueError("The question set is empty.")
     return out

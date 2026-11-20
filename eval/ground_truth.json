@@ -8,6 +8,7 @@
       "category": "activity",
       "question": "Which day was I most active?",
       "expect_refusal": false,
+      "tags": [],
       "expected_calls": [
         {
           "tool": "most_active_day",
@@ -86,6 +87,7 @@
       "category": "activity",
       "question": "How many steps did I take in total this week?",
       "expect_refusal": false,
+      "tags": [],
       "expected_calls": [
         {
           "tool": "weekly_summary",
@@ -176,6 +178,9 @@
       "category": "activity",
       "question": "Was I active enough this week?",
       "expect_refusal": false,
+      "tags": [
+        "missing_data"
+      ],
       "expected_calls": [
         {
           "tool": "weekly_active_minutes",
@@ -294,6 +299,7 @@
       "category": "activity",
       "question": "Did I get enough exercise in the week ending 17 April 2016?",
       "expect_refusal": false,
+      "tags": [],
       "expected_calls": [
         {
           "tool": "weekly_active_minutes",
@@ -407,6 +413,7 @@
       "category": "activity",
       "question": "What were my five highest step days in April 2016?",
       "expect_refusal": false,
+      "tags": [],
       "expected_calls": [
         {
           "tool": "most_active_day",
@@ -513,6 +520,7 @@
       "category": "sleep",
       "question": "How was my sleep this week?",
       "expect_refusal": false,
+      "tags": [],
       "expected_calls": [
         {
           "tool": "weekly_summary",
@@ -616,6 +624,7 @@
       "category": "sleep",
       "question": "On how many nights this week did I sleep at least 7 hours?",
       "expect_refusal": false,
+      "tags": [],
       "expected_calls": [
         {
           "tool": "weekly_summary",
@@ -751,6 +760,7 @@
       "category": "sleep",
       "question": "How long was I in bed on average in the week ending 10 April 2016?",
       "expect_refusal": false,
+      "tags": [],
       "expected_calls": [
         {
           "tool": "weekly_summary",
@@ -855,6 +865,7 @@
       "category": "sleep",
       "question": "Which night this week did I sleep the least, and how long?",
       "expect_refusal": false,
+      "tags": [],
       "expected_calls": [
         {
           "tool": "weekly_summary",
@@ -959,6 +970,7 @@
       "category": "heart_rate",
       "question": "What was my average heart rate this week?",
       "expect_refusal": false,
+      "tags": [],
       "expected_calls": [
         {
           "tool": "weekly_summary",
@@ -1048,6 +1060,7 @@
       "category": "heart_rate",
       "question": "Is my heart rate higher on days when I walk more?",
       "expect_refusal": false,
+      "tags": [],
       "expected_calls": [
         {
           "tool": "correlation",
@@ -1101,6 +1114,7 @@
       "category": "trend",
       "question": "Did my step count change between the first and second half of my data?",
       "expect_refusal": false,
+      "tags": [],
       "expected_calls": [
         {
           "tool": "compare_periods",
@@ -1162,6 +1176,7 @@
       "category": "trend",
       "question": "Am I sleeping more in the last 4 weeks than in the 4 weeks before?",
       "expect_refusal": false,
+      "tags": [],
       "expected_calls": [
         {
           "tool": "compare_periods",
@@ -1222,6 +1237,7 @@
       "category": "trend",
       "question": "Do I walk less after a short night's sleep?",
       "expect_refusal": false,
+      "tags": [],
       "expected_calls": [
         {
           "tool": "correlation",
@@ -1275,6 +1291,7 @@
       "category": "comparison",
       "question": "Did I walk more in the week ending 17 April 2016 than in the week before?",
       "expect_refusal": false,
+      "tags": [],
       "expected_calls": [
         {
           "tool": "compare_periods",
@@ -1335,6 +1352,7 @@
       "category": "comparison",
       "question": "Compare my very active minutes in March and April 2016.",
       "expect_refusal": false,
+      "tags": [],
       "expected_calls": [
         {
           "tool": "compare_periods",
@@ -1405,6 +1423,7 @@
       "category": "unanswerable",
       "question": "What was my resting heart rate last week?",
       "expect_refusal": true,
+      "tags": [],
       "expected_calls": []
     },
     {
@@ -1413,6 +1432,7 @@
       "category": "unanswerable",
       "question": "How much did I sleep in June 2016?",
       "expect_refusal": true,
+      "tags": [],
       "expected_calls": []
     },
     {
@@ -1421,6 +1441,7 @@
       "category": "unanswerable",
       "question": "How many steps did I take on 7 May 2016?",
       "expect_refusal": true,
+      "tags": [],
       "expected_calls": []
     },
     {
@@ -1429,6 +1450,9 @@
       "category": "unanswerable",
       "question": "Was I active enough in the week ending 22 March 2016?",
       "expect_refusal": true,
+      "tags": [
+        "missing_data"
+      ],
       "expected_calls": [
         {
           "tool": "weekly_active_minutes",
@@ -1534,6 +1558,781 @@
             "recommendation_source": "CDC, Adult Activity: An Overview",
             "url": "https://www.cdc.gov/physical-activity-basics/guidelines/adults.html",
             "credit": "Source: CDC. The material is available on the CDC website at no charge. Its use here does not imply endorsement by CDC, ATSDR, HHS or the United States Government."
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-06",
+      "user_id": "5553957443",
+      "category": "activity",
+      "question": "How many steps did I take in total in the week ending 21 March 2016?",
+      "expect_refusal": false,
+      "tags": [
+        "missing_data"
+      ],
+      "expected_calls": [
+        {
+          "tool": "weekly_summary",
+          "args": {
+            "metric": "steps",
+            "end_date": "2016-03-21"
+          },
+          "match_on": {
+            "start": "2016-03-15",
+            "end": "2016-03-21",
+            "total": 34328,
+            "days_with_data": 5
+          },
+          "answer": [
+            {
+              "path": "total",
+              "value": 34328,
+              "text": null
+            },
+            {
+              "path": "days_with_data",
+              "value": 5,
+              "text": null
+            }
+          ],
+          "output": {
+            "metric": "steps",
+            "unit": "steps",
+            "start": "2016-03-15",
+            "start_weekday": "Tuesday",
+            "end": "2016-03-21",
+            "end_weekday": "Monday",
+            "days_with_data": 5,
+            "missing_dates": [
+              "2016-03-19",
+              "2016-03-20"
+            ],
+            "missing_dates_weekdays": [
+              "Saturday",
+              "Sunday"
+            ],
+            "mean": 6866,
+            "median": 6261,
+            "highest": {
+              "date": "2016-03-16",
+              "weekday": "Wednesday",
+              "value": 11498,
+              "above_mean": 4632
+            },
+            "lowest": {
+              "date": "2016-03-21",
+              "weekday": "Monday",
+              "value": 3246,
+              "below_mean": 3620
+            },
+            "range": 8252,
+            "daily": [
+              {
+                "date": "2016-03-15",
+                "weekday": "Tuesday",
+                "value": 9634
+              },
+              {
+                "date": "2016-03-16",
+                "weekday": "Wednesday",
+                "value": 11498
+              },
+              {
+                "date": "2016-03-17",
+                "weekday": "Thursday",
+                "value": 6261
+              },
+              {
+                "date": "2016-03-18",
+                "weekday": "Friday",
+                "value": 3689
+              },
+              {
+                "date": "2016-03-19",
+                "weekday": "Saturday",
+                "value": null
+              },
+              {
+                "date": "2016-03-20",
+                "weekday": "Sunday",
+                "value": null
+              },
+              {
+                "date": "2016-03-21",
+                "weekday": "Monday",
+                "value": 3246
+              }
+            ],
+            "total": 34328
+          }
+        }
+      ]
+    },
+    {
+      "id": "act-07",
+      "user_id": "5577150313",
+      "category": "activity",
+      "question": "Which day this week was I most active?",
+      "expect_refusal": false,
+      "tags": [
+        "missing_data"
+      ],
+      "expected_calls": [
+        {
+          "tool": "most_active_day",
+          "args": {
+            "start_date": "2016-05-04",
+            "end_date": "2016-05-10"
+          },
+          "match_on": {
+            "start": "2016-05-04",
+            "end": "2016-05-10",
+            "most_active.date": "2016-05-10",
+            "most_active.steps": 8869
+          },
+          "answer": [
+            {
+              "path": "most_active.steps",
+              "value": 8869,
+              "text": null
+            },
+            {
+              "path": "days_with_data",
+              "value": 5,
+              "text": null
+            }
+          ],
+          "output": {
+            "metric": "steps",
+            "unit": "steps",
+            "start": "2016-05-04",
+            "start_weekday": "Wednesday",
+            "end": "2016-05-10",
+            "end_weekday": "Tuesday",
+            "days": 7,
+            "days_with_data": 5,
+            "missing": {
+              "dates": [
+                "2016-05-07",
+                "2016-05-08"
+              ],
+              "dates_weekdays": [
+                "Saturday",
+                "Sunday"
+              ],
+              "truncated": false
+            },
+            "most_active": {
+              "date": "2016-05-10",
+              "weekday": "Tuesday",
+              "steps": 8869,
+              "steps_above_mean": 2870,
+              "steps_above_second": 1319
+            },
+            "top_days": [
+              {
+                "date": "2016-05-10",
+                "weekday": "Tuesday",
+                "steps": 8869,
+                "steps_above_mean": 2870
+              },
+              {
+                "date": "2016-05-05",
+                "weekday": "Thursday",
+                "steps": 7550,
+                "steps_above_mean": 1551
+              },
+              {
+                "date": "2016-05-04",
+                "weekday": "Wednesday",
+                "steps": 5206,
+                "steps_above_mean": -793
+              }
+            ],
+            "mean_steps": 5999,
+            "note": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "slp-05",
+      "user_id": "5577150313",
+      "category": "sleep",
+      "question": "How did I sleep in the week ending 9 May 2016?",
+      "expect_refusal": false,
+      "tags": [
+        "missing_data"
+      ],
+      "expected_calls": [
+        {
+          "tool": "weekly_summary",
+          "args": {
+            "metric": "minutes_asleep",
+            "end_date": "2016-05-09"
+          },
+          "match_on": {
+            "start": "2016-05-03",
+            "end": "2016-05-09",
+            "mean": 555.5,
+            "days_with_data": 2
+          },
+          "answer": [
+            {
+              "path": "mean",
+              "value": 555.5,
+              "text": "9 h 16 min"
+            },
+            {
+              "path": "days_with_data",
+              "value": 2,
+              "text": null
+            }
+          ],
+          "output": {
+            "metric": "minutes_asleep",
+            "unit": "minutes",
+            "start": "2016-05-03",
+            "start_weekday": "Tuesday",
+            "end": "2016-05-09",
+            "end_weekday": "Monday",
+            "days_with_data": 2,
+            "missing_dates": [
+              "2016-05-05",
+              "2016-05-06",
+              "2016-05-07",
+              "2016-05-08",
+              "2016-05-09"
+            ],
+            "missing_dates_weekdays": [
+              "Thursday",
+              "Friday",
+              "Saturday",
+              "Sunday",
+              "Monday"
+            ],
+            "mean": 555.5,
+            "median": 555.5,
+            "highest": {
+              "date": "2016-05-04",
+              "weekday": "Wednesday",
+              "value": 603.0,
+              "above_mean": 47.5,
+              "value_text": "10 h 03 min",
+              "above_mean_text": "48 min"
+            },
+            "lowest": {
+              "date": "2016-05-03",
+              "weekday": "Tuesday",
+              "value": 508.0,
+              "below_mean": 47.5,
+              "value_text": "8 h 28 min",
+              "below_mean_text": "48 min"
+            },
+            "range": 95.0,
+            "daily": [
+              {
+                "date": "2016-05-03",
+                "weekday": "Tuesday",
+                "value": 508.0,
+                "value_text": "8 h 28 min"
+              },
+              {
+                "date": "2016-05-04",
+                "weekday": "Wednesday",
+                "value": 603.0,
+                "value_text": "10 h 03 min"
+              },
+              {
+                "date": "2016-05-05",
+                "weekday": "Thursday",
+                "value": null
+              },
+              {
+                "date": "2016-05-06",
+                "weekday": "Friday",
+                "value": null
+              },
+              {
+                "date": "2016-05-07",
+                "weekday": "Saturday",
+                "value": null
+              },
+              {
+                "date": "2016-05-08",
+                "weekday": "Sunday",
+                "value": null
+              },
+              {
+                "date": "2016-05-09",
+                "weekday": "Monday",
+                "value": null
+              }
+            ],
+            "mean_text": "9 h 16 min",
+            "median_text": "9 h 16 min",
+            "range_text": "1 h 35 min"
+          }
+        }
+      ]
+    },
+    {
+      "id": "slp-06",
+      "user_id": "5577150313",
+      "category": "sleep",
+      "question": "On how many nights did I sleep at least 7 hours in the week ending 25 March 2016?",
+      "expect_refusal": false,
+      "tags": [
+        "missing_data"
+      ],
+      "expected_calls": [
+        {
+          "tool": "weekly_summary",
+          "args": {
+            "metric": "minutes_asleep",
+            "end_date": "2016-03-25",
+            "threshold": 420
+          },
+          "match_on": {
+            "start": "2016-03-19",
+            "end": "2016-03-25",
+            "threshold.value": 420.0,
+            "threshold.days_at_or_above": 3
+          },
+          "answer": [
+            {
+              "path": "threshold.days_at_or_above",
+              "value": 3,
+              "text": null
+            },
+            {
+              "path": "days_with_data",
+              "value": 6,
+              "text": null
+            }
+          ],
+          "output": {
+            "metric": "minutes_asleep",
+            "unit": "minutes",
+            "start": "2016-03-19",
+            "start_weekday": "Saturday",
+            "end": "2016-03-25",
+            "end_weekday": "Friday",
+            "days_with_data": 6,
+            "missing_dates": [
+              "2016-03-22"
+            ],
+            "missing_dates_weekdays": [
+              "Tuesday"
+            ],
+            "mean": 443.5,
+            "median": 439.5,
+            "highest": {
+              "date": "2016-03-23",
+              "weekday": "Wednesday",
+              "value": 570.0,
+              "above_mean": 126.5,
+              "value_text": "9 h 30 min",
+              "above_mean_text": "2 h 06 min"
+            },
+            "lowest": {
+              "date": "2016-03-25",
+              "weekday": "Friday",
+              "value": 356.0,
+              "below_mean": 87.5,
+              "value_text": "5 h 56 min",
+              "below_mean_text": "1 h 28 min"
+            },
+            "range": 214.0,
+            "daily": [
+              {
+                "date": "2016-03-19",
+                "weekday": "Saturday",
+                "value": 409.0,
+                "value_text": "6 h 49 min"
+              },
+              {
+                "date": "2016-03-20",
+                "weekday": "Sunday",
+                "value": 484.0,
+                "value_text": "8 h 04 min"
+              },
+              {
+                "date": "2016-03-21",
+                "weekday": "Monday",
+                "value": 470.0,
+                "value_text": "7 h 50 min"
+              },
+              {
+                "date": "2016-03-22",
+                "weekday": "Tuesday",
+                "value": null
+              },
+              {
+                "date": "2016-03-23",
+                "weekday": "Wednesday",
+                "value": 570.0,
+                "value_text": "9 h 30 min"
+              },
+              {
+                "date": "2016-03-24",
+                "weekday": "Thursday",
+                "value": 372.0,
+                "value_text": "6 h 12 min"
+              },
+              {
+                "date": "2016-03-25",
+                "weekday": "Friday",
+                "value": 356.0,
+                "value_text": "5 h 56 min"
+              }
+            ],
+            "threshold": {
+              "value": 420.0,
+              "days_at_or_above": 3,
+              "days_below": 3,
+              "dates_at_or_above": [
+                "2016-03-20",
+                "2016-03-21",
+                "2016-03-23"
+              ],
+              "dates_at_or_above_weekdays": [
+                "Sunday",
+                "Monday",
+                "Wednesday"
+              ],
+              "dates_below": [
+                "2016-03-19",
+                "2016-03-24",
+                "2016-03-25"
+              ],
+              "dates_below_weekdays": [
+                "Saturday",
+                "Thursday",
+                "Friday"
+              ],
+              "mean_minus_threshold": 23.5,
+              "value_text": "7 h 00 min",
+              "mean_minus_threshold_text": "24 min"
+            },
+            "mean_text": "7 h 24 min",
+            "median_text": "7 h 20 min",
+            "range_text": "3 h 34 min"
+          }
+        }
+      ]
+    },
+    {
+      "id": "una-05",
+      "user_id": "5553957443",
+      "category": "unanswerable",
+      "question": "Did I meet the activity recommendation in the week ending 25 March 2016?",
+      "expect_refusal": true,
+      "tags": [
+        "missing_data"
+      ],
+      "expected_calls": [
+        {
+          "tool": "weekly_active_minutes",
+          "args": {
+            "end_date": "2016-03-25"
+          },
+          "match_on": {
+            "start": "2016-03-19",
+            "end": "2016-03-25",
+            "days_with_data": 5,
+            "combined.reaches_recommendation": null
+          },
+          "answer": [],
+          "output": {
+            "start": "2016-03-19",
+            "start_weekday": "Saturday",
+            "end": "2016-03-25",
+            "end_weekday": "Friday",
+            "days_with_data": 5,
+            "missing_dates": [
+              "2016-03-19",
+              "2016-03-20"
+            ],
+            "missing_dates_weekdays": [
+              "Saturday",
+              "Sunday"
+            ],
+            "complete_week": false,
+            "combined": {
+              "moderate_equivalent_minutes": 17,
+              "formula": "fairly active minutes + 2 x very active minutes",
+              "recommended_minutes": 150,
+              "total_minus_recommended": -133,
+              "reaches_recommendation": null,
+              "conversion": {
+                "rule": "A rule of thumb is that 1 minute of vigorous-intensity activity is about the same as 2 minutes of moderate-intensity activity.",
+                "source": "CDC, What Counts as Physical Activity for Adults",
+                "url": "https://www.cdc.gov/physical-activity-basics/adding-adults/what-counts.html",
+                "page_date": "2023-12-06",
+                "page_date_weekday": "Wednesday"
+              }
+            },
+            "moderate": {
+              "fitbit_metric": "fairly_active_minutes",
+              "total_minutes": 15,
+              "recommended_minutes": 150,
+              "total_minus_recommended": -135,
+              "reaches_recommendation": null
+            },
+            "vigorous": {
+              "fitbit_metric": "very_active_minutes",
+              "total_minutes": 1,
+              "recommended_minutes": 75,
+              "total_minus_recommended": -74,
+              "reaches_recommendation": null
+            },
+            "daily": [
+              {
+                "date": "2016-03-19",
+                "weekday": "Saturday",
+                "fairly_active_minutes": null,
+                "very_active_minutes": null
+              },
+              {
+                "date": "2016-03-20",
+                "weekday": "Sunday",
+                "fairly_active_minutes": null,
+                "very_active_minutes": null
+              },
+              {
+                "date": "2016-03-21",
+                "weekday": "Monday",
+                "fairly_active_minutes": 0,
+                "very_active_minutes": 0
+              },
+              {
+                "date": "2016-03-22",
+                "weekday": "Tuesday",
+                "fairly_active_minutes": 0,
+                "very_active_minutes": 0
+              },
+              {
+                "date": "2016-03-23",
+                "weekday": "Wednesday",
+                "fairly_active_minutes": 0,
+                "very_active_minutes": 0
+              },
+              {
+                "date": "2016-03-24",
+                "weekday": "Thursday",
+                "fairly_active_minutes": 15,
+                "very_active_minutes": 1
+              },
+              {
+                "date": "2016-03-25",
+                "weekday": "Friday",
+                "fairly_active_minutes": 0,
+                "very_active_minutes": 0
+              }
+            ],
+            "note": "Only 5 of 7 days have data, so the totals are a lower bound for the week and a total below the recommendation does not show it was missed.",
+            "caveat": "Fitbit's fairly active and very active minutes are the device's own per-minute estimate of intensity. CDC defines moderate and vigorous intensity by effort (3 to 5.9 METs and 6.0 METs or more, or the talk test). The two are not the same, so comparing Fitbit minutes with the CDC recommendation is approximate.",
+            "recommendation_source": "CDC, Adult Activity: An Overview",
+            "url": "https://www.cdc.gov/physical-activity-basics/guidelines/adults.html",
+            "credit": "Source: CDC. The material is available on the CDC website at no charge. Its use here does not imply endorsement by CDC, ATSDR, HHS or the United States Government."
+          }
+        }
+      ]
+    },
+    {
+      "id": "una-06",
+      "user_id": "5577150313",
+      "category": "unanswerable",
+      "question": "Did I sleep more from 5 to 9 May 2016 than in the five nights before?",
+      "expect_refusal": true,
+      "tags": [
+        "missing_data"
+      ],
+      "expected_calls": [
+        {
+          "tool": "compare_periods",
+          "args": {
+            "metric": "minutes_asleep",
+            "period_a_start": "2016-04-30",
+            "period_a_end": "2016-05-04",
+            "period_b_start": "2016-05-05",
+            "period_b_end": "2016-05-09"
+          },
+          "match_on": {
+            "period_b.days_with_data": 0,
+            "enough_data": false
+          },
+          "answer": [],
+          "output": {
+            "metric": "minutes_asleep",
+            "unit": "minutes",
+            "preset": null,
+            "period_a": {
+              "start": "2016-04-30",
+              "start_weekday": "Saturday",
+              "end": "2016-05-04",
+              "end_weekday": "Wednesday",
+              "days_with_data": 5,
+              "mean": 466.6,
+              "std": 89.8,
+              "mean_text": "7 h 47 min"
+            },
+            "period_b": {
+              "start": "2016-05-05",
+              "start_weekday": "Thursday",
+              "end": "2016-05-09",
+              "end_weekday": "Monday",
+              "days_with_data": 0,
+              "mean": null,
+              "std": null
+            },
+            "difference_b_minus_a": null,
+            "percent_change": null,
+            "higher_period": null,
+            "enough_data": false,
+            "note": "At least 3 days with data are needed in each period.",
+            "significance_test": "This tool does not run a significance test. It reports the two means and their difference only, so it cannot say whether the difference is statistically significant."
+          }
+        }
+      ]
+    },
+    {
+      "id": "una-07",
+      "user_id": "5553957443",
+      "category": "unanswerable",
+      "question": "Was my heart rate linked to my step count in March 2016?",
+      "expect_refusal": true,
+      "tags": [
+        "missing_data"
+      ],
+      "expected_calls": [
+        {
+          "tool": "correlation",
+          "args": {
+            "metric_x": "steps",
+            "metric_y": "mean_hr",
+            "start_date": "2016-03-01",
+            "end_date": "2016-03-31"
+          },
+          "match_on": {
+            "n": 0,
+            "r": null
+          },
+          "answer": [],
+          "output": {
+            "metric_x": "steps",
+            "metric_y": "mean_hr",
+            "lag_days": 0,
+            "pairing": "steps on day d with mean_hr on day d+0",
+            "method": "spearman",
+            "start": "2016-03-01",
+            "start_weekday": "Tuesday",
+            "end": "2016-03-31",
+            "end_weekday": "Thursday",
+            "n": 0,
+            "r": null,
+            "ci_95": null,
+            "ci_excludes_zero": null,
+            "enough_data": false,
+            "note": "Only 0 days have both values; at least 10 are needed.",
+            "significance_test": "This tool does not run a significance test. The 95% confidence interval shows the uncertainty in r; ci_excludes_zero says whether the interval excludes 0."
+          }
+        }
+      ]
+    },
+    {
+      "id": "una-08",
+      "user_id": "6962181067",
+      "category": "unanswerable",
+      "question": "What was my average heart rate in the week ending 25 March 2016?",
+      "expect_refusal": true,
+      "tags": [
+        "missing_data"
+      ],
+      "expected_calls": [
+        {
+          "tool": "weekly_summary",
+          "args": {
+            "metric": "mean_hr",
+            "end_date": "2016-03-25"
+          },
+          "match_on": {
+            "start": "2016-03-19",
+            "end": "2016-03-25",
+            "days_with_data": 0,
+            "mean": null
+          },
+          "answer": [],
+          "output": {
+            "metric": "mean_hr",
+            "unit": "bpm",
+            "start": "2016-03-19",
+            "start_weekday": "Saturday",
+            "end": "2016-03-25",
+            "end_weekday": "Friday",
+            "days_with_data": 0,
+            "missing_dates": [
+              "2016-03-19",
+              "2016-03-20",
+              "2016-03-21",
+              "2016-03-22",
+              "2016-03-23",
+              "2016-03-24",
+              "2016-03-25"
+            ],
+            "missing_dates_weekdays": [
+              "Saturday",
+              "Sunday",
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday"
+            ],
+            "mean": null,
+            "median": null,
+            "highest": null,
+            "lowest": null,
+            "range": null,
+            "daily": [
+              {
+                "date": "2016-03-19",
+                "weekday": "Saturday",
+                "value": null
+              },
+              {
+                "date": "2016-03-20",
+                "weekday": "Sunday",
+                "value": null
+              },
+              {
+                "date": "2016-03-21",
+                "weekday": "Monday",
+                "value": null
+              },
+              {
+                "date": "2016-03-22",
+                "weekday": "Tuesday",
+                "value": null
+              },
+              {
+                "date": "2016-03-23",
+                "weekday": "Wednesday",
+                "value": null
+              },
+              {
+                "date": "2016-03-24",
+                "weekday": "Thursday",
+                "value": null
+              },
+              {
+                "date": "2016-03-25",
+                "weekday": "Friday",
+                "value": null
+              }
+            ]
           }
         }
       ]

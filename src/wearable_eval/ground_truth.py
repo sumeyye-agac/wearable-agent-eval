@@ -74,7 +74,7 @@ def build_question(q: Question, df: pd.DataFrame) -> dict[str, Any]:
         calls.append({"tool": call.tool, "args": call.args, "match_on": match_on,
                       "answer": answer, "output": output})
     return {"id": q.id, "user_id": q.user_id, "category": q.category,
-            "question": q.question, "expect_refusal": q.expect_refusal,
+            "question": q.question, "expect_refusal": q.expect_refusal, "tags": q.tags,
             "expected_calls": calls}
 
 

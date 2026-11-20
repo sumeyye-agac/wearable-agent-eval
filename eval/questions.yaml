@@ -37,6 +37,7 @@ questions:
     category: activity
     question: Was I active enough this week?
     note: Two days are missing, but the total already reaches 150 moderate-equivalent minutes.
+    tags: [missing_data]
     expected_calls:
       - tool: weekly_active_minutes
         args: {}
@@ -206,8 +207,109 @@ questions:
     category: unanswerable
     question: Was I active enough in the week ending 22 March 2016?
     note: 5 of 7 days, total below 150, so reaches_recommendation is null and it cannot be settled.
+    tags: [missing_data]
     expect_refusal: true
     expected_calls:
       - tool: weekly_active_minutes
         args: {end_date: "2016-03-22"}
         match_on: [start, end, days_with_data, combined.reaches_recommendation]
+
+  # --- missing data: answerable, but the answer must say how many days it rests on ------
+  - id: act-06
+    user_id: "5553957443"
+    category: activity
+    question: How many steps did I take in total in the week ending 21 March 2016?
+    note: 19 and 20 March have no step data, so the total covers 5 days and is a lower bound.
+    tags: [missing_data]
+    expected_calls:
+      - tool: weekly_summary
+        args: {metric: steps, end_date: "2016-03-21"}
+        answer: [total, days_with_data]
+        match_on: [start, end, total, days_with_data]
+
+  - id: act-07
+    user_id: "5577150313"
+    category: activity
+    question: Which day this week was I most active?
+    note: 7 and 8 May have no step data; they must not be treated as inactive days.
+    tags: [missing_data]
+    expected_calls:
+      - tool: most_active_day
+        args: {start_date: "2016-05-04", end_date: "2016-05-10"}
+        answer: [most_active.steps, days_with_data]
+        match_on: [start, end, most_active.date, most_active.steps]
+
+  - id: slp-05
+    user_id: "5577150313"
+    category: sleep
+    question: How did I sleep in the week ending 9 May 2016?
+    note: Only 2 of 7 nights have data; a mean over 2 nights is not a picture of the week.
+    tags: [missing_data]
+    expected_calls:
+      - tool: weekly_summary
+        args: {metric: minutes_asleep, end_date: "2016-05-09"}
+        answer: [mean, days_with_data]
+        match_on: [start, end, mean, days_with_data]
+
+  - id: slp-06
+    user_id: "5577150313"
+    category: sleep
+    question: On how many nights did I sleep at least 7 hours in the week ending 25 March 2016?
+    note: 22 March has no sleep data, so 6 nights are counted.
+    tags: [missing_data]
+    expected_calls:
+      - tool: weekly_summary
+        args: {metric: minutes_asleep, end_date: "2016-03-25", threshold: 420}
+        answer: [threshold.days_at_or_above, days_with_data]
+        match_on: [start, end, threshold.value, threshold.days_at_or_above]
+
+  # --- missing data: cannot be answered from what was recorded ---------------------------
+  - id: una-05
+    user_id: "5553957443"
+    category: unanswerable
+    question: Did I meet the activity recommendation in the week ending 25 March 2016?
+    note: 5 of 7 days, 17 moderate-equivalent minutes; reaches_recommendation is null.
+    tags: [missing_data]
+    expect_refusal: true
+    expected_calls:
+      - tool: weekly_active_minutes
+        args: {end_date: "2016-03-25"}
+        match_on: [start, end, days_with_data, combined.reaches_recommendation]
+
+  - id: una-06
+    user_id: "5577150313"
+    category: unanswerable
+    question: Did I sleep more from 5 to 9 May 2016 than in the five nights before?
+    note: No sleep data 5-9 May, so compare_periods returns enough_data false.
+    tags: [missing_data]
+    expect_refusal: true
+    expected_calls:
+      - tool: compare_periods
+        args: {metric: minutes_asleep, period_a_start: "2016-04-30", period_a_end: "2016-05-04",
+               period_b_start: "2016-05-05", period_b_end: "2016-05-09"}
+        match_on: [period_b.days_with_data, enough_data]
+
+  - id: una-07
+    user_id: "5553957443"
+    category: unanswerable
+    question: Was my heart rate linked to my step count in March 2016?
+    note: No heart-rate data in March for this user, so n is 0 and r is null.
+    tags: [missing_data]
+    expect_refusal: true
+    expected_calls:
+      - tool: correlation
+        args: {metric_x: steps, metric_y: mean_hr, start_date: "2016-03-01",
+               end_date: "2016-03-31"}
+        match_on: [n, r]
+
+  - id: una-08
+    user_id: "6962181067"
+    category: unanswerable
+    question: What was my average heart rate in the week ending 25 March 2016?
+    note: Heart rate starts 2016-03-30 for this user; the week has 0 days with data.
+    tags: [missing_data]
+    expect_refusal: true
+    expected_calls:
+      - tool: weekly_summary
+        args: {metric: mean_hr, end_date: "2016-03-25"}
+        match_on: [start, end, days_with_data, mean]
