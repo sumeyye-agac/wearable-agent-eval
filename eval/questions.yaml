@@ -1,0 +1,213 @@
+# Evaluation question set. Format: eval/README.md.
+# Ground truth is not written here; scripts/build_ground_truth.py computes it from the tools
+# into eval/ground_truth.json.
+#
+# Demo users (data 2016-03-12 to 2016-05-11/12, Fitbit, Zenodo CC BY 4.0):
+#   6962181067  most complete: sleep every night, heart rate from 2016-03-30
+#   5553957443  steps/active minutes missing 2016-03-19..20, sleep missing 2016-03-18..21
+#   5577150313  steps missing 2016-05-07..08, sleep missing 2016-05-05..09
+# "This week" is the 7 days ending on the user's last complete day.
+
+schema_version: 1
+questions:
+
+  # --- activity -------------------------------------------------------------------------
+  - id: act-01
+    user_id: "6962181067"
+    category: activity
+    question: Which day was I most active?
+    expected_calls:
+      - tool: most_active_day
+        args: {}
+        answer: [most_active.steps, most_active.steps_above_second]
+        match_on: [most_active.date, most_active.steps, most_active.steps_above_second]
+
+  - id: act-02
+    user_id: "5553957443"
+    category: activity
+    question: How many steps did I take in total this week?
+    expected_calls:
+      - tool: weekly_summary
+        args: {metric: steps}
+        answer: [total]
+        match_on: [start, end, total]
+
+  - id: act-03
+    user_id: "5577150313"
+    category: activity
+    question: Was I active enough this week?
+    note: Two days are missing, but the total already reaches 150 moderate-equivalent minutes.
+    expected_calls:
+      - tool: weekly_active_minutes
+        args: {}
+        answer: [combined.moderate_equivalent_minutes]
+        match_on: [start, end, combined.moderate_equivalent_minutes]
+
+  - id: act-04
+    user_id: "6962181067"
+    category: activity
+    question: Did I get enough exercise in the week ending 17 April 2016?
+    expected_calls:
+      - tool: weekly_active_minutes
+        args: {end_date: "2016-04-17"}
+        answer: [combined.moderate_equivalent_minutes]
+        match_on: [start, end, combined.moderate_equivalent_minutes]
+
+  - id: act-05
+    user_id: "5553957443"
+    category: activity
+    question: What were my five highest step days in April 2016?
+    expected_calls:
+      - tool: most_active_day
+        args: {start_date: "2016-04-01", end_date: "2016-04-30", top_n: 5}
+        answer: [top_days.0.steps, top_days.1.steps, top_days.2.steps, top_days.3.steps,
+                 top_days.4.steps]
+
+  # --- sleep ----------------------------------------------------------------------------
+  - id: slp-01
+    user_id: "6962181067"
+    category: sleep
+    question: How was my sleep this week?
+    expected_calls:
+      - tool: weekly_summary
+        args: {metric: minutes_asleep}
+        answer: [mean]
+        match_on: [start, end, mean]
+
+  - id: slp-02
+    user_id: "5553957443"
+    category: sleep
+    question: On how many nights this week did I sleep at least 7 hours?
+    expected_calls:
+      - tool: weekly_summary
+        args: {metric: minutes_asleep, threshold: 420}
+        answer: [threshold.days_at_or_above]
+        match_on: [start, end, threshold.value, threshold.days_at_or_above]
+
+  - id: slp-03
+    user_id: "5577150313"
+    category: sleep
+    question: How long was I in bed on average in the week ending 10 April 2016?
+    expected_calls:
+      - tool: weekly_summary
+        args: {metric: minutes_in_bed, end_date: "2016-04-10"}
+        answer: [mean]
+        match_on: [start, end, mean]
+
+  - id: slp-04
+    user_id: "6962181067"
+    category: sleep
+    question: Which night this week did I sleep the least, and how long?
+    expected_calls:
+      - tool: weekly_summary
+        args: {metric: minutes_asleep}
+        answer: [lowest.value]
+        match_on: [start, end, lowest.date, lowest.value]
+
+  # --- heart rate -----------------------------------------------------------------------
+  - id: hr-01
+    user_id: "6962181067"
+    category: heart_rate
+    question: What was my average heart rate this week?
+    expected_calls:
+      - tool: weekly_summary
+        args: {metric: mean_hr}
+        answer: [mean]
+        match_on: [start, end, mean]
+
+  - id: hr-02
+    user_id: "5553957443"
+    category: heart_rate
+    question: Is my heart rate higher on days when I walk more?
+    note: Spearman is symmetric, so swapping metric_x and metric_y gives the same r and n.
+    expected_calls:
+      - tool: correlation
+        args: {metric_x: steps, metric_y: mean_hr}
+        answer: [r, n]
+
+  # --- trend ----------------------------------------------------------------------------
+  - id: trd-01
+    user_id: "6962181067"
+    category: trend
+    question: Did my step count change between the first and second half of my data?
+    expected_calls:
+      - tool: compare_periods
+        args: {metric: steps, preset: first_half_vs_second_half}
+        answer: [difference_b_minus_a, percent_change]
+
+  - id: trd-02
+    user_id: "5577150313"
+    category: trend
+    question: Am I sleeping more in the last 4 weeks than in the 4 weeks before?
+    expected_calls:
+      - tool: compare_periods
+        args: {metric: minutes_asleep, preset: last_4_weeks_vs_previous_4_weeks}
+        answer: [difference_b_minus_a]
+        match_on: [period_a.mean, period_b.mean, difference_b_minus_a]
+
+  - id: trd-03
+    user_id: "5553957443"
+    category: trend
+    question: Do I walk less after a short night's sleep?
+    note: Sleep is dated by the wake-up day, so lag_days=0 pairs a night with the day after.
+    expected_calls:
+      - tool: correlation
+        args: {metric_x: minutes_asleep, metric_y: steps}
+        answer: [r, n]
+
+  # --- comparison -----------------------------------------------------------------------
+  - id: cmp-01
+    user_id: "6962181067"
+    category: comparison
+    question: Did I walk more in the week ending 17 April 2016 than in the week before?
+    expected_calls:
+      - tool: compare_periods
+        args: {metric: steps, period_a_start: "2016-04-04", period_a_end: "2016-04-10",
+               period_b_start: "2016-04-11", period_b_end: "2016-04-17"}
+        answer: [difference_b_minus_a]
+        match_on: [period_a.mean, period_b.mean, difference_b_minus_a]
+
+  - id: cmp-02
+    user_id: "5577150313"
+    category: comparison
+    question: Compare my very active minutes in March and April 2016.
+    note: Data starts 2016-03-12; a call starting March on the 1st or the 12th gives the same means.
+    expected_calls:
+      - tool: compare_periods
+        args: {metric: very_active_minutes, period_a_start: "2016-03-01",
+               period_a_end: "2016-03-31", period_b_start: "2016-04-01",
+               period_b_end: "2016-04-30"}
+        answer: [period_a.mean, period_b.mean, difference_b_minus_a]
+
+  # --- unanswerable or incomplete data --------------------------------------------------
+  - id: una-01
+    user_id: "6962181067"
+    category: unanswerable
+    question: What was my resting heart rate last week?
+    note: The data has no resting heart rate; mean_hr must not be offered as one.
+    expect_refusal: true
+
+  - id: una-02
+    user_id: "5553957443"
+    category: unanswerable
+    question: How much did I sleep in June 2016?
+    note: Outside the data range (2016-03-12 to 2016-05-12).
+    expect_refusal: true
+
+  - id: una-03
+    user_id: "5577150313"
+    category: unanswerable
+    question: How many steps did I take on 7 May 2016?
+    note: No step data that day. A missing value is not zero.
+    expect_refusal: true
+
+  - id: una-04
+    user_id: "5553957443"
+    category: unanswerable
+    question: Was I active enough in the week ending 22 March 2016?
+    note: 5 of 7 days, total below 150, so reaches_recommendation is null and it cannot be settled.
+    expect_refusal: true
+    expected_calls:
+      - tool: weekly_active_minutes
+        args: {end_date: "2016-03-22"}
+        match_on: [start, end, days_with_data, combined.reaches_recommendation]

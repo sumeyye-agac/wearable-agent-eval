@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wearable-agent-eval"
+version = "0.1.0"
+description = "Cloud vs on-device LLM on the same wearable-data tools and question set."
+requires-python = ">=3.11"
+dependencies = ["pandas>=2.2", "pyyaml>=6.0"]
+
+[project.optional-dependencies]
+agent = ["anthropic>=2.8", "python-dotenv>=1.2"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
