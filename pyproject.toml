@@ -6,6 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "wearable-agent-eval"
 version = "0.1.0"
 description = "Cloud vs on-device LLM on the same wearable-data tools and question set."
+license = { text = "MIT" }
 requires-python = ">=3.11"
 dependencies = ["pandas>=2.2", "pyyaml>=6.0"]
 
