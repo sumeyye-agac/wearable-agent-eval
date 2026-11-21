@@ -232,3 +232,10 @@ docs/LOG.md
 
 # Local working files (phone prompt tests etc.)
 local/
+
+# OS files and model weights (on-device models are GBs; never commit them)
+.DS_Store
+*.litertlm
+*.gguf
+*.tflite
+*.safetensors
