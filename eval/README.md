@@ -58,11 +58,11 @@ Paths are dotted keys into the tool output. Integer parts index lists (`top_days
 | Refusal accuracy | `expect_refusal: true` | the answer says the data cannot answer the question and gives no invented number |
 | Coverage mentioned | calls with `coverage` | the answer contains the day count, as digits or an English word up to ten (`src/wearable_eval/metrics.py`, regex) |
 
-Open point for the unsupported-claim check: only `most_active_day` returns the window
-length (7), and no tool returns the number of missing days, only their dates. So "5 of 7
-days" or "2 days missing" would be flagged as unsupported. A likely rule is to count the
-length of each date list and of the window as supported numbers. To be decided when
-scoring is built.
+Supported numbers for the unsupported-claim check (`supported_numbers` in
+`src/wearable_eval/metrics.py`): every number in the model's tool outputs, plus the length
+of each list of dates and the length in days of each start-to-end window. Without the last
+two, "5 of 7 days" and "2 days missing" would count as invented, because only
+`most_active_day` returns the window length and no tool returns the number of missing days.
 
 ## Pilot set (28 questions)
 

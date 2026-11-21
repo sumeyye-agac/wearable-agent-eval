@@ -229,3 +229,6 @@ logs/
 # Local only: never commit or push
 CLAUDE.md
 docs/LOG.md
+
+# Local working files (phone prompt tests etc.)
+local/
