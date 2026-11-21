@@ -1,8 +1,10 @@
 # wearable-agent-eval
 
-> **Status: in progress.** The evaluation harness and a 28-question pilot set are done.
-> Results for Claude Haiku 5.5 (cloud) and Gemma 4 E2B (on-device), and the Android app,
-> are not in yet. Numbers will be added here as they are measured.
+> **Status: in progress** (updated 2026-11-21)
+>
+> ✅ **Last done:** eval harness and a 28-question pilot set with ground truth from the tools; Gemma-4-E2B-it runs on my phone (GPU, ~10 tok/s decode).
+>
+> 🔜 **Next:** measure time-to-first-token on the phone with the full agent prompt (~4K tokens, estimated).
 
 How accurate is a small on-device model, compared with a cloud model, when both answer
 health-data questions with the same tested tools? And what does it gain in latency, memory
@@ -11,7 +13,7 @@ and battery?
 The agent and the tools come from
 [ask-your-wearable](https://github.com/sumeyye-agac/ask-your-wearable). The copy here is
 from commit `a725a58`. The cloud reference is Claude Haiku 5.5, and the on-device model is
-Gemma 4 E2B.
+Gemma-4-E2B-it.
 
 ## Layout
 
