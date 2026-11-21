@@ -10,8 +10,8 @@ and battery?
 
 The agent and the tools come from
 [ask-your-wearable](https://github.com/sumeyye-agac/ask-your-wearable). The copy here is
-from commit `a725a58` (recorded in `docs/.source_commit`). The cloud reference is Claude
-Haiku 5.5, and the on-device model is Gemma 4 E2B.
+from commit `a725a58`. The cloud reference is Claude Haiku 5.5, and the on-device model is
+Gemma 4 E2B.
 
 ## Layout
 
