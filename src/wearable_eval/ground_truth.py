@@ -102,11 +102,13 @@ def check_reference_date(q: Question, df: pd.DataFrame) -> None:
                          f"{q.user_id} is not the tools' anchor {anchor}.")
 
 
-def build(questions: list[Question], users: dict[str, pd.DataFrame]) -> dict[str, Any]:
+def build(questions: list[Question], users: dict[str, pd.DataFrame],
+          version: str) -> dict[str, Any]:
     for q in questions:
         check_reference_date(q, users[q.user_id])
     return {
         "schema_version": SCHEMA_VERSION,
+        "questions_version": version,
         "numeric_tolerance": NUMERIC_TOLERANCE,
         "questions": [build_question(q, users[q.user_id]) for q in questions],
     }

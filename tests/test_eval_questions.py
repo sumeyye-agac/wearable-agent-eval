@@ -40,7 +40,7 @@ def test_committed_ground_truth_is_up_to_date():
 def test_ground_truth_matches_known_values(questions, users):
     # Spot checks against figures read straight from the data, so a change in a tool that
     # moves them shows up here and not only as a regenerated file.
-    gt = {q["id"]: q for q in build(questions, users)["questions"]}
+    gt = {q["id"]: q for q in build(questions, users, "v1")["questions"]}
     act01 = gt["act-01"]["expected_calls"][0]["match_on"]
     assert act01["most_active.date"] == "2016-03-17"
     assert act01["most_active.steps"] == 26100
@@ -58,7 +58,7 @@ def test_ground_truth_matches_known_values(questions, users):
 def test_missing_data_cases_really_miss_data(questions, users):
     # A missing_data question must rest on a tool result that shows the gap; if the data or
     # a tool changed so the gap disappeared, the question would test nothing.
-    gt = {q["id"]: q for q in build(questions, users)["questions"]}
+    gt = {q["id"]: q for q in build(questions, users, "v1")["questions"]}
     tagged = [q for q in questions if "missing_data" in q.tags]
     assert len(tagged) >= 10
     for q in tagged:
@@ -88,7 +88,7 @@ def _one(**overrides):
          "expected_calls": [{"tool": "weekly_summary", "args": {"metric": "minutes_asleep"},
                              "answer": ["mean"]}]}
     q.update(overrides)
-    return {"schema_version": 1, "questions": [q],
+    return {"schema_version": 1, "version": "v1", "questions": [q],
             "reference_dates": {"1": "2024-01-14", "999": "2024-01-14",
                                 "6962181067": "2016-05-11"}}
 
@@ -121,12 +121,24 @@ def test_build_rejects_a_path_not_in_the_output(users):
     data = _one(user_id="6962181067")
     data["questions"][0]["expected_calls"][0]["answer"] = ["not_a_field"]
     with pytest.raises(ValueError, match="not_a_field"):
-        build(parse_questions(data), users)
+        build(parse_questions(data), users, "v1")
 
 
 def test_ground_truth_file_is_valid_json():
     data = json.loads((REPO / "eval/ground_truth.json").read_text(encoding="utf-8"))
     assert data["numeric_tolerance"] == 0.01
+    assert data["questions_version"] == "v1"
+
+
+@pytest.mark.parametrize("version", [None, 1, "1", "v0", "v1.1", "V1"])
+def test_parse_requires_a_question_set_version(version):
+    data = _one()
+    if version is None:
+        del data["version"]
+    else:
+        data["version"] = version
+    with pytest.raises(ValueError, match="version must be v1, v2"):
+        parse_questions(data, users={"1"})
 
 
 def test_reference_dates_are_the_tools_anchor_and_in_the_prompt(questions, users):
@@ -141,7 +153,7 @@ def test_build_rejects_a_wrong_reference_date(users):
     data = _one(user_id="6962181067")
     data["reference_dates"] = {"6962181067": "2016-05-12"}
     with pytest.raises(ValueError, match="not the tools' anchor 2016-05-11"):
-        build(parse_questions(data), users)
+        build(parse_questions(data), users, "v1")
 
 
 def test_parse_requires_a_reference_date_for_every_user():
@@ -154,7 +166,7 @@ def test_parse_requires_a_reference_date_for_every_user():
 def test_coverage_questions_carry_the_day_count_in_the_tool_output(questions, users):
     # The day count is a field of the tool output, so a number like "5 days" in an answer
     # is supported by the tool result, not invented.
-    gt = {q["id"]: q for q in build(questions, users)["questions"]}
+    gt = {q["id"]: q for q in build(questions, users, "v1")["questions"]}
     expected = {"act-06": 5, "act-07": 5, "slp-05": 2, "slp-06": 6}
     with_coverage = {q["id"]: c["coverage"]["value"] for q in gt.values()
                      for c in q["expected_calls"] if c["coverage"]}

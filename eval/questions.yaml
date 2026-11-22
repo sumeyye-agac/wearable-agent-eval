@@ -8,6 +8,10 @@
 #   5577150313  steps missing 2016-05-07..08, sleep missing 2016-05-05..09
 schema_version: 1
 
+# Frozen as v1 (git tag questions-v1). Any change to a question, an expected call or a
+# reference date needs a new version; results are only compared within one version.
+version: v1
+
 # The pinned "today" per user. "This week" is the 7 days ending on it, "last 4 weeks" the 28
 # days ending on it. It is each user's last complete day; the build fails if it is not,
 # because the tools and the agent's system prompt use that day.

@@ -23,6 +23,7 @@ CATEGORIES = ("activity", "sleep", "heart_rate", "trend", "comparison", "unanswe
 _ARGUMENTS = {s["name"]: set(s["input_schema"]["properties"]) for s in TOOL_SPECS}
 _ISO_DATE = re.compile(r"\d{4}-\d{2}-\d{2}")
 _REQUIRED = {s["name"]: set(s["input_schema"]["required"]) for s in TOOL_SPECS}
+_VERSION = re.compile(r"v[1-9]\d*")
 
 
 @dataclass(frozen=True)
@@ -75,10 +76,21 @@ def _call(qid: str, raw: dict[str, Any]) -> ExpectedCall:
     return ExpectedCall(tool, dict(args), answer, match_on, coverage)
 
 
+def question_set_version(data: dict[str, Any]) -> str:
+    """The version of the question set ("v1", "v2", ...). Any change to the questions,
+    their expected calls or the reference dates needs a new version, so results from
+    different versions are never compared as if they were the same test."""
+    version = data.get("version")
+    if not isinstance(version, str) or not _VERSION.fullmatch(version):
+        raise ValueError(f"version must be v1, v2, ...; got {version!r}.")
+    return version
+
+
 def parse_questions(data: dict[str, Any], users: set[str] | None = None) -> list[Question]:
     """Turn the loaded YAML into Question objects, raising ValueError on any problem."""
     if data.get("schema_version") != SCHEMA_VERSION:
         raise ValueError(f"schema_version must be {SCHEMA_VERSION}.")
+    question_set_version(data)
     reference_dates = {str(k): str(v) for k, v in (data.get("reference_dates") or {}).items()}
     for uid, day in reference_dates.items():
         if not _ISO_DATE.fullmatch(day):
@@ -125,3 +137,8 @@ def parse_questions(data: dict[str, Any], users: set[str] | None = None) -> list
 def load_questions(path: Path, users: set[str] | None = None) -> list[Question]:
     with path.open(encoding="utf-8") as f:
         return parse_questions(yaml.safe_load(f), users)
+
+
+def load_version(path: Path) -> str:
+    with path.open(encoding="utf-8") as f:
+        return question_set_version(yaml.safe_load(f))

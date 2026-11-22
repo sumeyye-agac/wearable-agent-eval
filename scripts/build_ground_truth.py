@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 from wearable_eval.ground_truth import build, load_users
-from wearable_eval.questions import load_questions
+from wearable_eval.questions import load_questions, load_version
 
 REPO = Path(__file__).resolve().parents[1]
 DEMO = REPO / "data/demo/demo_daily.csv"
@@ -23,7 +23,8 @@ GROUND_TRUTH = REPO / "eval/ground_truth.json"
 def render() -> str:
     users = load_users(DEMO)
     questions = load_questions(QUESTIONS, set(users))
-    return json.dumps(build(questions, users), indent=2, ensure_ascii=False) + "\n"
+    data = build(questions, users, load_version(QUESTIONS))
+    return json.dumps(data, indent=2, ensure_ascii=False) + "\n"
 
 
 def main() -> int:

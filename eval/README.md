@@ -7,7 +7,8 @@
 ## Question format
 
 ```yaml
-schema_version: 1
+schema_version: 1                 # the file format
+version: v1                       # the question set; required, see below
 reference_dates:                  # the pinned "today" per user, required for every user
   "5553957443": "2016-05-11"
 questions:
@@ -25,6 +26,11 @@ questions:
         match_on: [start, end, threshold.value, threshold.days_at_or_above]
         coverage: days_with_data  # optional: day count the answer must mention
 ```
+
+**Version:** the question set is frozen per version. v1 is the 28-question pilot, tagged
+`questions-v1` in git. Any change to a question, an expected call or a reference date makes a
+new version (`v2`, ...); results are compared only within one version. The ground truth
+copies it as `questions_version`.
 
 **Pinned "today":** `reference_dates` makes explicit what "this week", "last night" and "the
 last 4 weeks" mean for each user: the 7 or 28 days ending on that date. It must equal the
