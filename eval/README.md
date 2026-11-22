@@ -28,9 +28,15 @@ questions:
 
 **Pinned "today":** `reference_dates` makes explicit what "this week", "last night" and "the
 last 4 weeks" mean for each user: the 7 or 28 days ending on that date. It must equal the
-user's last complete day. That is the day the tools use when `end_date` is omitted and the day
-the agent's system prompt names, and the build fails if they differ. The ground truth copies
-it into every question as `reference_date`.
+user's last complete day, the day the agent's system prompt names, and the build fails if they
+differ. The ground truth copies it into every question as `reference_date`.
+
+When `end_date` is omitted, the tools do not all stop on the same day. `weekly_summary` and
+`weekly_active_minutes` end on the last complete day. `most_active_day`,
+`missing_data_report` and `correlation` end on the last date with any data, which can be a
+partial day after it (2016-05-12 for user 6962181067). `compare_periods` has no `end_date`:
+its preset `last_4_weeks_vs_previous_4_weeks` ends on the last complete day, and
+`first_half_vs_second_half` ends on the last date with any data.
 
 Paths are dotted keys into the tool output. Integer parts index lists (`top_days.0.steps`).
 
