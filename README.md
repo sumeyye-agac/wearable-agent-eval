@@ -41,6 +41,9 @@
 
 </details>
 
+## How it works
+![System diagram](docs/architecture.png)
+
 How accurate is a small on-device model, compared with a cloud model, when both answer
 health-data questions with the same tested tools? And what does it gain in latency, memory
 and battery?
