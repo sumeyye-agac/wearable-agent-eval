@@ -44,10 +44,17 @@ def sha256_text(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
-def _usage_dict(usage: Any) -> dict[str, Any]:
-    if hasattr(usage, "model_dump"):
-        return usage.model_dump(mode="json")
-    return dict(vars(usage))  # a stand-in object in tests
+def to_json(value: Any) -> Any:
+    """SDK objects (pydantic models), stand-ins in tests and plain values, as JSON data."""
+    if hasattr(value, "model_dump"):
+        return value.model_dump(mode="json")
+    if isinstance(value, SimpleNamespace):
+        return to_json(vars(value))
+    if isinstance(value, dict):
+        return {k: to_json(v) for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [to_json(v) for v in value]
+    return value
 
 
 def _thinking_tokens(usage: dict[str, Any]) -> int:
@@ -56,9 +63,14 @@ def _thinking_tokens(usage: dict[str, Any]) -> int:
 
 
 class RecordingClient:
-    """Wraps an Anthropic client: passes every request through, with max_tokens set to the
-    runner's value, and records its wall-clock time, stop reason, content block types and
-    full usage block."""
+    """Wraps an Anthropic client. Passes every request through with max_tokens set to the
+    runner's value, and records per request:
+    - request: every field sent except the long fixed ones (system and tools are stored as
+      sha256, messages as the one new message: the question, or the tool results exactly
+      as sent back, with tool_use_id, the JSON string and is_error), plus the field names;
+    - response: the full response as returned (every content block: thinking with its
+      signature, text, tool_use with id, name and input), stop_reason and usage;
+    - seconds: wall-clock time of the request."""
 
     def __init__(self, client: Any, max_tokens: int = MAX_TOKENS):
         self._client = client
@@ -68,15 +80,24 @@ class RecordingClient:
 
     def _create(self, **kwargs: Any) -> Any:
         kwargs["max_tokens"] = self._max_tokens
+        messages = kwargs["messages"]
+        sent = {k: to_json(v) for k, v in kwargs.items()
+                if k not in ("system", "tools", "messages")}
+        sent.update(fields=sorted(kwargs), n_messages=len(messages),
+                    new_message=to_json(messages[-1]),
+                    system_sha256=sha256_text(kwargs.get("system", "")),
+                    tools_sha256=sha256_text(json.dumps(kwargs.get("tools"), sort_keys=True)))
         start = time.perf_counter()
         response = self._client.messages.create(**kwargs)
+        seconds = round(time.perf_counter() - start, 3)
+        body = to_json(response)
         self.requests.append({
             "step": len(self.requests) + 1,
-            "max_tokens": self._max_tokens,
-            "seconds": round(time.perf_counter() - start, 3),
-            "stop_reason": response.stop_reason,
-            "content_types": [b.type for b in response.content],
-            "usage": _usage_dict(response.usage),
+            "seconds": seconds,
+            "stop_reason": body["stop_reason"],
+            "usage": body["usage"],
+            "request": sent,
+            "response": body,
         })
         return response
 
@@ -180,10 +201,41 @@ def write_json(path: Path, data: Any) -> None:
 def append_line(path: Path, record: dict[str, Any]) -> None:
     with path.open("a", encoding="utf-8") as f:
         f.write(json.dumps(record, ensure_ascii=False) + "\n")
+        f.flush()
 
 
 def read_run(run_dir: Path) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     config = json.loads((run_dir / "config.json").read_text(encoding="utf-8"))
-    with (run_dir / "transcripts.jsonl").open(encoding="utf-8") as f:
-        lines = [json.loads(line) for line in f if line.strip()]
+    path = run_dir / "transcripts.jsonl"
+    lines = []
+    if path.exists():
+        with path.open(encoding="utf-8") as f:
+            lines = [json.loads(line) for line in f if line.strip()]
     return config, lines
+
+
+def repair_tail(path: Path) -> int:
+    """Cut a last line that an interruption left half written. Returns the bytes removed."""
+    if not path.exists():
+        return 0
+    data = path.read_bytes()
+    keep = data[:data.rfind(b"\n") + 1]
+    if len(keep) != len(data):
+        path.write_bytes(keep)
+    return len(data) - len(keep)
+
+
+def finished_pairs(lines: list[dict[str, Any]]) -> set[tuple[str, int]]:
+    """(question id, repeat) pairs with a line that did not end in an API error."""
+    return {(r["question_id"], r["repeat"]) for r in lines if r["status"] != "error"}
+
+
+RESUME_KEYS = ("model", "backend", "temperature", "thinking", "effort", "max_tokens",
+               "max_steps", "max_usd_per_question", "repeats", "questions_version",
+               "question_ids", "sha256")
+
+
+def resume_mismatches(old: dict[str, Any], new: dict[str, Any]) -> list[str]:
+    """Settings or inputs that differ between a run's config and the current state. A run
+    may only be resumed when this is empty, so all its lines answer the same test."""
+    return [k for k in RESUME_KEYS if old.get(k) != new.get(k)]

@@ -76,6 +76,11 @@ python3.11 -m venv .venv
 .venv/bin/pip install -r requirements-dev.txt
 .venv/bin/python -m pytest
 .venv/bin/python scripts/build_ground_truth.py
+
+# Needs ANTHROPIC_API_KEY (a git-ignored .env file works); costs money
+.venv/bin/python scripts/run_eval.py                       # 3 repeats into runs/dev/
+.venv/bin/python scripts/run_eval.py --resume runs/dev/<run>  # continue an interrupted run
+.venv/bin/python scripts/score_run.py runs/dev/<run>          # never calls a model
 ```
 
 ## Data

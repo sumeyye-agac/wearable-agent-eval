@@ -7,11 +7,15 @@ from types import SimpleNamespace as NS
 import pytest
 
 from wearable_eval.ground_truth import load_users
-from wearable_eval.runs import append_line, read_run, run_anthropic, token_totals, write_json
+import sys
+
+from wearable_eval.runs import (append_line, finished_pairs, read_run, repair_tail,
+                                resume_mismatches, run_anthropic, token_totals, write_json)
 from wearable_eval.scoring import (REFUSAL, answer_numbers, is_supported, score_answer,
                                    score_run, supported_values)
 
 REPO = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO / "scripts"))
 
 
 def usage(i=1000, o=100, thinking=40):
@@ -74,7 +78,7 @@ def test_runner_records_steps_tokens_and_tool_results(users):
 def test_runner_sends_its_own_max_tokens(users):
     client = FakeClient(final("ok"))
     record = run_anthropic(client, users["6962181067"], "hi", "claude-haiku-5-5")
-    assert client.sent[0]["max_tokens"] == 8192 == record["requests"][0]["max_tokens"]
+    assert client.sent[0]["max_tokens"] == 8192 == record["requests"][0]["request"]["max_tokens"]
     assert "temperature" not in client.sent[0]
 
 
@@ -159,3 +163,101 @@ def test_score_run_reports_spread_and_consistency(users, truth, tmp_path):
 def test_token_totals_handle_a_missing_thinking_count():
     requests = [{"usage": {"input_tokens": 5, "output_tokens": 2}}]
     assert token_totals(requests)["thinking_tokens"] == 0
+
+
+def test_full_requests_and_responses_are_saved(users):
+    record = act01_record(users, "26,100 steps.")
+    first, second = record["requests"]
+    # The response as returned: every block, with the tool_use id, name and input.
+    blocks = first["response"]["content"]
+    assert blocks[0] == {"type": "tool_use", "id": "t1", "name": "most_active_day",
+                         "input": {}}
+    assert [b["type"] for b in second["response"]["content"]] == ["thinking", "text"]
+    # The request settings, and which fields were sent at all (no temperature).
+    assert first["request"]["model"] == "claude-haiku-5-5"
+    assert first["request"]["max_tokens"] == 8192
+    assert first["request"]["output_config"] == {"effort": "medium"}
+    assert "temperature" not in first["request"]["fields"]
+    assert first["request"]["new_message"] == {"role": "user",
+                                               "content": "Which day was I most active?"}
+    # The tool result exactly as it was sent back to the model.
+    sent = second["request"]["new_message"]["content"][0]
+    assert sent["tool_use_id"] == "t1" and sent["is_error"] is False
+    assert json.loads(sent["content"]) == record["tool_calls"][0]["output"]
+
+
+def test_a_tool_error_is_saved_as_sent(users):
+    client = FakeClient(reply(tool_use("most_active_day", {"start_date": "2016012"})),
+                        final("Sorry."))
+    record = run_anthropic(client, users["6962181067"], "q", "claude-haiku-5-5")
+    sent = record["requests"][1]["request"]["new_message"]["content"][0]
+    assert sent["is_error"] is True and "2016012" in sent["content"]
+    assert record["tool_calls"][0]["is_error"] is True
+
+
+def test_latest_line_per_pair_wins_and_cost_counts_every_attempt(users, truth):
+    ok = {**act01_record(users, "26,100 steps."), "repeat": 1}
+    failed = {**ok, "status": "error", "answer": None, "tool_calls": [], "cost_usd": 0.001}
+    config = {"model": "m", "questions_version": "v1", "question_ids": ["act-01"]}
+    scores = score_run(config, [failed, ok], {"questions": list(truth.values())})
+    assert scores["answers"] == 1 and scores["statuses"] == {"answered": 1}
+    assert scores["usage"]["attempts"] == 2
+    assert scores["usage"]["cost_usd"] == round(0.001 + ok["cost_usd"], 4)
+
+
+def test_repair_tail_and_finished_pairs(tmp_path):
+    path = tmp_path / "transcripts.jsonl"
+    append_line(path, {"question_id": "a", "repeat": 1, "status": "answered"})
+    append_line(path, {"question_id": "b", "repeat": 1, "status": "error"})
+    with path.open("a") as f:
+        f.write('{"question_id": "c", "rep')  # cut off by an interruption
+    assert repair_tail(path) == len('{"question_id": "c", "rep')
+    _, lines = read_run_lines(tmp_path)
+    assert finished_pairs(lines) == {("a", 1)}
+
+
+def read_run_lines(run_dir):
+    write_json(run_dir / "config.json", {})
+    return read_run(run_dir)
+
+
+def test_resume_refuses_changed_inputs():
+    old = {"model": "m", "repeats": 3, "sha256": {"questions.yaml": "x"}}
+    assert resume_mismatches(old, dict(old)) == []
+    assert resume_mismatches(old, {**old, "sha256": {"questions.yaml": "y"}}) == ["sha256"]
+
+
+def test_an_interrupted_run_resumes_without_repeating_finished_pairs(tmp_path, monkeypatch):
+    import anthropic
+    import run_eval
+
+    calls = []
+
+    class Client:
+        def __init__(self, stop_after=None):
+            self.messages = NS(create=self._create)
+            self.stop_after = stop_after
+
+        def _create(self, **kwargs):
+            if self.stop_after is not None and len(calls) == self.stop_after:
+                raise KeyboardInterrupt  # stands in for the run being stopped
+            calls.append(kwargs["messages"][0]["content"])
+            return final("ok")
+
+    monkeypatch.setattr(run_eval, "REPO", tmp_path)
+    argv = ["run_eval.py", "--ids", "act-01,una-01", "--repeats", "2"]
+    monkeypatch.setattr("sys.argv", argv)
+    monkeypatch.setattr(anthropic, "Anthropic", lambda: Client(stop_after=3))
+    with pytest.raises(KeyboardInterrupt):
+        run_eval.main()
+    (run_dir,) = (tmp_path / "runs/dev").iterdir()
+    assert len(read_run(run_dir)[1]) == 3
+
+    monkeypatch.setattr("sys.argv", ["run_eval.py", "--resume", str(run_dir)])
+    monkeypatch.setattr(anthropic, "Anthropic", lambda: Client())
+    assert run_eval.main() == 0
+    config, lines = read_run(run_dir)
+    assert sorted((r["question_id"], r["repeat"]) for r in lines) == \
+        [("act-01", 1), ("act-01", 2), ("una-01", 1), ("una-01", 2)]
+    assert len(calls) == 4 and len(config["resumes"]) == 1
+    assert config["resumes"][0]["pairs_done"] == 3 and config["finished_at"]

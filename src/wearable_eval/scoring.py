@@ -164,9 +164,23 @@ def _spread(per_repeat: list[float | None]) -> dict[str, Any]:
             "min": min(kept) if kept else None, "max": max(kept) if kept else None}
 
 
-def score_run(config: dict[str, Any], lines: list[dict[str, Any]],
+def latest_lines(lines: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """One line per (question, repeat). A resumed run can hold an API-error line and a
+    later retry for the same pair; the last line that did not end in an error wins, and
+    an error line stays only when no retry finished."""
+    best: dict[tuple[str, int], dict[str, Any]] = {}
+    for r in lines:
+        key = (r["question_id"], r["repeat"])
+        if key not in best or r["status"] != "error" or best[key]["status"] == "error":
+            best[key] = r
+    return list(best.values())
+
+
+def score_run(config: dict[str, Any], attempts: list[dict[str, Any]],
               ground_truth: dict[str, Any]) -> dict[str, Any]:
+    """Scores one line per (question, repeat); usage and cost count every attempt."""
     truth = {q["id"]: q for q in ground_truth["questions"]}
+    lines = latest_lines(attempts)
     rows = [score_answer(r, truth[r["question_id"]]) for r in lines]
     repeats = sorted({r["repeat"] for r in rows})
 
@@ -210,7 +224,7 @@ def score_run(config: dict[str, Any], lines: list[dict[str, Any]],
     for r in lines:
         statuses[r["status"]] = statuses.get(r["status"], 0) + 1
     tokens: dict[str, int] = {}
-    for r in lines:
+    for r in attempts:
         for k, v in r["tokens"].items():
             tokens[k] = tokens.get(k, 0) + v
     return {
@@ -220,8 +234,9 @@ def score_run(config: dict[str, Any], lines: list[dict[str, Any]],
         "consistency": {"consistent_questions": sum(e["consistent"]
                                                     for e in per_question.values()),
                         "questions": len(per_question)},
-        "usage": {"cost_usd": round(sum(r["cost_usd"] for r in lines), 4),
-                  "requests": sum(r["steps"] for r in lines), **tokens,
+        "usage": {"attempts": len(attempts),
+                  "cost_usd": round(sum(r["cost_usd"] for r in attempts), 4),
+                  "requests": sum(r["steps"] for r in attempts), **tokens,
                   "seconds_per_answer_median": median(r["seconds"] for r in lines)
                   if lines else None},
         "per_question": per_question,
