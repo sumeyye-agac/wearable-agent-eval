@@ -22,10 +22,13 @@
 - [x] Added questions built on real gaps in the data, where the right answer is a refusal or must say how many days it covers
 - [x] Metrics as regex checks, no LLM judge: coverage mentioned, and the set of numbers the tools support (the unsupported-number check that uses it is not built yet)
 - [ ] Build the scoring: tool selection, numeric accuracy, unsupported numbers, refusal
+- [ ] Save every run to `runs/` (config, full transcripts, timings) and score from saved runs only
+- [ ] Run each question 3 times and report the spread
 - [ ] Run the Claude Haiku 5.5 baseline on the pilot set
 - [ ] Grow the set to 100–150 questions
 
 **Phase 2: Small model on my Mac**
+- [ ] Per-model format adapter (Anthropic tool use, LiteRT-LM tool format), one shared loop and the same tools
 - [ ] Run Gemma-4-E2B-it through the same harness
 - [ ] Optional second small model (Qwen3-1.7B)
 - [ ] Results table and error analysis: wrong tool, invented numbers, broken format
@@ -34,6 +37,7 @@
 - [ ] Minimal app with the model and the tools running on the phone
 - [ ] Port the tools to Kotlin and check them against the Python outputs
 - [ ] Measure latency with and without caching the fixed part of the prompt
+- [ ] Run a 20-question subset on the phone and compare answers with the Mac runs
 - [ ] One-minute demo video
 
 **Phase 4: Write-up**
