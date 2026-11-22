@@ -2,7 +2,7 @@
 
 > **Status: in progress** (updated 2026-11-22)
 >
-> ✅ **Last done:** time-to-first-token measured on the phone with the full agent prompt (5,145 tokens, Gemma tokenizer): 29.6 s on GPU.
+> ✅ **Last done:** runner and scorer: every run is saved to `runs/` and scored from the saved files only.
 >
 > 🔜 **Next:** run and score the Claude Haiku 5.5 baseline.
 
@@ -22,7 +22,7 @@
 - [x] Added questions built on real gaps in the data, where the right answer is a refusal or must say how many days it covers
 - [x] Metrics as regex checks, no LLM judge: coverage mentioned, and the set of numbers the tools support (the unsupported-number check that uses it is not built yet)
 - [ ] Build the scoring: tool selection, numeric accuracy, unsupported numbers, refusal
-- [ ] Save every run to `runs/` (config, full transcripts, timings) and score from saved runs only
+- [x] Save every run to `runs/` (config, full transcripts, timings) and score from saved runs only
 - [ ] Run each question 3 times and report the spread
 - [ ] Run the Claude Haiku 5.5 baseline on the pilot set
 - [ ] Grow the set to 100–150 questions
@@ -63,7 +63,8 @@ Gemma-4-E2B-it.
 | Path | Contents |
 | --- | --- |
 | `src/wearable/` | Tools, schema and agent loop, copied unchanged from ask-your-wearable |
-| `src/wearable_eval/` | Question loading, ground truth and text metrics |
+| `src/wearable_eval/` | Question loading, ground truth, runner and scoring |
+| `runs/` | Saved runs: `final/` is committed, `dev/` stays local |
 | `eval/` | Question set and generated ground truth ([format](eval/README.md)) |
 | `data/demo/` | Daily table for 3 demo users |
 | `android/` | On-device app (not started) |

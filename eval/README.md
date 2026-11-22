@@ -60,21 +60,38 @@ Paths are dotted keys into the tool output. Integer parts index lists (`top_days
 - Refusal questions may list expected calls (to check that the model looked) but no `answer`
   and no `coverage`.
 
-## Metrics (planned; scoring is not built yet)
+## Metrics
+
+Scored by `scripts/score_run.py` (`src/wearable_eval/scoring.py`) from a saved run only;
+it never calls a model. Numeric accuracy is not built yet.
 
 | Metric | Computed on | Rule |
 | --- | --- | --- |
-| Tool-selection accuracy | questions with expected calls | every expected call is matched by a model call (see `match_on`) |
-| Numeric accuracy | questions with `answer` paths | every expected number appears in the answer within ±1% (or as its `_text` form) |
-| Unsupported-claim rate | all answers | share of numbers in the answer that appear in none of the model's own tool outputs (regex, no LLM judge) |
-| Refusal accuracy | `expect_refusal: true` | the answer says the data cannot answer the question and gives no invented number |
-| Coverage mentioned | calls with `coverage` | the answer contains the day count, as digits or an English word up to ten (`src/wearable_eval/metrics.py`, regex) |
+| `tool_result_correct` | questions with expected calls | every expected call is matched by a model call: same tool, and its recorded output has the ground-truth values at the `match_on` paths (so the arguments must lead to the right result) |
+| Numeric accuracy (not built) | questions with `answer` paths | every expected number appears in the answer within ±1% (or as its `_text` form) |
+| Unsupported-number rate | all answers | share of numbers in the answer that none of the answer's own tool outputs supports (regex, no LLM judge) |
+| `refusal_correct` | `expect_refusal: true` | the answer matches a refusal phrase (`REFUSAL` in scoring.py) and has no unsupported number |
+| `coverage_mentioned` | calls with `coverage` | the answer contains the day count, as digits or an English word up to ten (`src/wearable_eval/metrics.py`, regex) |
 
-Supported numbers for the unsupported-claim check (`supported_numbers` in
-`src/wearable_eval/metrics.py`): every number in the model's tool outputs, plus the length
-of each list of dates and the length in days of each start-to-end window. Without the last
-two, "5 of 7 days" and "2 days missing" would count as invented, because only
-`most_active_day` returns the window length and no tool returns the number of missing days.
+Supported numbers (`supported_values` in `scoring.py`):
+
+- every number in the model's successful tool outputs, plus the length of each list of dates
+  and the length in days of each start-to-end window (`supported_numbers` in `metrics.py`).
+  Without the last two, "5 of 7 days" and "2 days missing" would count as invented, because
+  only `most_active_day` returns the window length and no tool returns the number of
+  missing days;
+- numbers written inside text fields of those outputs ("7 h 31 min" in `mean_text`,
+  guideline text);
+- numbers in the question itself ("at least 10,000 steps").
+
+Numbers in the answer are read after removing dates (`2016-05-11`, `May 11`, `11 May 2016`,
+`March 2016`, `5/11`) and list markers. A number matches a supported value within ±1%. Signs
+are kept: `-5%` or `+5%` must match a value with the same sign; an unsigned `5% lower`
+matches either sign, because the direction is then in words, which the check does not read.
+Numbers written as words ("five") are not checked.
+
+The refusal phrase list was written for the 8 pilot refusal questions and may miss other
+wordings; refusal answers are checked by eye after each run.
 
 ## Pilot set (28 questions)
 

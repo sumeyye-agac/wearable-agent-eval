@@ -239,3 +239,6 @@ local/
 *.gguf
 *.tflite
 *.safetensors
+
+# Eval runs: dev runs stay local, final runs (runs/final/) are committed
+runs/dev/
