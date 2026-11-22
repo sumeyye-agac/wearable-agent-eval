@@ -1,10 +1,10 @@
 # wearable-agent-eval
 
-> **Status: in progress** (updated 2026-11-21)
+> **Status: in progress** (updated 2026-11-22)
 >
-> ✅ **Last done:** eval harness and a 28-question pilot set with ground truth from the tools; Gemma-4-E2B-it runs on my phone (GPU, ~10 tok/s decode).
+> ✅ **Last done:** time-to-first-token measured on the phone with the full agent prompt (5,145 tokens, Gemma tokenizer): 29.6 s on GPU.
 >
-> 🔜 **Next:** measure time-to-first-token on the phone with the full agent prompt (~4K tokens, estimated).
+> 🔜 **Next:** run and score the Claude Haiku 5.5 baseline.
 
 <details>
 <summary><b>Plan and progress</b></summary>
@@ -14,7 +14,7 @@
 - [x] Measured speed on GPU and CPU: ~10 vs ~6.5 tok/s decode, ~3.0 vs ~2.2 GB RAM
 - [x] Sanity check: one tool call came back as valid JSON with the right tool and date
 - [x] Sanity check: asked for data no tool provides (blood oxygen); the model said it had no tool for it instead of inventing one
-- [ ] Measure time-to-first-token with the full agent prompt (~4K tokens, estimated)
+- [x] Measured time-to-first-token with the full agent prompt: 5,145 tokens (Gemma tokenizer), 29.6 s on GPU
 
 **Phase 1: Evaluation harness**
 - [x] Set up the repo and copied the tools and demo data from [ask-your-wearable](https://github.com/sumeyye-agac/ask-your-wearable), with its tests passing
