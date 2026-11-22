@@ -30,6 +30,7 @@
 **Phase 2: Small model on my Mac**
 - [ ] Per-model format adapter (Anthropic tool use, LiteRT-LM tool format), one shared loop and the same tools
 - [ ] Run Gemma-4-E2B-it through the same harness
+- [ ] Check whether Gemma corrects itself after a tool error (e.g. invalid dates)
 - [ ] Optional second small model (Qwen3-1.7B)
 - [ ] Results table and error analysis: wrong tool, invented numbers, broken format
 
