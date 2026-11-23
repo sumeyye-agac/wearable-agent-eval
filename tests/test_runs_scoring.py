@@ -1,6 +1,7 @@
 """The runner and the scorer, driven by a scripted stand-in for the API (no network)."""
 
 import json
+from datetime import date
 from pathlib import Path
 from types import SimpleNamespace as NS
 
@@ -15,6 +16,7 @@ from wearable_eval.scoring import (REFUSAL, answer_numbers, is_supported, score_
                                    score_run, supported_values)
 
 REPO = Path(__file__).resolve().parents[1]
+REF = date(2016, 5, 11)
 sys.path.insert(0, str(REPO / "scripts"))
 
 
@@ -94,23 +96,23 @@ def test_unsupported_numbers_skip_dates_and_accept_tool_values(users, truth):
                                  "(2016-03-17), with 26,100 steps, 3,029 more than the next "
                                  "day. That is about 7.5 miles.")
     scored = score_answer(record, truth["act-01"])
-    assert scored["unsupported"] == ["7.5"]
+    assert scored["unsupported_numbers"] == ["7.5"]
     assert scored["numbers"] == 3
 
 
 def values(text):
-    return [n.value for n in answer_numbers(text)]
+    return [n.value for n in answer_numbers(text, REF)]
 
 
 def test_answer_numbers():
     assert values("On 11 May 2016 and May 5th you slept 7 h 31 min, 1,234.5 in "
                   "total; SpO2 and E2B are not numbers.") == [7, 31, 1234.5]
     assert values("1. First\n2. Second: 12%") == [12]
-    assert answer_numbers(None) == []
+    assert answer_numbers(None, REF) == []
 
 
 def test_signs_are_kept_but_ranges_are_not_minus_signs():
-    assert [(n.value, n.signed) for n in answer_numbers("-5% (+3.2) and 7-9 hours, −4")] == \
+    assert [(n.value, n.signed) for n in answer_numbers("-5% (+3.2) and 7-9 hours, −4", REF)] == \
         [(-5, True), (3.2, True), (7, False), (9, False), (-4, True)]
 
 
@@ -119,13 +121,13 @@ def test_signs_are_kept_but_ranges_are_not_minus_signs():
 ])
 def test_an_explicit_sign_must_match_the_tool(text, ok):
     supported = {-12.3, 4}
-    assert all(is_supported(n, supported) for n in answer_numbers(text)) == ok
+    assert all(is_supported(n, supported) for n in answer_numbers(text, REF)) == ok
 
 
 def test_text_fields_and_the_question_support_numbers():
     calls = [{"output": {"mean": 451.3, "mean_text": "7 h 31 min"}, "is_error": False},
              {"output": "end_date 2030-01-01 is after the data; use 1 to 10", "is_error": True}]
-    values = supported_values(calls, "Did I reach 10,000 steps?")
+    values = supported_values(calls, "Did I reach 10,000 steps?", REF)
     assert {451.3, 7, 31, 10000} <= values
     assert 10 not in values  # numbers in an error message support nothing
 
@@ -154,8 +156,13 @@ def test_score_run_reports_spread_and_consistency(users, truth, tmp_path):
         append_line(tmp_path / "transcripts.jsonl", line)
     config, lines = read_run(tmp_path)
     scores = score_run(config, lines, {"questions": list(truth.values())})
-    assert scores["summary"]["tool_result_correct"]["per_repeat"] == [1.0, 1.0, 1.0]
-    assert scores["summary"]["answers_with_unsupported"]["per_repeat"] == [0.0, 0.0, 1.0]
+    summary = scores["summary"]
+    assert [c["rate"] for c in summary["tool_result_correct"]["per_repeat"]] == [1.0, 1.0, 1.0]
+    assert summary["tool_result_correct"]["all"] == {"k": 3, "n": 3, "rate": 1.0}
+    assert [c["k"] for c in summary["answers_with_unsupported_number"]["per_repeat"]] == \
+        [0, 0, 1]
+    assert summary["answers_with_unsupported_number"]["all"] == {"k": 1, "n": 3,
+                                                                "rate": 0.3333}
     assert scores["per_question"]["act-01"]["consistent"] is False
     assert scores["usage"]["thinking_tokens"] == 3 * 80
 

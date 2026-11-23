@@ -63,13 +63,15 @@ Paths are dotted keys into the tool output. Integer parts index lists (`top_days
 ## Metrics
 
 Scored by `scripts/score_run.py` (`src/wearable_eval/scoring.py`) from a saved run only;
-it never calls a model. Numeric accuracy is not built yet.
+it never calls a model. Numeric accuracy is not built yet. Every rate is reported with
+its count ("3/8, 37.5%"), per repeat and over all repeats.
 
 | Metric | Computed on | Rule |
 | --- | --- | --- |
 | `tool_result_correct` | questions with expected calls | every expected call is matched by a model call: same tool, and its recorded output has the ground-truth values at the `match_on` paths (so the arguments must lead to the right result) |
 | Numeric accuracy (not built) | questions with `answer` paths | every expected number appears in the answer within ±1% (or as its `_text` form) |
 | Unsupported-number rate | all answers | share of numbers in the answer that none of the answer's own tool outputs supports (regex, no LLM judge) |
+| Unsupported-date rate | all answers | share of dates in the answer that are not in the answer's own tool outputs, the question, the reference date or the prompt's "this week" / "last week", or that carry a wrong weekday (`src/wearable_eval/dates.py`) |
 | `refusal_correct` | `expect_refusal: true` | the answer matches a refusal phrase (`REFUSAL` in scoring.py) and has no unsupported number |
 | `coverage_mentioned` | calls with `coverage` | the answer contains the day count, as digits or an English word up to ten (`src/wearable_eval/metrics.py`, regex) |
 
@@ -84,11 +86,23 @@ Supported numbers (`supported_values` in `scoring.py`):
   guideline text);
 - numbers in the question itself ("at least 10,000 steps").
 
-Numbers in the answer are read after removing dates (`2016-05-11`, `May 11`, `11 May 2016`,
-`March 2016`, `5/11`) and list markers. A number matches a supported value within ±1%. Signs
-are kept: `-5%` or `+5%` must match a value with the same sign; an unsigned `5% lower`
-matches either sign, because the direction is then in words, which the check does not read.
-Numbers written as words ("five") are not checked.
+Numbers in the answer are read after taking out the dates (below) and list markers. A number
+matches a supported value within ±1%. Signs are kept: `-5%` or `+5%` must match a value with
+the same sign; an unsigned `5% lower` matches either sign, because the direction is then in
+words, which the check does not read. A number naming a period ("the last 7 days", "the
+previous 4 weeks", "a 28-day window") is also supported when the period is one the tools
+define: 7 days (weekly tools) or 28 days / 4 weeks (`compare_periods`). Numbers written as
+words ("five") are not checked.
+
+Dates (`dates.py`) are parsed, not just removed: single dates, ranges (`11–17 April`,
+`from 16 to 22 March`, `March 12–31, 2016`), lists (`16, 17, 18, 21 and 22 March`), weekday and
+day (`Saturday 19 and Sunday 20 March`, and `Thursday 17` without a month, which takes the
+month of the date before it), month and year (`June 2016`), and numeric dates with a year.
+A day is supported when it is in a tool output (an ISO date, or any day of a start-to-end
+window), in the question, the reference date, or in "this week" / "last week" as the system
+prompt defines them from the reference date. A weekday written next to a date must be that
+date's weekday. The data range the system prompt states ("the data covers 2016-03-12 to
+2016-05-12") is not a source yet, because the scorer does not read the data file.
 
 The refusal phrase list was written for the 8 pilot refusal questions and may miss other
 wordings; refusal answers are checked by eye after each run.

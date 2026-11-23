@@ -11,14 +11,17 @@ import sys
 from pathlib import Path
 
 from wearable_eval.runs import read_run, sha256_file, write_json
-from wearable_eval.scoring import METRICS, score_run
+from wearable_eval.scoring import SUMMARY_ROWS, score_run
 
 REPO = Path(__file__).resolve().parents[1]
 GROUND_TRUTH = REPO / "eval/ground_truth.json"
 
 
-def _pct(v: float | None) -> str:
-    return "  -  " if v is None else f"{100 * v:5.1f}%"
+def fmt(c: dict) -> str:
+    """A count as "k/n rate", e.g. "3/8 37.5%"."""
+    if not c["n"]:
+        return "-"
+    return f"{c['k']}/{c['n']} {100 * c['rate']:.1f}%"
 
 
 def main() -> int:
@@ -37,14 +40,12 @@ def main() -> int:
     s = scores["summary"]
     print(f"{scores['model']}, questions {scores['questions_version']}, "
           f"{scores['answers']} answers, statuses {scores['statuses']}")
-    print(f"{'metric':26} {'n':>3}  " + "  ".join(f"  r{k}  " for k in scores["repeats"])
-          + "   mean")
-    for m in (*METRICS, "unsupported_number_rate", "answers_with_unsupported"):
-        n = s[m].get("n_questions", "")
-        print(f"{m:26} {n:>3}  " + "  ".join(_pct(v) for v in s[m]["per_repeat"])
-              + f"  {_pct(s[m]['mean'])}")
-    c = scores["consistency"]
-    print(f"consistent over repeats: {c['consistent_questions']}/{c['questions']} questions")
+    cols = [f"r{k}" for k in scores["repeats"]] + ["all"]
+    print(f"{'metric':32}" + "".join(f"{c:>18}" for c in cols))
+    for m in SUMMARY_ROWS:
+        cells = [fmt(c) for c in s[m]["per_repeat"]] + [fmt(s[m]["all"])]
+        print(f"{m:32}" + "".join(f"{c:>18}" for c in cells))
+    print(f"consistent over repeats: {fmt(scores['consistency'])} of questions")
     print(f"usage: {scores['usage']}")
     print(f"Wrote {run_dir / 'scores.json'}")
     return 0
