@@ -27,7 +27,7 @@ from typing import Any
 import pandas as pd
 
 from wearable import agent
-from wearable.registry import TOOL_SPECS
+from wearable_eval import prompt_v1
 
 # Per request; thinking counts towards it. agent.py sends 4096; the runner's client wrapper
 # raises it to leave room for adaptive thinking, without changing agent.py.
@@ -112,7 +112,8 @@ def token_totals(requests: list[dict[str, Any]]) -> dict[str, int]:
 
 
 def run_anthropic(client: Any, df: pd.DataFrame, question: str, model: str) -> dict[str, Any]:
-    """One question through the existing agent loop (src/wearable/agent.py), unchanged.
+    """One question through the agent loop (src/wearable/agent.py), with the frozen prompt
+    v1 (src/wearable_eval/prompt_v1.py) as system prompt and tool specs.
 
     API errors are recorded in the line instead of stopping the run. The cost is summed
     from the recorded usage, so a question that failed half way still counts what it spent.
@@ -123,7 +124,8 @@ def run_anthropic(client: Any, df: pd.DataFrame, question: str, model: str) -> d
     start = time.perf_counter()
     result, error = None, None
     try:
-        result = agent.ask(recorder, df, question, model=model)
+        result = agent.ask(recorder, df, question, model=model,
+                           system=prompt_v1.system_prompt(df), tools=prompt_v1.TOOL_SPECS)
     except anthropic.APIError as err:
         error = f"{type(err).__name__}: {err}"
     seconds = round(time.perf_counter() - start, 3)
@@ -166,13 +168,14 @@ def build_config(*, model: str, repeats: int, questions_version: str, question_i
         "max_usd_per_question": agent.MAX_USD_PER_QUESTION,
         "repeats": repeats,
         "questions_version": questions_version,
+        "prompt_version": prompt_v1.PROMPT_VERSION,
         "question_ids": question_ids,
         "sha256": {
             "questions.yaml": sha256_file(questions_path),
             "ground_truth.json": sha256_file(ground_truth_path),
             "demo_daily.csv": sha256_file(data_path),
-            "tool_specs": sha256_text(json.dumps(TOOL_SPECS, sort_keys=True)),
-            "system_prompts": {uid: sha256_text(agent.system_prompt(df))
+            "tool_specs": sha256_text(json.dumps(prompt_v1.TOOL_SPECS, sort_keys=True)),
+            "system_prompts": {uid: sha256_text(prompt_v1.system_prompt(df))
                                for uid, df in sorted(users.items())},
         },
         "git_commit": _git("rev-parse", "HEAD"),
@@ -232,7 +235,7 @@ def finished_pairs(lines: list[dict[str, Any]]) -> set[tuple[str, int]]:
 
 RESUME_KEYS = ("model", "backend", "temperature", "thinking", "effort", "max_tokens",
                "max_steps", "max_usd_per_question", "repeats", "questions_version",
-               "question_ids", "sha256")
+               "prompt_version", "question_ids", "sha256")
 
 
 def resume_mismatches(old: dict[str, Any], new: dict[str, Any]) -> list[str]:

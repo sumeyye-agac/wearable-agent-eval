@@ -192,3 +192,15 @@ def test_prompt_says_to_copy_weekdays_from_tool_results(two_weeks):
     prompt = " ".join(agent.system_prompt(two_weeks).split())
     assert "When you name a weekday, copy it from that field." in prompt
     assert "Never work out a weekday yourself" in prompt
+
+
+def test_system_and_tools_can_be_replaced(two_weeks):
+    tools = [{"name": "weekly_summary", "description": "short", "input_schema": {}}]
+    client = FakeClient(final("ok"))
+    agent.ask(client, two_weeks, "q", system="frozen prompt", tools=tools)
+    assert client.requests[0]["system"] == "frozen prompt"
+    assert client.requests[0]["tools"] is tools
+    client = FakeClient(final("ok"))
+    agent.ask(client, two_weeks, "q")
+    assert client.requests[0]["system"] == agent.system_prompt(two_weeks)
+    assert client.requests[0]["tools"] is agent.TOOL_SPECS

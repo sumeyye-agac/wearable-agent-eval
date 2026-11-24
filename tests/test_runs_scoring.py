@@ -84,6 +84,14 @@ def test_runner_sends_its_own_max_tokens(users):
     assert "temperature" not in client.sent[0]
 
 
+def test_runner_sends_prompt_v1(users):
+    from wearable_eval import prompt_v1
+    client = FakeClient(final("ok"))
+    run_anthropic(client, users["6962181067"], "hi", "claude-haiku-5-5")
+    assert client.sent[0]["system"] == prompt_v1.system_prompt(users["6962181067"])
+    assert client.sent[0]["tools"] == prompt_v1.TOOL_SPECS
+
+
 def test_tool_result_correct_matches_results_not_arguments(users, truth):
     good = act01_record(users, "x", {"start_date": "2016-03-12", "end_date": "2016-05-11"})
     assert score_answer(good, truth["act-01"])["tool_result_correct"] is True

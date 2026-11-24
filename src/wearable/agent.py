@@ -180,8 +180,13 @@ def _text(content: list[Any]) -> str:
 
 
 def ask(client: Any, df: pd.DataFrame, question: str, *, model: str = DEFAULT_MODEL,
-        max_steps: int = MAX_STEPS, max_usd: float = MAX_USD_PER_QUESTION) -> AgentResult:
+        max_steps: int = MAX_STEPS, max_usd: float = MAX_USD_PER_QUESTION,
+        system: str | None = None, tools: list[dict[str, Any]] | None = None) -> AgentResult:
     """Answer one question about one user's daily frame.
+
+    system and tools replace the default system prompt (system_prompt(df)) and tool specs
+    (TOOL_SPECS), for example with a frozen prompt version. The tool names and arguments
+    must stay those of TOOL_SPECS, because the tools are still run through run_tool.
 
     The loop ends when the model answers, after max_steps model requests, or when the
     estimated cost reaches max_usd, whichever comes first. The status field says which,
@@ -190,14 +195,15 @@ def ask(client: Any, df: pd.DataFrame, question: str, *, model: str = DEFAULT_MO
     request_cost(None, model)  # fail before spending anything if the price is unknown
     result = AgentResult(question=question, answer=None, status=STEP_CAP, model=model, steps=0)
     messages: list[dict[str, Any]] = [{"role": "user", "content": question}]
-    system = system_prompt(df)
+    system = system_prompt(df) if system is None else system
+    tools = TOOL_SPECS if tools is None else tools
 
     for step in range(1, max_steps + 1):
         if result.cost_usd >= max_usd:
             result.status = SPEND_CAP
             break
         response = client.messages.create(
-            model=model, max_tokens=MAX_TOKENS, system=system, tools=TOOL_SPECS,
+            model=model, max_tokens=MAX_TOKENS, system=system, tools=tools,
             messages=messages, output_config={"effort": EFFORT},
         )
         result.steps = step

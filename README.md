@@ -2,9 +2,9 @@
 
 > **Status: in progress** (updated 2026-11-24)
 >
-> ✅ **Last done:** question set v1.1: 34 questions, including 6 new ones I wrote before seeing any model output, and fixes from a ground-truth audit of v1.
+> ✅ **Last done:** prompt v1: one frozen system prompt and tool schemas for every model, 18% shorter for Gemma (3,506 vs 4,297 tokens on the first turn), with each answer rule the scorer checks stated once.
 >
-> 🔜 **Next:** prompt v1.
+> 🔜 **Next:** one Claude Haiku 5.5 regression check on prompt v1, then scorer v1 with validation.
 
 <details>
 <summary><b>Plan and progress</b></summary>
@@ -19,7 +19,7 @@
 
 **A. Freeze the inputs**
 - [x] Question set v1.1
-- [ ] Prompt v1
+- [x] Prompt v1
 - [ ] Scorer v1 with validation: null baseline, mutation test, labeling policy, and decision rules written before any Gemma output is read
 
 **B. Runs on the frozen inputs**
@@ -53,8 +53,8 @@ Gemma-4-E2B-it.
 
 | Path | Contents |
 | --- | --- |
-| `src/wearable/` | Tools, schema and agent loop, copied unchanged from ask-your-wearable |
-| `src/wearable_eval/` | Question loading, ground truth, runner and scoring |
+| `src/wearable/` | Tools, schema and agent loop, copied from ask-your-wearable; one change: `ask()` takes `system=` and `tools=` |
+| `src/wearable_eval/` | Question loading, ground truth, prompt v1 (`prompt_v1.py`), runner and scoring |
 | `runs/` | Saved runs: `final/` is committed, `dev/` stays local |
 | `eval/` | Question set and generated ground truth ([format](eval/README.md)) |
 | `data/demo/` | Daily table for 3 demo users |
