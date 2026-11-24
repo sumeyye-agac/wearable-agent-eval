@@ -2,9 +2,9 @@
 
 > **Status: in progress** (updated 2026-11-24)
 >
-> ✅ **Last done:** question set v1.3, final for phase A: each expected answer now holds only what its question asks (7 questions changed).
+> ✅ **Last done:** scorer v1 parts 1-2: end-to-end pass per answer with a source for every number and date, then validation without any model (oracle 34/34, empty 0/34, null baseline, mutation test).
 >
-> 🔜 **Next:** scorer v1: the rules are built; validation (fake agents, null baseline, mutation test) comes next.
+> 🔜 **Next:** scorer v1 part 3: labeling policy and decision rules, then the scorer-v1 tag.
 
 <details>
 <summary><b>Plan and progress</b></summary>
