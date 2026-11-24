@@ -174,8 +174,8 @@ def score_answer(record: dict[str, Any], truth: dict[str, Any]) -> dict[str, Any
     refusal = None
     if truth["expect_refusal"]:
         refusal = bool(answer) and REFUSAL.search(answer) is not None and not unsupported
-    coverage = [coverage_mentioned(answer, e["coverage"]["value"])
-                for e in expected if e.get("coverage")]
+    coverage = [coverage_mentioned(answer, c["value"])
+                for e in expected for c in e.get("coverage") or []]
     return {
         "question_id": record["question_id"], "repeat": record["repeat"],
         "category": truth["category"], "status": record["status"],

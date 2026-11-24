@@ -8,9 +8,10 @@
 #   5577150313  steps missing 2016-05-07..08, sleep missing 2016-05-05..09
 schema_version: 1
 
-# Frozen as v1 (git tag questions-v1). Any change to a question, an expected call or a
-# reference date needs a new version; results are only compared within one version.
-version: v1
+# Frozen per version (git tags questions-v1, questions-v1.1). Any change to a question, an
+# expected call or a reference date needs a new version; results are only compared within
+# one version. Changes between versions: eval/README.md.
+version: v1.1
 
 # The pinned "today" per user. "This week" is the 7 days ending on it, "last 4 weeks" the 28
 # days ending on it. It is each user's last complete day; the build fails if it is not,
@@ -52,6 +53,7 @@ questions:
       - tool: weekly_active_minutes
         args: {}
         answer: [combined.moderate_equivalent_minutes]
+        coverage: days_with_data
         match_on: [start, end, combined.moderate_equivalent_minutes]
 
   - id: act-04
@@ -73,6 +75,11 @@ questions:
         args: {start_date: "2016-04-01", end_date: "2016-04-30", top_n: 5}
         answer: [top_days.0.steps, top_days.1.steps, top_days.2.steps, top_days.3.steps,
                  top_days.4.steps]
+        answer_dates: [top_days.0.date, top_days.1.date, top_days.2.date, top_days.3.date,
+                       top_days.4.date]
+        match_on: [top_days.0.date, top_days.0.steps, top_days.1.date, top_days.1.steps,
+                   top_days.2.date, top_days.2.steps, top_days.3.date, top_days.3.steps,
+                   top_days.4.date, top_days.4.steps]
 
   # --- sleep ----------------------------------------------------------------------------
   - id: slp-01
@@ -109,10 +116,12 @@ questions:
     user_id: "6962181067"
     category: sleep
     question: Which night this week did I sleep the least, and how long?
+    note: The lowest row is 2016-05-07 (wake-up day); "the night of 6 May" names the same night.
     expected_calls:
       - tool: weekly_summary
         args: {metric: minutes_asleep}
         answer: [lowest.value]
+        answer_dates: [lowest.date]
         match_on: [start, end, lowest.date, lowest.value]
 
   # --- heart rate -----------------------------------------------------------------------
@@ -150,10 +159,13 @@ questions:
     user_id: "5577150313"
     category: trend
     question: Am I sleeping more in the last 4 weeks than in the 4 weeks before?
+    note: Sleep is missing on 1 of the earlier 28 nights and 5 of the later 28.
+    tags: [missing_data]
     expected_calls:
       - tool: compare_periods
         args: {metric: minutes_asleep, preset: last_4_weeks_vs_previous_4_weeks}
         answer: [difference_b_minus_a]
+        coverage: [period_a.days_with_data, period_b.days_with_data]
         match_on: [period_a.mean, period_b.mean, difference_b_minus_a]
 
   - id: trd-03
@@ -183,12 +195,15 @@ questions:
     category: comparison
     question: Compare my very active minutes in March and April 2016.
     note: Data starts 2016-03-12; a call starting March on the 1st or the 12th gives the same means.
+      March has 20 days with data and April 29 (no activity data on 11 April).
+    tags: [missing_data]
     expected_calls:
       - tool: compare_periods
         args: {metric: very_active_minutes, period_a_start: "2016-03-01",
                period_a_end: "2016-03-31", period_b_start: "2016-04-01",
                period_b_end: "2016-04-30"}
         answer: [period_a.mean, period_b.mean, difference_b_minus_a]
+        coverage: [period_a.days_with_data, period_b.days_with_data]
 
   # --- unanswerable or incomplete data --------------------------------------------------
   - id: una-01
@@ -327,3 +342,84 @@ questions:
       - tool: weekly_summary
         args: {metric: mean_hr, end_date: "2016-03-25"}
         match_on: [start, end, days_with_data, mean]
+
+  # --- added in v1.1 (questions written by the maintainer) -------------------------------
+  - id: act-08
+    user_id: "5553957443"
+    category: activity
+    question: Did I hit the 150 mins activity goal in the week ending March 19, 2016?
+    note: 19 March has no data, but the 6 recorded days already pass 150, so the answer is settled.
+    tags: [missing_data]
+    expected_calls:
+      - tool: weekly_active_minutes
+        args: {end_date: "2016-03-19"}
+        answer: [combined.moderate_equivalent_minutes]
+        coverage: days_with_data
+        match_on: [start, end, days_with_data, combined.moderate_equivalent_minutes]
+
+  - id: act-09
+    user_id: "6962181067"
+    category: activity
+    question: How many steps did I get last week?
+    note: The system prompt defines "last week" as the 7 days before "this week".
+    expected_calls:
+      - tool: weekly_summary
+        args: {metric: steps, end_date: "2016-05-04"}
+        answer: [total]
+        match_on: [start, end, total]
+
+  - id: slp-07
+    user_id: "5553957443"
+    category: sleep
+    question: How long did I sleep the night of March 31, 2016?
+    note: Sleep is dated by the wake-up day, so the night of 31 March is the 2016-04-01 row. Any
+      7-day window that contains that day gives the same value.
+    expected_calls:
+      - tool: weekly_summary
+        args: {metric: minutes_asleep, end_date: "2016-04-01"}
+        answer: [daily.date=2016-04-01.value]
+
+  - id: slp-08
+    user_id: "5553957443"
+    category: sleep
+    question: What's my average sleep time in decimal hours from March 22 to March 28, 2016?
+    note: The tools give minutes and hours-and-minutes text, not decimal hours.
+    expected_calls:
+      - tool: weekly_summary
+        args: {metric: minutes_asleep, end_date: "2016-03-28"}
+        answer: [mean]
+        match_on: [start, end, mean]
+
+  - id: trd-04
+    user_id: "6962181067"
+    category: trend
+    question: In April, did I usually get more steps on days when I had more fairly active minutes?
+    note: Spearman (the tool's default) is symmetric, so swapping metric_x and metric_y gives the
+      same r and n.
+    expected_calls:
+      - tool: correlation
+        args: {metric_x: steps, metric_y: fairly_active_minutes, start_date: "2016-04-01",
+               end_date: "2016-04-30"}
+        answer: [r, n]
+
+  - id: cmp-03
+    user_id: "6962181067"
+    category: comparison
+    question: Did I get more steps from May 5 to 11 than I did from April 28 to May 4?
+    note: Both weeks have step data on all 7 days, so comparing the means (one compare_periods
+      call) gives the same answer as comparing the totals (two weekly_summary calls).
+    expected_calls:
+      - tool: compare_periods
+        args: {metric: steps, period_a_start: "2016-04-28", period_a_end: "2016-05-04",
+               period_b_start: "2016-05-05", period_b_end: "2016-05-11"}
+        answer: [difference_b_minus_a]
+        match_on: [period_a.mean, period_b.mean, difference_b_minus_a]
+    alternative_routes:
+      - - tool: weekly_summary
+          args: {metric: steps, end_date: "2016-05-04"}
+          answer: [total]
+          match_on: [start, end, total]
+        - tool: weekly_summary
+          args: {metric: steps, end_date: "2016-05-11"}
+          answer: [total]
+          match_on: [start, end, total]

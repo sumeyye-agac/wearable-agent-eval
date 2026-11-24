@@ -1,5 +1,6 @@
 import json
 import sys
+from datetime import date
 from pathlib import Path
 
 import pytest
@@ -61,11 +62,18 @@ def test_missing_data_cases_really_miss_data(questions, users):
     gt = {q["id"]: q for q in build(questions, users, "v1")["questions"]}
     tagged = [q for q in questions if "missing_data" in q.tags]
     assert len(tagged) >= 10
+    def short_period(period):
+        # a compare_periods period with fewer days of data than days in it
+        if not period:
+            return False
+        days = (date.fromisoformat(period["end"]) - date.fromisoformat(period["start"])).days + 1
+        return period["days_with_data"] < days
+
     for q in tagged:
         out = gt[q.id]["expected_calls"][0]["output"]
         gap = (out.get("days_with_data", 7) < 7
                or out.get("enough_data") is False
-               or (out.get("period_b") or {}).get("days_with_data", 7) < 3
+               or short_period(out.get("period_a")) or short_period(out.get("period_b"))
                or out.get("n", 99) < 10)
         assert gap, q.id
     assert gt["slp-05"]["expected_calls"][0]["output"]["days_with_data"] == 2
@@ -81,6 +89,40 @@ def test_resolve_follows_lists_and_rejects_missing_paths():
         resolve(output, "top_days.2.steps")
     with pytest.raises(KeyError):
         resolve(output, "mean")
+
+
+def test_resolve_picks_a_list_item_by_key():
+    output = {"daily": [{"date": "2016-03-31", "value": 412.0},
+                        {"date": "2016-04-01", "value": 365.0}]}
+    assert resolve(output, "daily.date=2016-04-01.value") == 365.0
+    with pytest.raises(KeyError):
+        resolve(output, "daily.date=2016-04-02.value")
+
+
+def test_alternative_routes_are_built_like_expected_calls(questions, users):
+    # cmp-03 can be answered by one compare_periods call or by two weekly_summary calls.
+    gt = {q["id"]: q for q in build(questions, users, "v1.1")["questions"]}
+    (route,) = gt["cmp-03"]["alternative_routes"]
+    assert [c["match_on"]["total"] for c in route] == [74092, 61947]
+    assert gt["cmp-03"]["expected_calls"][0]["match_on"]["difference_b_minus_a"] == -1735
+    assert gt["act-01"]["alternative_routes"] == []
+
+
+def test_answer_dates_accept_the_evening_before_for_sleep_only(users):
+    data = _one(user_id="6962181067")
+    call = data["questions"][0]["expected_calls"][0]
+    call["answer_dates"] = ["lowest.date"]
+    (date_,) = build(parse_questions(data), users, "v1")["questions"][0]["expected_calls"][0][
+        "answer_dates"]
+    assert date_["value"] == "2016-05-07"
+    assert date_["accepted"] == ["2016-05-07", "2016-05-06"]
+    call["args"] = {"metric": "steps"}
+    (date_,) = build(parse_questions(data), users, "v1")["questions"][0]["expected_calls"][0][
+        "answer_dates"]
+    assert date_["accepted"] == [date_["value"]]
+    call["answer_dates"] = ["mean"]
+    with pytest.raises(ValueError, match="not a YYYY-MM-DD date"):
+        build(parse_questions(data), users, "v1")
 
 
 def _one(**overrides):
@@ -104,6 +146,16 @@ def _one(**overrides):
      "needs answer or match_on"),
     ({"expect_refusal": True}, "refusal question cannot require numbers"),
     ({"tags": "missing_data"}, "tags must be a list"),
+    ({"alternative_routes": [[]]}, "alternative_routes must be a list of non-empty lists"),
+    ({"alternative_routes": [{"tool": "weekly_summary"}]}, "alternative_routes must be"),
+    ({"expected_calls": [], "alternative_routes": [[
+        {"tool": "weekly_summary", "args": {"metric": "steps"}, "answer": ["total"]}]]},
+     "need expected_calls"),
+    ({"expect_refusal": True, "expected_calls": [
+        {"tool": "weekly_summary", "args": {"metric": "steps"}, "match_on": ["total"]}],
+      "alternative_routes": [[
+        {"tool": "weekly_summary", "args": {"metric": "steps"}, "answer": ["total"]}]]},
+     "refusal question cannot require numbers"),
 ])
 def test_parse_rejects_invalid_questions(overrides, message):
     with pytest.raises(ValueError, match=message):
@@ -127,18 +179,26 @@ def test_build_rejects_a_path_not_in_the_output(users):
 def test_ground_truth_file_is_valid_json():
     data = json.loads((REPO / "eval/ground_truth.json").read_text(encoding="utf-8"))
     assert data["numeric_tolerance"] == 0.01
-    assert data["questions_version"] == "v1"
+    assert data["text_tolerance_minutes"] == 1
+    assert data["questions_version"] == "v1.1"
 
 
-@pytest.mark.parametrize("version", [None, 1, "1", "v0", "v1.1", "V1"])
+@pytest.mark.parametrize("version", [None, 1, "1", "v0", "v1.0", "v1.1.1", "V1"])
 def test_parse_requires_a_question_set_version(version):
     data = _one()
     if version is None:
         del data["version"]
     else:
         data["version"] = version
-    with pytest.raises(ValueError, match="version must be v1, v2"):
+    with pytest.raises(ValueError, match="version must be v1, v1.1, v2"):
         parse_questions(data, users={"1"})
+
+
+@pytest.mark.parametrize("version", ["v1", "v1.1", "v2", "v12.3"])
+def test_parse_accepts_minor_versions(version):
+    data = _one()
+    data["version"] = version
+    parse_questions(data, users={"1"})
 
 
 def test_reference_dates_are_the_tools_anchor_and_in_the_prompt(questions, users):
@@ -167,9 +227,11 @@ def test_coverage_questions_carry_the_day_count_in_the_tool_output(questions, us
     # The day count is a field of the tool output, so a number like "5 days" in an answer
     # is supported by the tool result, not invented.
     gt = {q["id"]: q for q in build(questions, users, "v1")["questions"]}
-    expected = {"act-06": 5, "act-07": 5, "slp-05": 2, "slp-06": 6}
-    with_coverage = {q["id"]: c["coverage"]["value"] for q in gt.values()
+    expected = {"act-03": [5], "act-06": [5], "act-07": [5], "act-08": [6], "slp-05": [2],
+                "slp-06": [6], "trd-02": [27, 23], "cmp-02": [20, 29]}
+    with_coverage = {q["id"]: [x["value"] for x in c["coverage"]] for q in gt.values()
                      for c in q["expected_calls"] if c["coverage"]}
     assert with_coverage == expected
-    for qid, count in expected.items():
-        assert gt[qid]["expected_calls"][0]["output"]["days_with_data"] == count
+    for qid, counts in expected.items():
+        call = gt[qid]["expected_calls"][0]
+        assert [resolve(call["output"], x["path"]) for x in call["coverage"]] == counts

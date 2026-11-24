@@ -2,9 +2,9 @@
 
 > **Status: in progress** (updated 2026-11-24)
 >
-> ✅ **Last done:** a Claude Haiku 5.5 pilot run on questions v1 (not reported as a result: the scorer is not validated yet), and a LiteRT-LM spike on my Mac (go: valid tool calls, deterministic at temperature 0).
+> ✅ **Last done:** question set v1.1: 34 questions, including 6 new ones I wrote before seeing any model output, and fixes from a ground-truth audit of v1.
 >
-> 🔜 **Next:** question set v1.1.
+> 🔜 **Next:** prompt v1.
 
 <details>
 <summary><b>Plan and progress</b></summary>
@@ -18,7 +18,7 @@
 - [x] A LiteRT-LM spike on my Mac: Gemma-4-E2B-it makes valid tool calls and is deterministic at temperature 0
 
 **A. Freeze the inputs**
-- [ ] Question set v1.1
+- [x] Question set v1.1
 - [ ] Prompt v1
 - [ ] Scorer v1 with validation: null baseline, mutation test, labeling policy, and decision rules written before any Gemma output is read
 

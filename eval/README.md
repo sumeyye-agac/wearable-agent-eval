@@ -8,7 +8,7 @@
 
 ```yaml
 schema_version: 1                 # the file format
-version: v1                       # the question set; required, see below
+version: v1.1                     # the question set; required, see below
 reference_dates:                  # the pinned "today" per user, required for every user
   "5553957443": "2016-05-11"
 questions:
@@ -24,13 +24,16 @@ questions:
         args: {metric: minutes_asleep, threshold: 420}
         answer: [threshold.days_at_or_above]   # numbers the answer must state
         match_on: [start, end, threshold.value, threshold.days_at_or_above]
-        coverage: days_with_data  # optional: day count the answer must mention
+        coverage: days_with_data  # optional: day count(s) the answer must mention
+        answer_dates: [lowest.date]   # optional: dates the answer must state
+    alternative_routes:           # optional: other call sets that answer it equally well
+      - - tool: ...               # each route is a list of calls, all of them needed
 ```
 
-**Version:** the question set is frozen per version. v1 is the 28-question pilot, tagged
-`questions-v1` in git. Any change to a question, an expected call or a reference date makes a
-new version (`v2`, ...); results are compared only within one version. The ground truth
-copies it as `questions_version`.
+**Version:** the question set is frozen per version and tagged in git (`questions-v1`,
+`questions-v1.1`). Any change to a question, an expected call or a reference date makes a
+new version (`v1.1`, `v2`, ...); results are compared only within one version. The ground
+truth copies it as `questions_version`. Changes are listed under "Changelog" below.
 
 **Pinned "today":** `reference_dates` makes explicit what "this week", "last night" and "the
 last 4 weeks" mean for each user: the 7 or 28 days ending on that date. It must equal the
@@ -45,6 +48,8 @@ its preset `last_4_weeks_vs_previous_4_weeks` ends on the last complete day, and
 `first_half_vs_second_half` ends on the last date with any data.
 
 Paths are dotted keys into the tool output. Integer parts index lists (`top_days.0.steps`).
+A `key=value` part picks the first list item with that key and value
+(`daily.date=2016-04-01.value`), so the path finds a day wherever it sits in the window.
 
 - **answer:** each path must resolve to a number. If the output also has a `<path>_text`
   sibling (hours and minutes for the sleep metrics), the ground truth keeps it as an accepted
@@ -54,11 +59,20 @@ Paths are dotted keys into the tool output. Integer parts index lists (`top_days
   The rule compares results instead of arguments, so these count as correct: `end_date`
   omitted vs given as the last complete day, March starting on the 1st vs the 12th (data
   starts on the 12th), and `metric_x`/`metric_y` swapped in a Spearman correlation.
-- **coverage:** an output path holding the number of days a result rests on (an integer).
-  It is used for answerable questions with missing days. The day count is a field of the tool
-  output, so the unsupported-claim check finds it there.
-- Refusal questions may list expected calls (to check that the model looked) but no `answer`
-  and no `coverage`.
+- **coverage:** an output path, or a list of paths, holding the number of days a result rests
+  on (an integer). It is used for answerable questions with missing days; `compare_periods`
+  questions list one count per period. The day count is a field of the tool output, so the
+  unsupported-claim check finds it there.
+- **answer_dates:** output paths holding dates (YYYY-MM-DD) the answer must state. The
+  ground truth lists the accepted forms: the date itself, and for a sleep metric also the
+  evening before, because sleep is dated by the wake-up day ("the night of 6 May" is the
+  2016-05-07 row). Not scored yet; it is part of scorer v1.
+- **alternative_routes:** other ways to answer the question with the tools, each a list of
+  calls written like `expected_calls` (which is the first route). The ground truth builds
+  every route. `tool_result_correct` checks only `expected_calls` for now; accepting any
+  route is part of scorer v1.
+- Refusal questions may list expected calls (to check that the model looked) but no
+  `answer`, no `answer_dates` and no `coverage`.
 
 ## Metrics
 
@@ -69,7 +83,7 @@ its count ("3/8, 37.5%"), per repeat and over all repeats.
 | Metric | Computed on | Rule |
 | --- | --- | --- |
 | `tool_result_correct` | questions with expected calls | every expected call is matched by a model call: same tool, and its recorded output has the ground-truth values at the `match_on` paths (so the arguments must lead to the right result) |
-| Numeric accuracy (not built) | questions with `answer` paths | every expected number appears in the answer within ±1% (or as its `_text` form) |
+| Numeric accuracy (not built) | questions with `answer` paths | every expected number appears in the answer within ±1%, or as an hours-and-minutes form within ±1 min of the value (`text_tolerance_minutes`) |
 | Unsupported-number rate | all answers | share of numbers in the answer that none of the answer's own tool outputs supports (regex, no LLM judge) |
 | Unsupported-date rate | all answers | share of dates in the answer that are not in the answer's own tool outputs, the question, the reference date or the prompt's "this week" / "last week", or that carry a wrong weekday (`src/wearable_eval/dates.py`) |
 | `refusal_correct` | `expect_refusal: true` | the answer matches a refusal phrase (`REFUSAL` in scoring.py) and has no unsupported number |
@@ -107,15 +121,15 @@ date's weekday. The data range the system prompt states ("the data covers 2016-0
 The refusal phrase list was written for the 8 pilot refusal questions and may miss other
 wordings; refusal answers are checked by eye after each run.
 
-## Pilot set (28 questions)
+## Question set v1.1 (34 questions)
 
 | Category | n | tagged missing_data |
 | --- | --- | --- |
-| activity | 7 | 3 |
-| sleep | 6 | 2 |
+| activity | 9 | 4 |
+| sleep | 8 | 2 |
 | heart_rate | 2 | 0 |
-| trend | 3 | 0 |
-| comparison | 2 | 0 |
+| trend | 4 | 1 |
+| comparison | 3 | 1 |
 | unanswerable | 8 | 5 |
 
 The `missing_data` questions come in two kinds, all built on real gaps in the demo data:
@@ -129,5 +143,30 @@ The `missing_data` questions come in two kinds, all built on real gaps in the de
 
 `tests/test_eval_questions.py` checks that every tagged question still rests on a gap.
 
-Known gaps in the pilot: no multi-tool questions yet, no guideline (`get_guideline`)
+Known gaps: no multi-tool questions yet, no guideline (`get_guideline`)
 questions, no medical-advice or off-topic questions. They are planned for the full set.
+
+## Changelog
+
+**v1.1** (34 questions)
+
+- Added six questions written by the maintainer before seeing any model output: act-08
+  (a week with a missing day where the total already settles the answer), act-09 ("last
+  week"), slp-07 (one night, dated by the wake-up day), slp-08 (mean sleep in decimal
+  hours), trd-04 (steps and fairly active minutes in April), cmp-03 (two adjacent weeks).
+- cmp-02 and trd-02: tagged `missing_data`, with a coverage check per period. Both compare
+  periods with missing days (cmp-02: March has 20 days with data, April 29; trd-02: 27 and
+  23 nights).
+- act-03: coverage check added (5 of 7 days).
+- act-05: the dates of the five top days are checked too, in the tool result (`match_on`)
+  and as `answer_dates`.
+- slp-04: the night may be named by its wake-up day (2016-05-07) or the evening before
+  (6 May), through `answer_dates`.
+- Hours-and-minutes forms are accepted within ±1 min (slp-05: 555.5 min may be "9 h 15 min"
+  or "9 h 16 min").
+- cmp-03 has two routes: one `compare_periods` call (daily means) or two `weekly_summary`
+  calls (weekly totals).
+- Format: `coverage` may be a list, new `answer_dates` and `alternative_routes` keys,
+  `key=value` path parts, version labels like `v1.1`.
+
+**v1** (28 questions): the pilot set.

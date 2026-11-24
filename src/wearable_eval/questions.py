@@ -23,7 +23,7 @@ CATEGORIES = ("activity", "sleep", "heart_rate", "trend", "comparison", "unanswe
 _ARGUMENTS = {s["name"]: set(s["input_schema"]["properties"]) for s in TOOL_SPECS}
 _ISO_DATE = re.compile(r"\d{4}-\d{2}-\d{2}")
 _REQUIRED = {s["name"]: set(s["input_schema"]["required"]) for s in TOOL_SPECS}
-_VERSION = re.compile(r"v[1-9]\d*")
+_VERSION = re.compile(r"v[1-9]\d*(?:\.[1-9]\d*)?")
 
 
 @dataclass(frozen=True)
@@ -32,7 +32,8 @@ class ExpectedCall:
     args: dict[str, Any]
     answer: list[str]      # output paths whose numbers the answer must state
     match_on: list[str]    # output paths a model's call must reproduce to count as this call
-    coverage: str | None = None  # output path of the day count the answer must mention
+    coverage: list[str] = field(default_factory=list)  # paths of day counts the answer must mention
+    answer_dates: list[str] = field(default_factory=list)  # paths of dates the answer must state
 
 
 @dataclass(frozen=True)
@@ -46,6 +47,9 @@ class Question:
     expect_refusal: bool = False
     note: str | None = None
     tags: list[str] = field(default_factory=list)  # free labels for analysis, e.g. missing_data
+    # Other call sets that answer the question equally well (each a list of calls, all
+    # needed). expected_calls is the first route; these are the others.
+    alternative_routes: list[list[ExpectedCall]] = field(default_factory=list)
 
 
 def _fail(qid: str, message: str) -> None:
@@ -53,7 +57,7 @@ def _fail(qid: str, message: str) -> None:
 
 
 def _call(qid: str, raw: dict[str, Any]) -> ExpectedCall:
-    unknown = set(raw) - {"tool", "args", "answer", "match_on", "coverage"}
+    unknown = set(raw) - {"tool", "args", "answer", "match_on", "coverage", "answer_dates"}
     if unknown:
         _fail(qid, f"unknown key(s) in expected call: {', '.join(sorted(unknown))}")
     tool = raw.get("tool")
@@ -70,19 +74,24 @@ def _call(qid: str, raw: dict[str, Any]) -> ExpectedCall:
     match_on = list(raw.get("match_on") or answer)
     if not match_on:
         _fail(qid, f"expected call {tool} needs answer or match_on paths")
-    coverage = raw.get("coverage")
-    if coverage is not None and (not isinstance(coverage, str) or not coverage):
-        _fail(qid, f"coverage in expected call {tool} must be an output path")
-    return ExpectedCall(tool, dict(args), answer, match_on, coverage)
+    coverage = raw.get("coverage") or []
+    if isinstance(coverage, str):
+        coverage = [coverage]
+    if not isinstance(coverage, list) or not all(isinstance(c, str) and c for c in coverage):
+        _fail(qid, f"coverage in expected call {tool} must be an output path or a list of them")
+    answer_dates = raw.get("answer_dates") or []
+    if not isinstance(answer_dates, list) or not all(isinstance(d, str) and d for d in answer_dates):
+        _fail(qid, f"answer_dates in expected call {tool} must be a list of output paths")
+    return ExpectedCall(tool, dict(args), answer, match_on, list(coverage), list(answer_dates))
 
 
 def question_set_version(data: dict[str, Any]) -> str:
-    """The version of the question set ("v1", "v2", ...). Any change to the questions,
+    """The version of the question set ("v1", "v1.1", "v2", ...). Any change to the questions,
     their expected calls or the reference dates needs a new version, so results from
     different versions are never compared as if they were the same test."""
     version = data.get("version")
     if not isinstance(version, str) or not _VERSION.fullmatch(version):
-        raise ValueError(f"version must be v1, v2, ...; got {version!r}.")
+        raise ValueError(f"version must be v1, v1.1, v2, ...; got {version!r}.")
     return version
 
 
@@ -103,7 +112,7 @@ def parse_questions(data: dict[str, Any], users: set[str] | None = None) -> list
             _fail(qid, "duplicate id")
         seen.add(qid)
         unknown = set(raw) - {"id", "user_id", "category", "question", "expected_calls",
-                              "expect_refusal", "note", "tags"}
+                              "expect_refusal", "note", "tags", "alternative_routes"}
         if unknown:
             _fail(qid, f"unknown key(s): {', '.join(sorted(unknown))}")
         if raw.get("category") not in CATEGORIES:
@@ -116,19 +125,27 @@ def parse_questions(data: dict[str, Any], users: set[str] | None = None) -> list
         if not str(raw.get("question") or "").strip():
             _fail(qid, "empty question")
         calls = [_call(qid, c) for c in raw.get("expected_calls") or []]
+        routes_raw = raw.get("alternative_routes") or []
+        if not isinstance(routes_raw, list) or not all(isinstance(r, list) and r
+                                                       for r in routes_raw):
+            _fail(qid, "alternative_routes must be a list of non-empty lists of calls")
+        if routes_raw and not calls:
+            _fail(qid, "alternative_routes need expected_calls as the first route")
+        routes = [[_call(qid, c) for c in r] for r in routes_raw]
+        every_call = calls + [c for r in routes for c in r]
         refusal = raw.get("expect_refusal", False)
         if not isinstance(refusal, bool):
             _fail(qid, "expect_refusal must be true or false")
-        if refusal and any(c.answer for c in calls):
-            _fail(qid, "a refusal question cannot require numbers in the answer")
+        if refusal and any(c.answer or c.answer_dates for c in every_call):
+            _fail(qid, "a refusal question cannot require numbers or dates in the answer")
         tags = raw.get("tags") or []
         if not isinstance(tags, list) or not all(isinstance(t, str) and t for t in tags):
             _fail(qid, "tags must be a list of non-empty strings")
-        if refusal and any(c.coverage for c in calls):
+        if refusal and any(c.coverage for c in every_call):
             _fail(qid, "a refusal question cannot require a day count")
         out.append(Question(qid, user_id, raw["category"], raw["question"].strip(),
                             reference_dates[user_id], calls, refusal, raw.get("note"),
-                            list(tags)))
+                            list(tags), routes))
     if not out:
         raise ValueError("The question set is empty.")
     return out

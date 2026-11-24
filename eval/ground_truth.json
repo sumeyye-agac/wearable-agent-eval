@@ -1,7 +1,8 @@
 {
   "schema_version": 1,
-  "questions_version": "v1",
+  "questions_version": "v1.1",
   "numeric_tolerance": 0.01,
+  "text_tolerance_minutes": 1,
   "questions": [
     {
       "id": "act-01",
@@ -32,6 +33,7 @@
               "text": null
             }
           ],
+          "answer_dates": [],
           "coverage": null,
           "output": {
             "metric": "steps",
@@ -82,7 +84,8 @@
             "note": null
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "act-02",
@@ -110,6 +113,7 @@
               "text": null
             }
           ],
+          "answer_dates": [],
           "coverage": null,
           "output": {
             "metric": "steps",
@@ -175,7 +179,8 @@
             "total": 64766
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "act-03",
@@ -203,7 +208,13 @@
               "text": null
             }
           ],
-          "coverage": null,
+          "answer_dates": [],
+          "coverage": [
+            {
+              "path": "days_with_data",
+              "value": 5
+            }
+          ],
           "output": {
             "start": "2016-05-04",
             "start_weekday": "Wednesday",
@@ -298,7 +309,8 @@
             "credit": "Source: CDC. The material is available on the CDC website at no charge. Its use here does not imply endorsement by CDC, ATSDR, HHS or the United States Government."
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "act-04",
@@ -326,6 +338,7 @@
               "text": null
             }
           ],
+          "answer_dates": [],
           "coverage": null,
           "output": {
             "start": "2016-04-11",
@@ -414,7 +427,8 @@
             "credit": "Source: CDC. The material is available on the CDC website at no charge. Its use here does not imply endorsement by CDC, ATSDR, HHS or the United States Government."
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "act-05",
@@ -433,10 +447,15 @@
             "top_n": 5
           },
           "match_on": {
+            "top_days.0.date": "2016-04-14",
             "top_days.0.steps": 17022,
+            "top_days.1.date": "2016-04-15",
             "top_days.1.steps": 16556,
+            "top_days.2.date": "2016-04-19",
             "top_days.2.steps": 15482,
+            "top_days.3.date": "2016-04-07",
             "top_days.3.steps": 15444,
+            "top_days.4.date": "2016-04-29",
             "top_days.4.steps": 12764
           },
           "answer": [
@@ -464,6 +483,43 @@
               "path": "top_days.4.steps",
               "value": 12764,
               "text": null
+            }
+          ],
+          "answer_dates": [
+            {
+              "path": "top_days.0.date",
+              "value": "2016-04-14",
+              "accepted": [
+                "2016-04-14"
+              ]
+            },
+            {
+              "path": "top_days.1.date",
+              "value": "2016-04-15",
+              "accepted": [
+                "2016-04-15"
+              ]
+            },
+            {
+              "path": "top_days.2.date",
+              "value": "2016-04-19",
+              "accepted": [
+                "2016-04-19"
+              ]
+            },
+            {
+              "path": "top_days.3.date",
+              "value": "2016-04-07",
+              "accepted": [
+                "2016-04-07"
+              ]
+            },
+            {
+              "path": "top_days.4.date",
+              "value": "2016-04-29",
+              "accepted": [
+                "2016-04-29"
+              ]
             }
           ],
           "coverage": null,
@@ -523,7 +579,8 @@
             "note": null
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "slp-01",
@@ -551,6 +608,7 @@
               "text": "7 h 31 min"
             }
           ],
+          "answer_dates": [],
           "coverage": null,
           "output": {
             "metric": "minutes_asleep",
@@ -629,7 +687,8 @@
             "range_text": "4 h 03 min"
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "slp-02",
@@ -659,6 +718,7 @@
               "text": null
             }
           ],
+          "answer_dates": [],
           "coverage": null,
           "output": {
             "metric": "minutes_asleep",
@@ -767,7 +827,8 @@
             "range_text": "2 h 48 min"
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "slp-03",
@@ -796,6 +857,7 @@
               "text": "7 h 44 min"
             }
           ],
+          "answer_dates": [],
           "coverage": null,
           "output": {
             "metric": "minutes_in_bed",
@@ -874,7 +936,8 @@
             "range_text": "2 h 17 min"
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "slp-04",
@@ -901,6 +964,16 @@
               "path": "lowest.value",
               "value": 298.0,
               "text": "4 h 58 min"
+            }
+          ],
+          "answer_dates": [
+            {
+              "path": "lowest.date",
+              "value": "2016-05-07",
+              "accepted": [
+                "2016-05-07",
+                "2016-05-06"
+              ]
             }
           ],
           "coverage": null,
@@ -981,7 +1054,8 @@
             "range_text": "4 h 03 min"
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "hr-01",
@@ -1009,6 +1083,7 @@
               "text": null
             }
           ],
+          "answer_dates": [],
           "coverage": null,
           "output": {
             "metric": "mean_hr",
@@ -1073,7 +1148,8 @@
             ]
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "hr-02",
@@ -1106,6 +1182,7 @@
               "text": null
             }
           ],
+          "answer_dates": [],
           "coverage": null,
           "output": {
             "metric_x": "steps",
@@ -1129,7 +1206,8 @@
             "significance_test": "This tool does not run a significance test. The 95% confidence interval shows the uncertainty in r; ci_excludes_zero says whether the interval excludes 0."
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "trd-01",
@@ -1162,6 +1240,7 @@
               "text": null
             }
           ],
+          "answer_dates": [],
           "coverage": null,
           "output": {
             "metric": "steps",
@@ -1193,7 +1272,8 @@
             "significance_test": "This tool does not run a significance test. It reports the two means and their difference only, so it cannot say whether the difference is statistically significant."
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "trd-02",
@@ -1202,7 +1282,9 @@
       "question": "Am I sleeping more in the last 4 weeks than in the 4 weeks before?",
       "reference_date": "2016-05-10",
       "expect_refusal": false,
-      "tags": [],
+      "tags": [
+        "missing_data"
+      ],
       "expected_calls": [
         {
           "tool": "compare_periods",
@@ -1222,7 +1304,17 @@
               "text": "14 min"
             }
           ],
-          "coverage": null,
+          "answer_dates": [],
+          "coverage": [
+            {
+              "path": "period_a.days_with_data",
+              "value": 27
+            },
+            {
+              "path": "period_b.days_with_data",
+              "value": 23
+            }
+          ],
           "output": {
             "metric": "minutes_asleep",
             "unit": "minutes",
@@ -1256,7 +1348,8 @@
             "difference_b_minus_a_text": "14 min"
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "trd-03",
@@ -1289,6 +1382,7 @@
               "text": null
             }
           ],
+          "answer_dates": [],
           "coverage": null,
           "output": {
             "metric_x": "minutes_asleep",
@@ -1312,7 +1406,8 @@
             "significance_test": "This tool does not run a significance test. The 95% confidence interval shows the uncertainty in r; ci_excludes_zero says whether the interval excludes 0."
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "cmp-01",
@@ -1344,6 +1439,7 @@
               "text": null
             }
           ],
+          "answer_dates": [],
           "coverage": null,
           "output": {
             "metric": "steps",
@@ -1375,7 +1471,8 @@
             "significance_test": "This tool does not run a significance test. It reports the two means and their difference only, so it cannot say whether the difference is statistically significant."
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "cmp-02",
@@ -1384,7 +1481,9 @@
       "question": "Compare my very active minutes in March and April 2016.",
       "reference_date": "2016-05-10",
       "expect_refusal": false,
-      "tags": [],
+      "tags": [
+        "missing_data"
+      ],
       "expected_calls": [
         {
           "tool": "compare_periods",
@@ -1417,7 +1516,17 @@
               "text": null
             }
           ],
-          "coverage": null,
+          "answer_dates": [],
+          "coverage": [
+            {
+              "path": "period_a.days_with_data",
+              "value": 20
+            },
+            {
+              "path": "period_b.days_with_data",
+              "value": 29
+            }
+          ],
           "output": {
             "metric": "very_active_minutes",
             "unit": "minutes",
@@ -1448,7 +1557,8 @@
             "significance_test": "This tool does not run a significance test. It reports the two means and their difference only, so it cannot say whether the difference is statistically significant."
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "una-01",
@@ -1458,7 +1568,8 @@
       "reference_date": "2016-05-11",
       "expect_refusal": true,
       "tags": [],
-      "expected_calls": []
+      "expected_calls": [],
+      "alternative_routes": []
     },
     {
       "id": "una-02",
@@ -1468,7 +1579,8 @@
       "reference_date": "2016-05-11",
       "expect_refusal": true,
       "tags": [],
-      "expected_calls": []
+      "expected_calls": [],
+      "alternative_routes": []
     },
     {
       "id": "una-03",
@@ -1478,7 +1590,8 @@
       "reference_date": "2016-05-10",
       "expect_refusal": true,
       "tags": [],
-      "expected_calls": []
+      "expected_calls": [],
+      "alternative_routes": []
     },
     {
       "id": "una-04",
@@ -1503,6 +1616,7 @@
             "combined.reaches_recommendation": null
           },
           "answer": [],
+          "answer_dates": [],
           "coverage": null,
           "output": {
             "start": "2016-03-16",
@@ -1598,7 +1712,8 @@
             "credit": "Source: CDC. The material is available on the CDC website at no charge. Its use here does not imply endorsement by CDC, ATSDR, HHS or the United States Government."
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "act-06",
@@ -1630,10 +1745,13 @@
               "text": null
             }
           ],
-          "coverage": {
-            "path": "days_with_data",
-            "value": 5
-          },
+          "answer_dates": [],
+          "coverage": [
+            {
+              "path": "days_with_data",
+              "value": 5
+            }
+          ],
           "output": {
             "metric": "steps",
             "unit": "steps",
@@ -1705,7 +1823,8 @@
             "total": 34328
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "act-07",
@@ -1737,10 +1856,13 @@
               "text": null
             }
           ],
-          "coverage": {
-            "path": "days_with_data",
-            "value": 5
-          },
+          "answer_dates": [],
+          "coverage": [
+            {
+              "path": "days_with_data",
+              "value": 5
+            }
+          ],
           "output": {
             "metric": "steps",
             "unit": "steps",
@@ -1792,7 +1914,8 @@
             "note": null
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "slp-05",
@@ -1824,10 +1947,13 @@
               "text": "9 h 16 min"
             }
           ],
-          "coverage": {
-            "path": "days_with_data",
-            "value": 2
-          },
+          "answer_dates": [],
+          "coverage": [
+            {
+              "path": "days_with_data",
+              "value": 2
+            }
+          ],
           "output": {
             "metric": "minutes_asleep",
             "unit": "minutes",
@@ -1913,7 +2039,8 @@
             "range_text": "1 h 35 min"
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "slp-06",
@@ -1946,10 +2073,13 @@
               "text": null
             }
           ],
-          "coverage": {
-            "path": "days_with_data",
-            "value": 6
-          },
+          "answer_dates": [],
+          "coverage": [
+            {
+              "path": "days_with_data",
+              "value": 6
+            }
+          ],
           "output": {
             "metric": "minutes_asleep",
             "unit": "minutes",
@@ -2059,7 +2189,8 @@
             "range_text": "3 h 34 min"
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "una-05",
@@ -2084,6 +2215,7 @@
             "combined.reaches_recommendation": null
           },
           "answer": [],
+          "answer_dates": [],
           "coverage": null,
           "output": {
             "start": "2016-03-19",
@@ -2179,7 +2311,8 @@
             "credit": "Source: CDC. The material is available on the CDC website at no charge. Its use here does not imply endorsement by CDC, ATSDR, HHS or the United States Government."
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "una-06",
@@ -2206,6 +2339,7 @@
             "enough_data": false
           },
           "answer": [],
+          "answer_dates": [],
           "coverage": null,
           "output": {
             "metric": "minutes_asleep",
@@ -2238,7 +2372,8 @@
             "significance_test": "This tool does not run a significance test. It reports the two means and their difference only, so it cannot say whether the difference is statistically significant."
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "una-07",
@@ -2264,6 +2399,7 @@
             "r": null
           },
           "answer": [],
+          "answer_dates": [],
           "coverage": null,
           "output": {
             "metric_x": "steps",
@@ -2284,7 +2420,8 @@
             "significance_test": "This tool does not run a significance test. The 95% confidence interval shows the uncertainty in r; ci_excludes_zero says whether the interval excludes 0."
           }
         }
-      ]
+      ],
+      "alternative_routes": []
     },
     {
       "id": "una-08",
@@ -2310,6 +2447,7 @@
             "mean": null
           },
           "answer": [],
+          "answer_dates": [],
           "coverage": null,
           "output": {
             "metric": "mean_hr",
@@ -2381,6 +2519,746 @@
             ]
           }
         }
+      ],
+      "alternative_routes": []
+    },
+    {
+      "id": "act-08",
+      "user_id": "5553957443",
+      "category": "activity",
+      "question": "Did I hit the 150 mins activity goal in the week ending March 19, 2016?",
+      "reference_date": "2016-05-11",
+      "expect_refusal": false,
+      "tags": [
+        "missing_data"
+      ],
+      "expected_calls": [
+        {
+          "tool": "weekly_active_minutes",
+          "args": {
+            "end_date": "2016-03-19"
+          },
+          "match_on": {
+            "start": "2016-03-13",
+            "end": "2016-03-19",
+            "days_with_data": 6,
+            "combined.moderate_equivalent_minutes": 221
+          },
+          "answer": [
+            {
+              "path": "combined.moderate_equivalent_minutes",
+              "value": 221,
+              "text": null
+            }
+          ],
+          "answer_dates": [],
+          "coverage": [
+            {
+              "path": "days_with_data",
+              "value": 6
+            }
+          ],
+          "output": {
+            "start": "2016-03-13",
+            "start_weekday": "Sunday",
+            "end": "2016-03-19",
+            "end_weekday": "Saturday",
+            "days_with_data": 6,
+            "missing_dates": [
+              "2016-03-19"
+            ],
+            "missing_dates_weekdays": [
+              "Saturday"
+            ],
+            "complete_week": false,
+            "combined": {
+              "moderate_equivalent_minutes": 221,
+              "formula": "fairly active minutes + 2 x very active minutes",
+              "recommended_minutes": 150,
+              "total_minus_recommended": 71,
+              "reaches_recommendation": true,
+              "conversion": {
+                "rule": "A rule of thumb is that 1 minute of vigorous-intensity activity is about the same as 2 minutes of moderate-intensity activity.",
+                "source": "CDC, What Counts as Physical Activity for Adults",
+                "url": "https://www.cdc.gov/physical-activity-basics/adding-adults/what-counts.html",
+                "page_date": "2023-12-06",
+                "page_date_weekday": "Wednesday"
+              }
+            },
+            "moderate": {
+              "fitbit_metric": "fairly_active_minutes",
+              "total_minutes": 79,
+              "recommended_minutes": 150,
+              "total_minus_recommended": -71,
+              "reaches_recommendation": null
+            },
+            "vigorous": {
+              "fitbit_metric": "very_active_minutes",
+              "total_minutes": 71,
+              "recommended_minutes": 75,
+              "total_minus_recommended": -4,
+              "reaches_recommendation": null
+            },
+            "daily": [
+              {
+                "date": "2016-03-13",
+                "weekday": "Sunday",
+                "fairly_active_minutes": 0,
+                "very_active_minutes": 0
+              },
+              {
+                "date": "2016-03-14",
+                "weekday": "Monday",
+                "fairly_active_minutes": 25,
+                "very_active_minutes": 40
+              },
+              {
+                "date": "2016-03-15",
+                "weekday": "Tuesday",
+                "fairly_active_minutes": 21,
+                "very_active_minutes": 11
+              },
+              {
+                "date": "2016-03-16",
+                "weekday": "Wednesday",
+                "fairly_active_minutes": 33,
+                "very_active_minutes": 20
+              },
+              {
+                "date": "2016-03-17",
+                "weekday": "Thursday",
+                "fairly_active_minutes": 0,
+                "very_active_minutes": 0
+              },
+              {
+                "date": "2016-03-18",
+                "weekday": "Friday",
+                "fairly_active_minutes": 0,
+                "very_active_minutes": 0
+              },
+              {
+                "date": "2016-03-19",
+                "weekday": "Saturday",
+                "fairly_active_minutes": null,
+                "very_active_minutes": null
+              }
+            ],
+            "note": "Only 6 of 7 days have data, so the totals are a lower bound for the week and a total below the recommendation does not show it was missed.",
+            "caveat": "Fitbit's fairly active and very active minutes are the device's own per-minute estimate of intensity. CDC defines moderate and vigorous intensity by effort (3 to 5.9 METs and 6.0 METs or more, or the talk test). The two are not the same, so comparing Fitbit minutes with the CDC recommendation is approximate.",
+            "recommendation_source": "CDC, Adult Activity: An Overview",
+            "url": "https://www.cdc.gov/physical-activity-basics/guidelines/adults.html",
+            "credit": "Source: CDC. The material is available on the CDC website at no charge. Its use here does not imply endorsement by CDC, ATSDR, HHS or the United States Government."
+          }
+        }
+      ],
+      "alternative_routes": []
+    },
+    {
+      "id": "act-09",
+      "user_id": "6962181067",
+      "category": "activity",
+      "question": "How many steps did I get last week?",
+      "reference_date": "2016-05-11",
+      "expect_refusal": false,
+      "tags": [],
+      "expected_calls": [
+        {
+          "tool": "weekly_summary",
+          "args": {
+            "metric": "steps",
+            "end_date": "2016-05-04"
+          },
+          "match_on": {
+            "start": "2016-04-28",
+            "end": "2016-05-04",
+            "total": 74092
+          },
+          "answer": [
+            {
+              "path": "total",
+              "value": 74092,
+              "text": null
+            }
+          ],
+          "answer_dates": [],
+          "coverage": null,
+          "output": {
+            "metric": "steps",
+            "unit": "steps",
+            "start": "2016-04-28",
+            "start_weekday": "Thursday",
+            "end": "2016-05-04",
+            "end_weekday": "Wednesday",
+            "days_with_data": 7,
+            "missing_dates": [],
+            "mean": 10585,
+            "median": 10762,
+            "highest": {
+              "date": "2016-05-02",
+              "weekday": "Monday",
+              "value": 12912,
+              "above_mean": 2327
+            },
+            "lowest": {
+              "date": "2016-05-01",
+              "weekday": "Sunday",
+              "value": 5454,
+              "below_mean": 5131
+            },
+            "range": 7458,
+            "daily": [
+              {
+                "date": "2016-04-28",
+                "weekday": "Thursday",
+                "value": 12627
+              },
+              {
+                "date": "2016-04-29",
+                "weekday": "Friday",
+                "value": 10762
+              },
+              {
+                "date": "2016-04-30",
+                "weekday": "Saturday",
+                "value": 10081
+              },
+              {
+                "date": "2016-05-01",
+                "weekday": "Sunday",
+                "value": 5454
+              },
+              {
+                "date": "2016-05-02",
+                "weekday": "Monday",
+                "value": 12912
+              },
+              {
+                "date": "2016-05-03",
+                "weekday": "Tuesday",
+                "value": 12109
+              },
+              {
+                "date": "2016-05-04",
+                "weekday": "Wednesday",
+                "value": 10147
+              }
+            ],
+            "total": 74092
+          }
+        }
+      ],
+      "alternative_routes": []
+    },
+    {
+      "id": "slp-07",
+      "user_id": "5553957443",
+      "category": "sleep",
+      "question": "How long did I sleep the night of March 31, 2016?",
+      "reference_date": "2016-05-11",
+      "expect_refusal": false,
+      "tags": [],
+      "expected_calls": [
+        {
+          "tool": "weekly_summary",
+          "args": {
+            "metric": "minutes_asleep",
+            "end_date": "2016-04-01"
+          },
+          "match_on": {
+            "daily.date=2016-04-01.value": 365.0
+          },
+          "answer": [
+            {
+              "path": "daily.date=2016-04-01.value",
+              "value": 365.0,
+              "text": "6 h 05 min"
+            }
+          ],
+          "answer_dates": [],
+          "coverage": null,
+          "output": {
+            "metric": "minutes_asleep",
+            "unit": "minutes",
+            "start": "2016-03-26",
+            "start_weekday": "Saturday",
+            "end": "2016-04-01",
+            "end_weekday": "Friday",
+            "days_with_data": 7,
+            "missing_dates": [],
+            "mean": 384.9,
+            "median": 365.0,
+            "highest": {
+              "date": "2016-03-28",
+              "weekday": "Monday",
+              "value": 585.0,
+              "above_mean": 200.1,
+              "value_text": "9 h 45 min",
+              "above_mean_text": "3 h 20 min"
+            },
+            "lowest": {
+              "date": "2016-03-26",
+              "weekday": "Saturday",
+              "value": 191.0,
+              "below_mean": 193.9,
+              "value_text": "3 h 11 min",
+              "below_mean_text": "3 h 14 min"
+            },
+            "range": 394.0,
+            "daily": [
+              {
+                "date": "2016-03-26",
+                "weekday": "Saturday",
+                "value": 191.0,
+                "value_text": "3 h 11 min"
+              },
+              {
+                "date": "2016-03-27",
+                "weekday": "Sunday",
+                "value": 523.0,
+                "value_text": "8 h 43 min"
+              },
+              {
+                "date": "2016-03-28",
+                "weekday": "Monday",
+                "value": 585.0,
+                "value_text": "9 h 45 min"
+              },
+              {
+                "date": "2016-03-29",
+                "weekday": "Tuesday",
+                "value": 347.0,
+                "value_text": "5 h 47 min"
+              },
+              {
+                "date": "2016-03-30",
+                "weekday": "Wednesday",
+                "value": 271.0,
+                "value_text": "4 h 31 min"
+              },
+              {
+                "date": "2016-03-31",
+                "weekday": "Thursday",
+                "value": 412.0,
+                "value_text": "6 h 52 min"
+              },
+              {
+                "date": "2016-04-01",
+                "weekday": "Friday",
+                "value": 365.0,
+                "value_text": "6 h 05 min"
+              }
+            ],
+            "mean_text": "6 h 25 min",
+            "median_text": "6 h 05 min",
+            "range_text": "6 h 34 min"
+          }
+        }
+      ],
+      "alternative_routes": []
+    },
+    {
+      "id": "slp-08",
+      "user_id": "5553957443",
+      "category": "sleep",
+      "question": "What's my average sleep time in decimal hours from March 22 to March 28, 2016?",
+      "reference_date": "2016-05-11",
+      "expect_refusal": false,
+      "tags": [],
+      "expected_calls": [
+        {
+          "tool": "weekly_summary",
+          "args": {
+            "metric": "minutes_asleep",
+            "end_date": "2016-03-28"
+          },
+          "match_on": {
+            "start": "2016-03-22",
+            "end": "2016-03-28",
+            "mean": 435.0
+          },
+          "answer": [
+            {
+              "path": "mean",
+              "value": 435.0,
+              "text": "7 h 15 min"
+            }
+          ],
+          "answer_dates": [],
+          "coverage": null,
+          "output": {
+            "metric": "minutes_asleep",
+            "unit": "minutes",
+            "start": "2016-03-22",
+            "start_weekday": "Tuesday",
+            "end": "2016-03-28",
+            "end_weekday": "Monday",
+            "days_with_data": 7,
+            "missing_dates": [],
+            "mean": 435.0,
+            "median": 523.0,
+            "highest": {
+              "date": "2016-03-25",
+              "weekday": "Friday",
+              "value": 607.0,
+              "above_mean": 172.0,
+              "value_text": "10 h 07 min",
+              "above_mean_text": "2 h 52 min"
+            },
+            "lowest": {
+              "date": "2016-03-26",
+              "weekday": "Saturday",
+              "value": 191.0,
+              "below_mean": 244.0,
+              "value_text": "3 h 11 min",
+              "below_mean_text": "4 h 04 min"
+            },
+            "range": 416.0,
+            "daily": [
+              {
+                "date": "2016-03-22",
+                "weekday": "Tuesday",
+                "value": 526.0,
+                "value_text": "8 h 46 min"
+              },
+              {
+                "date": "2016-03-23",
+                "weekday": "Wednesday",
+                "value": 249.0,
+                "value_text": "4 h 09 min"
+              },
+              {
+                "date": "2016-03-24",
+                "weekday": "Thursday",
+                "value": 364.0,
+                "value_text": "6 h 04 min"
+              },
+              {
+                "date": "2016-03-25",
+                "weekday": "Friday",
+                "value": 607.0,
+                "value_text": "10 h 07 min"
+              },
+              {
+                "date": "2016-03-26",
+                "weekday": "Saturday",
+                "value": 191.0,
+                "value_text": "3 h 11 min"
+              },
+              {
+                "date": "2016-03-27",
+                "weekday": "Sunday",
+                "value": 523.0,
+                "value_text": "8 h 43 min"
+              },
+              {
+                "date": "2016-03-28",
+                "weekday": "Monday",
+                "value": 585.0,
+                "value_text": "9 h 45 min"
+              }
+            ],
+            "mean_text": "7 h 15 min",
+            "median_text": "8 h 43 min",
+            "range_text": "6 h 56 min"
+          }
+        }
+      ],
+      "alternative_routes": []
+    },
+    {
+      "id": "trd-04",
+      "user_id": "6962181067",
+      "category": "trend",
+      "question": "In April, did I usually get more steps on days when I had more fairly active minutes?",
+      "reference_date": "2016-05-11",
+      "expect_refusal": false,
+      "tags": [],
+      "expected_calls": [
+        {
+          "tool": "correlation",
+          "args": {
+            "metric_x": "steps",
+            "metric_y": "fairly_active_minutes",
+            "start_date": "2016-04-01",
+            "end_date": "2016-04-30"
+          },
+          "match_on": {
+            "r": 0.301,
+            "n": 30
+          },
+          "answer": [
+            {
+              "path": "r",
+              "value": 0.301,
+              "text": null
+            },
+            {
+              "path": "n",
+              "value": 30,
+              "text": null
+            }
+          ],
+          "answer_dates": [],
+          "coverage": null,
+          "output": {
+            "metric_x": "steps",
+            "metric_y": "fairly_active_minutes",
+            "lag_days": 0,
+            "pairing": "steps on day d with fairly_active_minutes on day d+0",
+            "method": "spearman",
+            "start": "2016-04-01",
+            "start_weekday": "Friday",
+            "end": "2016-04-30",
+            "end_weekday": "Saturday",
+            "n": 30,
+            "r": 0.301,
+            "ci_95": [
+              -0.075,
+              0.602
+            ],
+            "ci_excludes_zero": false,
+            "enough_data": true,
+            "note": null,
+            "significance_test": "This tool does not run a significance test. The 95% confidence interval shows the uncertainty in r; ci_excludes_zero says whether the interval excludes 0."
+          }
+        }
+      ],
+      "alternative_routes": []
+    },
+    {
+      "id": "cmp-03",
+      "user_id": "6962181067",
+      "category": "comparison",
+      "question": "Did I get more steps from May 5 to 11 than I did from April 28 to May 4?",
+      "reference_date": "2016-05-11",
+      "expect_refusal": false,
+      "tags": [],
+      "expected_calls": [
+        {
+          "tool": "compare_periods",
+          "args": {
+            "metric": "steps",
+            "period_a_start": "2016-04-28",
+            "period_a_end": "2016-05-04",
+            "period_b_start": "2016-05-05",
+            "period_b_end": "2016-05-11"
+          },
+          "match_on": {
+            "period_a.mean": 10585,
+            "period_b.mean": 8850,
+            "difference_b_minus_a": -1735
+          },
+          "answer": [
+            {
+              "path": "difference_b_minus_a",
+              "value": -1735,
+              "text": null
+            }
+          ],
+          "answer_dates": [],
+          "coverage": null,
+          "output": {
+            "metric": "steps",
+            "unit": "steps",
+            "preset": null,
+            "period_a": {
+              "start": "2016-04-28",
+              "start_weekday": "Thursday",
+              "end": "2016-05-04",
+              "end_weekday": "Wednesday",
+              "days_with_data": 7,
+              "mean": 10585,
+              "std": 2540
+            },
+            "period_b": {
+              "start": "2016-05-05",
+              "start_weekday": "Thursday",
+              "end": "2016-05-11",
+              "end_weekday": "Wednesday",
+              "days_with_data": 7,
+              "mean": 8850,
+              "std": 4033
+            },
+            "difference_b_minus_a": -1735,
+            "percent_change": -16.4,
+            "higher_period": "period_a",
+            "enough_data": true,
+            "note": null,
+            "significance_test": "This tool does not run a significance test. It reports the two means and their difference only, so it cannot say whether the difference is statistically significant."
+          }
+        }
+      ],
+      "alternative_routes": [
+        [
+          {
+            "tool": "weekly_summary",
+            "args": {
+              "metric": "steps",
+              "end_date": "2016-05-04"
+            },
+            "match_on": {
+              "start": "2016-04-28",
+              "end": "2016-05-04",
+              "total": 74092
+            },
+            "answer": [
+              {
+                "path": "total",
+                "value": 74092,
+                "text": null
+              }
+            ],
+            "answer_dates": [],
+            "coverage": null,
+            "output": {
+              "metric": "steps",
+              "unit": "steps",
+              "start": "2016-04-28",
+              "start_weekday": "Thursday",
+              "end": "2016-05-04",
+              "end_weekday": "Wednesday",
+              "days_with_data": 7,
+              "missing_dates": [],
+              "mean": 10585,
+              "median": 10762,
+              "highest": {
+                "date": "2016-05-02",
+                "weekday": "Monday",
+                "value": 12912,
+                "above_mean": 2327
+              },
+              "lowest": {
+                "date": "2016-05-01",
+                "weekday": "Sunday",
+                "value": 5454,
+                "below_mean": 5131
+              },
+              "range": 7458,
+              "daily": [
+                {
+                  "date": "2016-04-28",
+                  "weekday": "Thursday",
+                  "value": 12627
+                },
+                {
+                  "date": "2016-04-29",
+                  "weekday": "Friday",
+                  "value": 10762
+                },
+                {
+                  "date": "2016-04-30",
+                  "weekday": "Saturday",
+                  "value": 10081
+                },
+                {
+                  "date": "2016-05-01",
+                  "weekday": "Sunday",
+                  "value": 5454
+                },
+                {
+                  "date": "2016-05-02",
+                  "weekday": "Monday",
+                  "value": 12912
+                },
+                {
+                  "date": "2016-05-03",
+                  "weekday": "Tuesday",
+                  "value": 12109
+                },
+                {
+                  "date": "2016-05-04",
+                  "weekday": "Wednesday",
+                  "value": 10147
+                }
+              ],
+              "total": 74092
+            }
+          },
+          {
+            "tool": "weekly_summary",
+            "args": {
+              "metric": "steps",
+              "end_date": "2016-05-11"
+            },
+            "match_on": {
+              "start": "2016-05-05",
+              "end": "2016-05-11",
+              "total": 61947
+            },
+            "answer": [
+              {
+                "path": "total",
+                "value": 61947,
+                "text": null
+              }
+            ],
+            "answer_dates": [],
+            "coverage": null,
+            "output": {
+              "metric": "steps",
+              "unit": "steps",
+              "start": "2016-05-05",
+              "start_weekday": "Thursday",
+              "end": "2016-05-11",
+              "end_weekday": "Wednesday",
+              "days_with_data": 7,
+              "missing_dates": [],
+              "mean": 8850,
+              "median": 6815,
+              "highest": {
+                "date": "2016-05-10",
+                "weekday": "Tuesday",
+                "value": 15448,
+                "above_mean": 6598
+              },
+              "lowest": {
+                "date": "2016-05-08",
+                "weekday": "Sunday",
+                "value": 4188,
+                "below_mean": 4662
+              },
+              "range": 11260,
+              "daily": [
+                {
+                  "date": "2016-05-05",
+                  "weekday": "Thursday",
+                  "value": 10524
+                },
+                {
+                  "date": "2016-05-06",
+                  "weekday": "Friday",
+                  "value": 5908
+                },
+                {
+                  "date": "2016-05-07",
+                  "weekday": "Saturday",
+                  "value": 6815
+                },
+                {
+                  "date": "2016-05-08",
+                  "weekday": "Sunday",
+                  "value": 4188
+                },
+                {
+                  "date": "2016-05-09",
+                  "weekday": "Monday",
+                  "value": 12342
+                },
+                {
+                  "date": "2016-05-10",
+                  "weekday": "Tuesday",
+                  "value": 15448
+                },
+                {
+                  "date": "2016-05-11",
+                  "weekday": "Wednesday",
+                  "value": 6722
+                }
+              ],
+              "total": 61947
+            }
+          }
+        ]
       ]
     }
   ]
