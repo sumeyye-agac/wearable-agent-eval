@@ -9,6 +9,7 @@ a message that says what was wrong and what is valid.
 from __future__ import annotations
 
 import math
+from decimal import ROUND_HALF_UP, Decimal
 from statistics import NormalDist
 from typing import Any
 
@@ -51,22 +52,53 @@ def _day(ts: pd.Timestamp) -> str:
     return ts.strftime("%Y-%m-%d")
 
 
+def _half_up(value: Decimal, step: str) -> Decimal:
+    """Round to a step ("1", "0.01") with halves away from zero: 427.5 -> 428, 7.125 -> 7.13.
+    The minutes text and the decimal hours both use it, so they always round the same way."""
+    return value.quantize(Decimal(step), rounding=ROUND_HALF_UP)
+
+
+def _exact(minutes: float) -> Decimal:
+    """The value as shown (repr of the float), so 427.5 is exactly 427.5, not a binary
+    approximation."""
+    return Decimal(repr(float(minutes)))
+
+
+def _hours(minutes: float) -> float:
+    """Minutes as decimal hours, 2 decimals: 435 -> 7.25, 427.5 -> 7.13."""
+    return float(_half_up(_exact(minutes) / 60, "0.01"))
+
+
 def _hm(minutes: float) -> str:
-    """Minutes as text, rounded to the minute: 458.3 -> '7 h 38 min', 13.9 -> '14 min'."""
-    total = int(round(abs(minutes)))
+    """Minutes as text, rounded to the minute: 458.3 -> '7 h 38 min', 13.9 -> '14 min',
+    427.5 -> '7 h 08 min'."""
+    total = int(_half_up(abs(_exact(minutes)), "1"))
     sign = "-" if minutes < 0 and total else ""
     if total < 60:
         return f"{sign}{total} min"
     return f"{sign}{total // 60} h {total % 60:02d} min"
 
 
-def _add_text(out: dict[str, Any], m: Metric, *keys: str) -> dict[str, Any]:
-    """For the sleep metrics, add '<key>_text' with the value as hours and minutes."""
+def _add_text(out: dict[str, Any], m: Metric, *keys: str, hours: bool = True
+              ) -> dict[str, Any]:
+    """For the sleep metrics, add '<key>_text' with the value as hours and minutes and, with
+    hours=True, '<key>_hours' with it in decimal hours (2 decimals: 435 -> 7.25), so a
+    reader never converts units. Per-day rows use hours=False to keep tool results short."""
     if m.as_hours:
         for key in keys:
             if out.get(key) is not None:
                 out[f"{key}_text"] = _hm(out[key])
+                if hours:
+                    out[f"{key}_hours"] = _hours(out[key])
     return out
+
+
+def _add_night(row: dict[str, Any], m: Metric) -> dict[str, Any]:
+    """For the sleep metrics, add 'night_of': the evening the night began, the day before
+    the wake-up date the row is dated by (the 2016-04-01 row is the night of 2016-03-31)."""
+    if m.night:
+        row["night_of"] = _day(pd.Timestamp(row["date"]) - pd.Timedelta(days=1))
+    return row
 
 
 def _parse_date(value: str, name: str) -> pd.Timestamp:
@@ -143,9 +175,11 @@ def weekly_summary(df: pd.DataFrame, metric: str, end_date: str | None = None,
     day with their distance from the mean, the range (highest minus lowest), every day's
     value (None when missing), and for steps and active minutes the weekly total. With a
     threshold it also returns how many days, and which dates, are at or above it and below
-    it, and the mean minus the threshold. For the sleep metrics every value also comes as text in hours and
-    minutes ("<key>_text"), so nothing has to be converted by the reader. Steps and active
-    minutes are whole numbers. Every difference is the difference of the rounded values
+    it, and the mean minus the threshold. For the sleep metrics every value also comes as
+    text in hours and minutes ("<key>_text") and, except in the per-day list, in decimal
+    hours ("<key>_hours"); every day (daily, highest, lowest) also gives "night_of", the
+    evening the night began, so nothing has to be converted or dated by the reader. Steps and active minutes are
+    whole numbers. Every difference is the difference of the rounded values
     shown, so a reader who checks the subtraction gets the same number.
     """
     m = check_metric(metric)
@@ -158,7 +192,8 @@ def weekly_summary(df: pd.DataFrame, metric: str, end_date: str | None = None,
         "days_with_data": int(present.size),
         "missing_dates": [_day(d) for d in values.index[values.isna()]],
         "mean": None, "median": None, "highest": None, "lowest": None, "range": None,
-        "daily": [_add_text({"date": _day(d), "value": _num(v, m.digits)}, m, "value")
+        "daily": [_add_night(_add_text({"date": _day(d), "value": _num(v, m.digits)}, m,
+                                       "value", hours=False), m)
                   for d, v in values.items()],
     }
     mean = None
@@ -168,12 +203,12 @@ def weekly_summary(df: pd.DataFrame, metric: str, end_date: str | None = None,
         out["mean"] = mean
         out["median"] = _num(present.median(), m.digits)
         # idxmax/idxmin return the first date on ties, which keeps the result deterministic.
-        out["highest"] = _add_text(
+        out["highest"] = _add_night(_add_text(
             {"date": _day(present.idxmax()), "value": high,
-             "above_mean": _num(high - mean, m.digits)}, m, "value", "above_mean")
-        out["lowest"] = _add_text(
+             "above_mean": _num(high - mean, m.digits)}, m, "value", "above_mean"), m)
+        out["lowest"] = _add_night(_add_text(
             {"date": _day(present.idxmin()), "value": low,
-             "below_mean": _num(mean - low, m.digits)}, m, "value", "below_mean")
+             "below_mean": _num(mean - low, m.digits)}, m, "value", "below_mean"), m)
         out["range"] = _num(high - low, m.digits)
     if m.weekly_total:
         out["total"] = int(present.sum()) if present.size else None
@@ -232,7 +267,8 @@ def compare_periods(df: pd.DataFrame, metric: str, preset: str | None = None,
 
     Returns per-period mean, standard deviation and days with data, the difference
     B minus A in the metric's unit and in percent, and which period is higher. For metrics
-    in minutes the means and the difference also come as text in hours and minutes.
+    in minutes the means and the difference also come as text in hours and minutes and in
+    decimal hours.
     If either period has fewer than 3 days with data, enough_data is False and the
     difference is None.
     """

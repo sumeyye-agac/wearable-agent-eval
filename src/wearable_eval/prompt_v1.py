@@ -1,10 +1,14 @@
-"""Prompt v1: the frozen system prompt and tool schemas used for every model in the eval.
+"""Prompt v1.x: the frozen system prompt and tool schemas used for every model in the eval.
 
 Tool names, argument names, types, enums and required lists are those of
 wearable.registry.TOOL_SPECS, so run_tool works unchanged; only the description texts are
 shorter. Each rule is stated once: conventions and answer rules in the system prompt,
 what a tool does and when to use it in its description. Any change to this text makes a
 new prompt version; results are compared only within one version.
+
+v1.1: durations and nights are stated only in the forms the tool results give. The tools
+now return decimal hours ("_hours") and each night's night_of date, so the model never
+converts units or works out the evening before a wake-up day.
 """
 
 from __future__ import annotations
@@ -17,7 +21,7 @@ import pandas as pd
 from wearable.registry import TOOL_SPECS as BASE_TOOL_SPECS
 from wearable.tools import data_range, last_complete_day
 
-PROMPT_VERSION = "v1"
+PROMPT_VERSION = "v1.1"
 
 _METRICS = """\
 - steps (steps/day): total steps in the day; only days with all 24 hours recorded.
@@ -55,8 +59,9 @@ The data is a daily table from a Fitbit device, one row per calendar day, coveri
 week" are anchored on the last complete day, {anchor:%Y-%m-%d} ({anchor:%A}). "This week" \
 is {anchor - 6 * day:%Y-%m-%d} to {anchor:%Y-%m-%d}; "last week" is \
 {anchor - 13 * day:%Y-%m-%d} to {anchor - 7 * day:%Y-%m-%d}.{partial} Dates are YYYY-MM-DD \
-and inclusive. Sleep is dated by the wake-up day: a night is the row of the morning it ends. \
-A missing value means there was no valid measurement that day; it never means zero.
+and inclusive. Sleep is dated by the wake-up day: a night is the row of the morning it ends, \
+and the row's night_of field is the evening the night began. A missing value means there \
+was no valid measurement that day; it never means zero.
 
 The metrics:
 {_METRICS}
@@ -73,11 +78,13 @@ they cover this week.
 tool returns an error, read it, fix the call and try again.
 - Every number you state must come from a tool result in this conversation or from the \
 question. Do not compute new numbers yourself: no differences, sums, ratios, averages, \
-counts or estimates, even simple ones. You may write minutes as hours, including decimal \
-hours. The tools already return the usual comparisons (distance from the mean, lead over \
-the next day, difference between periods, days above a threshold, weekly totals) and give \
-minutes as hours and minutes in "_text" fields; use those. If the tools cannot produce a \
-number the question needs, say what is missing and offer the closest thing they can compute.
+counts, unit conversions or estimates, even simple ones. The tools already return the usual \
+comparisons (distance from the mean, lead over the next day, difference between periods, \
+days above a threshold, weekly totals); use those. If the tools cannot produce a number the \
+question needs, say what is missing and offer the closest thing they can compute.
+- State durations and nights only in the forms the tool results give: a sleep duration in \
+minutes, in hours and minutes ("_text" fields) or in decimal hours ("_hours" fields), and a \
+night by its date or its night_of date.
 - Every date you state must come from a tool result, the question or this prompt; do not \
 work out dates yourself. Name the date of every day you single out, such as the most active \
 day or the shortest night.
@@ -133,7 +140,9 @@ _DESCRIPTIONS: dict[str, dict[str, str]] = {
             "dates, mean, median, highest and lowest day, every day's value and, for steps "
             "and active minutes, the weekly total. With a threshold it also counts and "
             "lists the days at or above it and below it. Sleep values also come as hours "
-            "and minutes in '_text' fields. Call it once per metric.",
+            "and minutes ('_text'), the summary values also in decimal hours ('_hours'), "
+            "and every sleep day has night_of, the evening the night began. Call it once "
+            "per metric.",
         "metric": _METRIC_ARG,
         "end_date": "Last day of the week, YYYY-MM-DD. Omit for 'this week': the 7 days "
                     "ending on the last complete day.",
@@ -145,9 +154,10 @@ _DESCRIPTIONS: dict[str, dict[str, str]] = {
         "": "Compare the daily mean of one metric between two periods that do not overlap. "
             "Give either a preset or all four dates, never both. Returns each period's "
             "mean, standard deviation and days with data, difference_b_minus_a and "
-            "percent_change (positive means period B is higher). Minutes also come as "
-            "hours and minutes in '_text' fields. If a period has fewer than 3 days with "
-            "data, enough_data is false and no difference is given.",
+            "percent_change (positive means period B is higher). For sleep, the means and "
+            "the difference also come as hours and minutes ('_text') and decimal hours "
+            "('_hours'). If a period has fewer than 3 days with data, enough_data is false "
+            "and no difference is given.",
         "metric": _METRIC_ARG,
         "preset": "first_half_vs_second_half splits the whole data range in two. "
                   "last_4_weeks_vs_previous_4_weeks compares the 28 days ending on the "

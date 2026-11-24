@@ -21,6 +21,7 @@ class Metric:
     as_hours: bool = False   # tools also give the value as hours and minutes
     weekly_total: bool = False  # adding the days of a week up makes sense
     whole_day: bool = False  # a value exists only if the whole 24 hours were recorded
+    night: bool = False      # one value per night, dated by the wake-up day
 
 
 METRICS: dict[str, Metric] = {
@@ -35,14 +36,14 @@ METRICS: dict[str, Metric] = {
         "Minutes scored as asleep in the night's main sleep (episodes of 3 h or more, "
         "episodes split by a gap of 60 min or less merged). Dated by the wake-up day.",
         "Neither direction is better in itself; adults are usually advised 7-9 h.",
-        as_hours=True,
+        as_hours=True, night=True,
     ),
     "minutes_in_bed": Metric(
         "minutes_in_bed", "minutes",
         "Minutes recorded in the night's main sleep, including restless and awake minutes. "
         "Dated by the wake-up day.",
         "Neither direction is better in itself.",
-        as_hours=True,
+        as_hours=True, night=True,
     ),
     "mean_hr": Metric(
         "mean_hr", "bpm",

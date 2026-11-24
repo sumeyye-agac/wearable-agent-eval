@@ -119,3 +119,13 @@ def test_with_weekdays_handles_nested_results_and_keeps_existing_keys():
     assert out["missing"]["dates_weekdays"] == ["Friday", "Saturday"]
     assert out["most_active"] == {"date": "2016-05-08", "weekday": "Sunday"}
     assert "note_weekday" not in out and out["n"] == 3
+
+
+def test_a_sleep_night_gets_its_own_weekday(demo_people):
+    out = run_tool(demo_people["5553957443"], "weekly_summary",
+                   {"metric": "minutes_asleep", "end_date": "2016-04-01"})
+    night = out["daily"][6]
+    assert (night["date"], night["weekday"]) == ("2016-04-01", "Friday")
+    assert (night["night_of"], night["night_of_weekday"]) == ("2016-03-31", "Thursday")
+    assert (night["value"], night["value_text"]) == (365.0, "6 h 05 min")
+    assert out["median_hours"] == 6.08  # median 365.0 min

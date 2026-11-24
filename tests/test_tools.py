@@ -53,13 +53,62 @@ def test_weekly_summary_week_without_data(two_weeks):
 def test_weekly_summary_gives_minutes_as_hours_and_minutes():
     out = weekly_summary(_frame(minutes_asleep=[443, 298, 541, 489, 469, 452, 516]),
                          "minutes_asleep")
-    assert (out["mean"], out["mean_text"]) == (458.3, "7 h 38 min")
-    assert (out["median"], out["median_text"]) == (469.0, "7 h 49 min")
-    assert (out["range"], out["range_text"]) == (243.0, "4 h 03 min")
+    assert (out["mean"], out["mean_text"], out["mean_hours"]) == (458.3, "7 h 38 min", 7.64)
+    assert (out["median"], out["median_text"], out["median_hours"]) == \
+        (469.0, "7 h 49 min", 7.82)
+    assert (out["range"], out["range_text"], out["range_hours"]) == (243.0, "4 h 03 min", 4.05)
     assert out["lowest"] == {"date": "2024-01-02", "value": 298.0, "value_text": "4 h 58 min",
-                             "below_mean": 160.3, "below_mean_text": "2 h 40 min"}
+                             "value_hours": 4.97, "below_mean": 160.3,
+                             "below_mean_text": "2 h 40 min", "below_mean_hours": 2.67,
+                             "night_of": "2024-01-01"}
     assert out["highest"]["above_mean_text"] == "1 h 23 min"
-    assert out["daily"][6] == {"date": "2024-01-07", "value": 516.0, "value_text": "8 h 36 min"}
+    assert out["highest"]["night_of"] == "2024-01-02"
+    # Per-day rows carry no decimal hours, to keep the result short.
+    assert out["daily"][6] == {"date": "2024-01-07", "value": 516.0, "value_text": "8 h 36 min",
+                               "night_of": "2024-01-06"}
+
+
+def test_decimal_hours_have_two_decimals():
+    out = weekly_summary(_frame(minutes_asleep=[435.0] * 7), "minutes_asleep")
+    assert (out["mean"], out["mean_text"], out["mean_hours"]) == (435.0, "7 h 15 min", 7.25)
+    out = weekly_summary(_frame(minutes_in_bed=[500.0] * 7), "minutes_in_bed")
+    assert out["mean_hours"] == 8.33 and "value_hours" not in out["daily"][0]
+
+
+def test_hours_and_text_round_halves_up_the_same_way():
+    # 427.5 min: both forms round the half up (7.125 h -> 7.13, 427.5 min -> 428 = 7 h 08).
+    # Python's round() would give 7.12 and 428, two different directions.
+    out = weekly_summary(_frame(minutes_asleep=[427.5] * 7), "minutes_asleep")
+    assert (out["mean"], out["mean_text"], out["mean_hours"]) == (427.5, "7 h 08 min", 7.13)
+    assert (out["lowest"]["value_text"], out["lowest"]["value_hours"]) == ("7 h 08 min", 7.13)
+    below = weekly_summary(_frame(minutes_asleep=[300.0] * 7), "minutes_asleep",
+                           threshold=427.5)
+    assert below["threshold"]["mean_minus_threshold"] == -127.5
+    assert below["threshold"]["mean_minus_threshold_text"] == "-2 h 08 min"
+    assert below["threshold"]["mean_minus_threshold_hours"] == -2.13
+
+
+def test_night_of_is_the_evening_before_the_wake_up_day():
+    df = to_daily_frame(pd.DataFrame({
+        "date": pd.date_range("2016-03-26", periods=7, freq="D"),
+        "minutes_asleep": [191, 523, 585, 347, 271, 412, 365]}))
+    out = weekly_summary(df, "minutes_asleep", end_date="2016-04-01")
+    last = out["daily"][6]
+    assert (last["date"], last["night_of"], last["value"]) == ("2016-04-01", "2016-03-31", 365)
+    assert [d["night_of"] for d in out["daily"]][:2] == ["2016-03-25", "2016-03-26"]
+    assert (out["lowest"]["date"], out["lowest"]["night_of"]) == ("2016-03-26", "2016-03-25")
+    # A missing night still gets its date, so the reader can name the night that is missing.
+    gap = weekly_summary(_frame(minutes_asleep=[None, 400, 400, 400, 400, 400, 400]),
+                         "minutes_asleep")
+    assert gap["daily"][0] == {"date": "2024-01-01", "value": None, "night_of": "2023-12-31"}
+
+
+def test_metrics_that_are_not_sleep_get_no_hours_or_night():
+    out = weekly_summary(_frame(steps=[8000] * 7, mean_hr=[70.0] * 7), "steps")
+    assert not any(k.endswith("_hours") or k == "night_of" for k in out["daily"][0])
+    assert "mean_hours" not in out and "night_of" not in out["highest"]
+    hr = weekly_summary(_frame(steps=[8000] * 7, mean_hr=[70.0] * 7), "mean_hr")
+    assert "mean_hours" not in hr and "night_of" not in hr["daily"][0]
 
 
 def test_weekly_summary_compares_with_a_threshold():
@@ -67,14 +116,18 @@ def test_weekly_summary_compares_with_a_threshold():
                          "minutes_asleep", threshold=420)
     # 420 itself counts as at or above; the missing night counts as neither.
     assert out["threshold"] == {
-        "value": 420.0, "value_text": "7 h 00 min", "days_at_or_above": 5, "days_below": 1,
+        "value": 420.0, "value_text": "7 h 00 min", "value_hours": 7.0,
+        "days_at_or_above": 5, "days_below": 1,
         "dates_at_or_above": ["2024-01-01", "2024-01-03", "2024-01-04", "2024-01-05",
                               "2024-01-06"],
         "dates_below": ["2024-01-02"],
-        "mean_minus_threshold": 20.5, "mean_minus_threshold_text": "20 min"}
+        # 20.5 min rounds half up to 21 (Python's round() gave 20).
+        "mean_minus_threshold": 20.5, "mean_minus_threshold_text": "21 min",
+        "mean_minus_threshold_hours": 0.34}
     below = weekly_summary(_frame(minutes_asleep=[300.0] * 7), "minutes_asleep", threshold=420)
     assert below["threshold"]["mean_minus_threshold"] == -120.0
     assert below["threshold"]["mean_minus_threshold_text"] == "-2 h 00 min"
+    assert below["threshold"]["mean_minus_threshold_hours"] == -2.0
     with pytest.raises(ValueError, match="threshold"):
         weekly_summary(_frame(minutes_asleep=[300.0] * 7), "minutes_asleep", threshold="7h")
 
@@ -340,10 +393,13 @@ def test_compare_periods_names_the_higher_period_and_gives_text_for_minutes():
     assert sleep["higher_period"] == "period_b"
     assert (sleep["difference_b_minus_a"], sleep["difference_b_minus_a_text"]) == \
         (30.0, "30 min")
-    assert sleep["period_a"]["mean_text"] == "6 h 40 min"
+    assert sleep["difference_b_minus_a_hours"] == 0.5
+    assert (sleep["period_a"]["mean_text"], sleep["period_a"]["mean_hours"]) == \
+        ("6 h 40 min", 6.67)
     steps = compare_periods(df, "steps", **dates)
     assert steps["higher_period"] == "period_a" and steps["difference_b_minus_a"] == -3000.0
     assert "difference_b_minus_a_text" not in steps and "mean_text" not in steps["period_a"]
+    assert "difference_b_minus_a_hours" not in steps and "mean_hours" not in steps["period_a"]
 
 
 def test_compare_periods_without_enough_data_names_no_higher_period(two_weeks):
@@ -398,6 +454,7 @@ def test_weekly_summary_totals_active_minutes_without_hour_text():
     assert out["unit"] == "minutes" and out["total"] == 151
     assert out["mean"] == 22 and isinstance(out["mean"], int)  # 21.57
     assert "mean_text" not in out and "value_text" not in out["daily"][0]
+    assert "mean_hours" not in out and "night_of" not in out["daily"][0]
 
 
 def test_weekly_active_minutes_complete_week_reaching_the_moderate_target():

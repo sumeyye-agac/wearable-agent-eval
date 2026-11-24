@@ -61,7 +61,9 @@ def test_this_week_and_last_week_are_given_as_dates(users):
     "If a question names no time window, use all the data",
     "without end_date they cover this week",
     "Every number you state must come from a tool result in this conversation or from the question",
-    "You may write minutes as hours, including decimal hours",
+    "unit conversions or estimates",
+    "State durations and nights only in the forms the tool results give",
+    "the row's night_of field is the evening the night began",
     "Every date you state must come from a tool result, the question or this prompt",
     "When you name a weekday, copy it from that field",
     "Say which period your answer covers",
@@ -71,6 +73,18 @@ def test_this_week_and_last_week_are_given_as_dates(users):
 ])
 def test_the_conventions_are_stated(users, rule):
     assert rule in " ".join(prompt_v1.system_prompt(users["5553957443"]).split())
+
+
+def test_prompt_version_is_v1_1():
+    assert prompt_v1.PROMPT_VERSION == "v1.1"
+
+
+def test_the_model_is_not_told_to_convert_units(users):
+    # v1.1: decimal hours and night_of come from the tools; v1 allowed converting minutes.
+    prompt = " ".join(prompt_v1.system_prompt(users["5553957443"]).split())
+    assert "You may write minutes as hours" not in prompt
+    weekly = next(s for s in prompt_v1.TOOL_SPECS if s["name"] == "weekly_summary")
+    assert "'_hours'" in weekly["description"] and "night_of" in weekly["description"]
 
 
 def test_no_recommendation_numbers_in_the_prompt(users):

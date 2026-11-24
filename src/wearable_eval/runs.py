@@ -113,7 +113,8 @@ def token_totals(requests: list[dict[str, Any]]) -> dict[str, int]:
 
 def run_anthropic(client: Any, df: pd.DataFrame, question: str, model: str) -> dict[str, Any]:
     """One question through the agent loop (src/wearable/agent.py), with the frozen prompt
-    v1 (src/wearable_eval/prompt_v1.py) as system prompt and tool specs.
+    (src/wearable_eval/prompt_v1.py, version in PROMPT_VERSION) as system prompt and tool
+    specs.
 
     API errors are recorded in the line instead of stopping the run. The cost is summed
     from the recorded usage, so a question that failed half way still counts what it spent.

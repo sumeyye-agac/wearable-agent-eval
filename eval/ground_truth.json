@@ -627,7 +627,11 @@
               "value": 541.0,
               "above_mean": 89.7,
               "value_text": "9 h 01 min",
-              "above_mean_text": "1 h 30 min"
+              "value_hours": 9.02,
+              "above_mean_text": "1 h 30 min",
+              "above_mean_hours": 1.5,
+              "night_of": "2016-05-07",
+              "night_of_weekday": "Saturday"
             },
             "lowest": {
               "date": "2016-05-07",
@@ -635,7 +639,11 @@
               "value": 298.0,
               "below_mean": 153.3,
               "value_text": "4 h 58 min",
-              "below_mean_text": "2 h 33 min"
+              "value_hours": 4.97,
+              "below_mean_text": "2 h 33 min",
+              "below_mean_hours": 2.56,
+              "night_of": "2016-05-06",
+              "night_of_weekday": "Friday"
             },
             "range": 243.0,
             "daily": [
@@ -643,48 +651,65 @@
                 "date": "2016-05-05",
                 "weekday": "Thursday",
                 "value": 467.0,
-                "value_text": "7 h 47 min"
+                "value_text": "7 h 47 min",
+                "night_of": "2016-05-04",
+                "night_of_weekday": "Wednesday"
               },
               {
                 "date": "2016-05-06",
                 "weekday": "Friday",
                 "value": 443.0,
-                "value_text": "7 h 23 min"
+                "value_text": "7 h 23 min",
+                "night_of": "2016-05-05",
+                "night_of_weekday": "Thursday"
               },
               {
                 "date": "2016-05-07",
                 "weekday": "Saturday",
                 "value": 298.0,
-                "value_text": "4 h 58 min"
+                "value_text": "4 h 58 min",
+                "night_of": "2016-05-06",
+                "night_of_weekday": "Friday"
               },
               {
                 "date": "2016-05-08",
                 "weekday": "Sunday",
                 "value": 541.0,
-                "value_text": "9 h 01 min"
+                "value_text": "9 h 01 min",
+                "night_of": "2016-05-07",
+                "night_of_weekday": "Saturday"
               },
               {
                 "date": "2016-05-09",
                 "weekday": "Monday",
                 "value": 489.0,
-                "value_text": "8 h 09 min"
+                "value_text": "8 h 09 min",
+                "night_of": "2016-05-08",
+                "night_of_weekday": "Sunday"
               },
               {
                 "date": "2016-05-10",
                 "weekday": "Tuesday",
                 "value": 469.0,
-                "value_text": "7 h 49 min"
+                "value_text": "7 h 49 min",
+                "night_of": "2016-05-09",
+                "night_of_weekday": "Monday"
               },
               {
                 "date": "2016-05-11",
                 "weekday": "Wednesday",
                 "value": 452.0,
-                "value_text": "7 h 32 min"
+                "value_text": "7 h 32 min",
+                "night_of": "2016-05-10",
+                "night_of_weekday": "Tuesday"
               }
             ],
             "mean_text": "7 h 31 min",
+            "mean_hours": 7.52,
             "median_text": "7 h 47 min",
-            "range_text": "4 h 03 min"
+            "median_hours": 7.78,
+            "range_text": "4 h 03 min",
+            "range_hours": 4.05
           }
         }
       ],
@@ -737,7 +762,11 @@
               "value": 568.0,
               "above_mean": 116.1,
               "value_text": "9 h 28 min",
-              "above_mean_text": "1 h 56 min"
+              "value_hours": 9.47,
+              "above_mean_text": "1 h 56 min",
+              "above_mean_hours": 1.94,
+              "night_of": "2016-05-07",
+              "night_of_weekday": "Saturday"
             },
             "lowest": {
               "date": "2016-05-06",
@@ -745,7 +774,11 @@
               "value": 400.0,
               "below_mean": 51.9,
               "value_text": "6 h 40 min",
-              "below_mean_text": "52 min"
+              "value_hours": 6.67,
+              "below_mean_text": "52 min",
+              "below_mean_hours": 0.87,
+              "night_of": "2016-05-05",
+              "night_of_weekday": "Thursday"
             },
             "range": 168.0,
             "daily": [
@@ -753,43 +786,57 @@
                 "date": "2016-05-05",
                 "weekday": "Thursday",
                 "value": 419.0,
-                "value_text": "6 h 59 min"
+                "value_text": "6 h 59 min",
+                "night_of": "2016-05-04",
+                "night_of_weekday": "Wednesday"
               },
               {
                 "date": "2016-05-06",
                 "weekday": "Friday",
                 "value": 400.0,
-                "value_text": "6 h 40 min"
+                "value_text": "6 h 40 min",
+                "night_of": "2016-05-05",
+                "night_of_weekday": "Thursday"
               },
               {
                 "date": "2016-05-07",
                 "weekday": "Saturday",
                 "value": 442.0,
-                "value_text": "7 h 22 min"
+                "value_text": "7 h 22 min",
+                "night_of": "2016-05-06",
+                "night_of_weekday": "Friday"
               },
               {
                 "date": "2016-05-08",
                 "weekday": "Sunday",
                 "value": 568.0,
-                "value_text": "9 h 28 min"
+                "value_text": "9 h 28 min",
+                "night_of": "2016-05-07",
+                "night_of_weekday": "Saturday"
               },
               {
                 "date": "2016-05-09",
                 "weekday": "Monday",
                 "value": 453.0,
-                "value_text": "7 h 33 min"
+                "value_text": "7 h 33 min",
+                "night_of": "2016-05-08",
+                "night_of_weekday": "Sunday"
               },
               {
                 "date": "2016-05-10",
                 "weekday": "Tuesday",
                 "value": 418.0,
-                "value_text": "6 h 58 min"
+                "value_text": "6 h 58 min",
+                "night_of": "2016-05-09",
+                "night_of_weekday": "Monday"
               },
               {
                 "date": "2016-05-11",
                 "weekday": "Wednesday",
                 "value": 463.0,
-                "value_text": "7 h 43 min"
+                "value_text": "7 h 43 min",
+                "night_of": "2016-05-10",
+                "night_of_weekday": "Tuesday"
               }
             ],
             "threshold": {
@@ -820,11 +867,16 @@
               ],
               "mean_minus_threshold": 31.9,
               "value_text": "7 h 00 min",
-              "mean_minus_threshold_text": "32 min"
+              "value_hours": 7.0,
+              "mean_minus_threshold_text": "32 min",
+              "mean_minus_threshold_hours": 0.53
             },
             "mean_text": "7 h 32 min",
+            "mean_hours": 7.53,
             "median_text": "7 h 22 min",
-            "range_text": "2 h 48 min"
+            "median_hours": 7.37,
+            "range_text": "2 h 48 min",
+            "range_hours": 2.8
           }
         }
       ],
@@ -876,7 +928,11 @@
               "value": 518.0,
               "above_mean": 54.1,
               "value_text": "8 h 38 min",
-              "above_mean_text": "54 min"
+              "value_hours": 8.63,
+              "above_mean_text": "54 min",
+              "above_mean_hours": 0.9,
+              "night_of": "2016-04-08",
+              "night_of_weekday": "Friday"
             },
             "lowest": {
               "date": "2016-04-06",
@@ -884,7 +940,11 @@
               "value": 381.0,
               "below_mean": 82.9,
               "value_text": "6 h 21 min",
-              "below_mean_text": "1 h 23 min"
+              "value_hours": 6.35,
+              "below_mean_text": "1 h 23 min",
+              "below_mean_hours": 1.38,
+              "night_of": "2016-04-05",
+              "night_of_weekday": "Tuesday"
             },
             "range": 137.0,
             "daily": [
@@ -892,48 +952,65 @@
                 "date": "2016-04-04",
                 "weekday": "Monday",
                 "value": 454.0,
-                "value_text": "7 h 34 min"
+                "value_text": "7 h 34 min",
+                "night_of": "2016-04-03",
+                "night_of_weekday": "Sunday"
               },
               {
                 "date": "2016-04-05",
                 "weekday": "Tuesday",
                 "value": 493.0,
-                "value_text": "8 h 13 min"
+                "value_text": "8 h 13 min",
+                "night_of": "2016-04-04",
+                "night_of_weekday": "Monday"
               },
               {
                 "date": "2016-04-06",
                 "weekday": "Wednesday",
                 "value": 381.0,
-                "value_text": "6 h 21 min"
+                "value_text": "6 h 21 min",
+                "night_of": "2016-04-05",
+                "night_of_weekday": "Tuesday"
               },
               {
                 "date": "2016-04-07",
                 "weekday": "Thursday",
                 "value": 451.0,
-                "value_text": "7 h 31 min"
+                "value_text": "7 h 31 min",
+                "night_of": "2016-04-06",
+                "night_of_weekday": "Wednesday"
               },
               {
                 "date": "2016-04-08",
                 "weekday": "Friday",
                 "value": 469.0,
-                "value_text": "7 h 49 min"
+                "value_text": "7 h 49 min",
+                "night_of": "2016-04-07",
+                "night_of_weekday": "Thursday"
               },
               {
                 "date": "2016-04-09",
                 "weekday": "Saturday",
                 "value": 518.0,
-                "value_text": "8 h 38 min"
+                "value_text": "8 h 38 min",
+                "night_of": "2016-04-08",
+                "night_of_weekday": "Friday"
               },
               {
                 "date": "2016-04-10",
                 "weekday": "Sunday",
                 "value": 481.0,
-                "value_text": "8 h 01 min"
+                "value_text": "8 h 01 min",
+                "night_of": "2016-04-09",
+                "night_of_weekday": "Saturday"
               }
             ],
             "mean_text": "7 h 44 min",
+            "mean_hours": 7.73,
             "median_text": "7 h 49 min",
-            "range_text": "2 h 17 min"
+            "median_hours": 7.82,
+            "range_text": "2 h 17 min",
+            "range_hours": 2.28
           }
         }
       ],
@@ -994,7 +1071,11 @@
               "value": 541.0,
               "above_mean": 89.7,
               "value_text": "9 h 01 min",
-              "above_mean_text": "1 h 30 min"
+              "value_hours": 9.02,
+              "above_mean_text": "1 h 30 min",
+              "above_mean_hours": 1.5,
+              "night_of": "2016-05-07",
+              "night_of_weekday": "Saturday"
             },
             "lowest": {
               "date": "2016-05-07",
@@ -1002,7 +1083,11 @@
               "value": 298.0,
               "below_mean": 153.3,
               "value_text": "4 h 58 min",
-              "below_mean_text": "2 h 33 min"
+              "value_hours": 4.97,
+              "below_mean_text": "2 h 33 min",
+              "below_mean_hours": 2.56,
+              "night_of": "2016-05-06",
+              "night_of_weekday": "Friday"
             },
             "range": 243.0,
             "daily": [
@@ -1010,48 +1095,65 @@
                 "date": "2016-05-05",
                 "weekday": "Thursday",
                 "value": 467.0,
-                "value_text": "7 h 47 min"
+                "value_text": "7 h 47 min",
+                "night_of": "2016-05-04",
+                "night_of_weekday": "Wednesday"
               },
               {
                 "date": "2016-05-06",
                 "weekday": "Friday",
                 "value": 443.0,
-                "value_text": "7 h 23 min"
+                "value_text": "7 h 23 min",
+                "night_of": "2016-05-05",
+                "night_of_weekday": "Thursday"
               },
               {
                 "date": "2016-05-07",
                 "weekday": "Saturday",
                 "value": 298.0,
-                "value_text": "4 h 58 min"
+                "value_text": "4 h 58 min",
+                "night_of": "2016-05-06",
+                "night_of_weekday": "Friday"
               },
               {
                 "date": "2016-05-08",
                 "weekday": "Sunday",
                 "value": 541.0,
-                "value_text": "9 h 01 min"
+                "value_text": "9 h 01 min",
+                "night_of": "2016-05-07",
+                "night_of_weekday": "Saturday"
               },
               {
                 "date": "2016-05-09",
                 "weekday": "Monday",
                 "value": 489.0,
-                "value_text": "8 h 09 min"
+                "value_text": "8 h 09 min",
+                "night_of": "2016-05-08",
+                "night_of_weekday": "Sunday"
               },
               {
                 "date": "2016-05-10",
                 "weekday": "Tuesday",
                 "value": 469.0,
-                "value_text": "7 h 49 min"
+                "value_text": "7 h 49 min",
+                "night_of": "2016-05-09",
+                "night_of_weekday": "Monday"
               },
               {
                 "date": "2016-05-11",
                 "weekday": "Wednesday",
                 "value": 452.0,
-                "value_text": "7 h 32 min"
+                "value_text": "7 h 32 min",
+                "night_of": "2016-05-10",
+                "night_of_weekday": "Tuesday"
               }
             ],
             "mean_text": "7 h 31 min",
+            "mean_hours": 7.52,
             "median_text": "7 h 47 min",
-            "range_text": "4 h 03 min"
+            "median_hours": 7.78,
+            "range_text": "4 h 03 min",
+            "range_hours": 4.05
           }
         }
       ],
@@ -1327,7 +1429,8 @@
               "days_with_data": 27,
               "mean": 430.3,
               "std": 53.0,
-              "mean_text": "7 h 10 min"
+              "mean_text": "7 h 10 min",
+              "mean_hours": 7.17
             },
             "period_b": {
               "start": "2016-04-13",
@@ -1337,7 +1440,8 @@
               "days_with_data": 23,
               "mean": 444.1,
               "std": 68.6,
-              "mean_text": "7 h 24 min"
+              "mean_text": "7 h 24 min",
+              "mean_hours": 7.4
             },
             "difference_b_minus_a": 13.8,
             "percent_change": 3.2,
@@ -1345,7 +1449,8 @@
             "enough_data": true,
             "note": null,
             "significance_test": "This tool does not run a significance test. It reports the two means and their difference only, so it cannot say whether the difference is statistically significant.",
-            "difference_b_minus_a_text": "14 min"
+            "difference_b_minus_a_text": "14 min",
+            "difference_b_minus_a_hours": 0.23
           }
         }
       ],
@@ -2155,7 +2260,11 @@
               "value": 603.0,
               "above_mean": 47.5,
               "value_text": "10 h 03 min",
-              "above_mean_text": "48 min"
+              "value_hours": 10.05,
+              "above_mean_text": "48 min",
+              "above_mean_hours": 0.79,
+              "night_of": "2016-05-03",
+              "night_of_weekday": "Tuesday"
             },
             "lowest": {
               "date": "2016-05-03",
@@ -2163,7 +2272,11 @@
               "value": 508.0,
               "below_mean": 47.5,
               "value_text": "8 h 28 min",
-              "below_mean_text": "48 min"
+              "value_hours": 8.47,
+              "below_mean_text": "48 min",
+              "below_mean_hours": 0.79,
+              "night_of": "2016-05-02",
+              "night_of_weekday": "Monday"
             },
             "range": 95.0,
             "daily": [
@@ -2171,43 +2284,60 @@
                 "date": "2016-05-03",
                 "weekday": "Tuesday",
                 "value": 508.0,
-                "value_text": "8 h 28 min"
+                "value_text": "8 h 28 min",
+                "night_of": "2016-05-02",
+                "night_of_weekday": "Monday"
               },
               {
                 "date": "2016-05-04",
                 "weekday": "Wednesday",
                 "value": 603.0,
-                "value_text": "10 h 03 min"
+                "value_text": "10 h 03 min",
+                "night_of": "2016-05-03",
+                "night_of_weekday": "Tuesday"
               },
               {
                 "date": "2016-05-05",
                 "weekday": "Thursday",
-                "value": null
+                "value": null,
+                "night_of": "2016-05-04",
+                "night_of_weekday": "Wednesday"
               },
               {
                 "date": "2016-05-06",
                 "weekday": "Friday",
-                "value": null
+                "value": null,
+                "night_of": "2016-05-05",
+                "night_of_weekday": "Thursday"
               },
               {
                 "date": "2016-05-07",
                 "weekday": "Saturday",
-                "value": null
+                "value": null,
+                "night_of": "2016-05-06",
+                "night_of_weekday": "Friday"
               },
               {
                 "date": "2016-05-08",
                 "weekday": "Sunday",
-                "value": null
+                "value": null,
+                "night_of": "2016-05-07",
+                "night_of_weekday": "Saturday"
               },
               {
                 "date": "2016-05-09",
                 "weekday": "Monday",
-                "value": null
+                "value": null,
+                "night_of": "2016-05-08",
+                "night_of_weekday": "Sunday"
               }
             ],
             "mean_text": "9 h 16 min",
+            "mean_hours": 9.26,
             "median_text": "9 h 16 min",
-            "range_text": "1 h 35 min"
+            "median_hours": 9.26,
+            "range_text": "1 h 35 min",
+            "range_hours": 1.58
           }
         }
       ],
@@ -2273,7 +2403,11 @@
               "value": 570.0,
               "above_mean": 126.5,
               "value_text": "9 h 30 min",
-              "above_mean_text": "2 h 06 min"
+              "value_hours": 9.5,
+              "above_mean_text": "2 h 07 min",
+              "above_mean_hours": 2.11,
+              "night_of": "2016-03-22",
+              "night_of_weekday": "Tuesday"
             },
             "lowest": {
               "date": "2016-03-25",
@@ -2281,7 +2415,11 @@
               "value": 356.0,
               "below_mean": 87.5,
               "value_text": "5 h 56 min",
-              "below_mean_text": "1 h 28 min"
+              "value_hours": 5.93,
+              "below_mean_text": "1 h 28 min",
+              "below_mean_hours": 1.46,
+              "night_of": "2016-03-24",
+              "night_of_weekday": "Thursday"
             },
             "range": 214.0,
             "daily": [
@@ -2289,42 +2427,56 @@
                 "date": "2016-03-19",
                 "weekday": "Saturday",
                 "value": 409.0,
-                "value_text": "6 h 49 min"
+                "value_text": "6 h 49 min",
+                "night_of": "2016-03-18",
+                "night_of_weekday": "Friday"
               },
               {
                 "date": "2016-03-20",
                 "weekday": "Sunday",
                 "value": 484.0,
-                "value_text": "8 h 04 min"
+                "value_text": "8 h 04 min",
+                "night_of": "2016-03-19",
+                "night_of_weekday": "Saturday"
               },
               {
                 "date": "2016-03-21",
                 "weekday": "Monday",
                 "value": 470.0,
-                "value_text": "7 h 50 min"
+                "value_text": "7 h 50 min",
+                "night_of": "2016-03-20",
+                "night_of_weekday": "Sunday"
               },
               {
                 "date": "2016-03-22",
                 "weekday": "Tuesday",
-                "value": null
+                "value": null,
+                "night_of": "2016-03-21",
+                "night_of_weekday": "Monday"
               },
               {
                 "date": "2016-03-23",
                 "weekday": "Wednesday",
                 "value": 570.0,
-                "value_text": "9 h 30 min"
+                "value_text": "9 h 30 min",
+                "night_of": "2016-03-22",
+                "night_of_weekday": "Tuesday"
               },
               {
                 "date": "2016-03-24",
                 "weekday": "Thursday",
                 "value": 372.0,
-                "value_text": "6 h 12 min"
+                "value_text": "6 h 12 min",
+                "night_of": "2016-03-23",
+                "night_of_weekday": "Wednesday"
               },
               {
                 "date": "2016-03-25",
                 "weekday": "Friday",
                 "value": 356.0,
-                "value_text": "5 h 56 min"
+                "value_text": "5 h 56 min",
+                "night_of": "2016-03-24",
+                "night_of_weekday": "Thursday"
               }
             ],
             "threshold": {
@@ -2353,11 +2505,16 @@
               ],
               "mean_minus_threshold": 23.5,
               "value_text": "7 h 00 min",
-              "mean_minus_threshold_text": "24 min"
+              "value_hours": 7.0,
+              "mean_minus_threshold_text": "24 min",
+              "mean_minus_threshold_hours": 0.39
             },
             "mean_text": "7 h 24 min",
+            "mean_hours": 7.39,
             "median_text": "7 h 20 min",
-            "range_text": "3 h 34 min"
+            "median_hours": 7.33,
+            "range_text": "3 h 34 min",
+            "range_hours": 3.57
           }
         }
       ],
@@ -2524,7 +2681,8 @@
               "days_with_data": 5,
               "mean": 466.6,
               "std": 89.8,
-              "mean_text": "7 h 47 min"
+              "mean_text": "7 h 47 min",
+              "mean_hours": 7.78
             },
             "period_b": {
               "start": "2016-05-05",
@@ -2964,7 +3122,11 @@
               "value": 585.0,
               "above_mean": 200.1,
               "value_text": "9 h 45 min",
-              "above_mean_text": "3 h 20 min"
+              "value_hours": 9.75,
+              "above_mean_text": "3 h 20 min",
+              "above_mean_hours": 3.34,
+              "night_of": "2016-03-27",
+              "night_of_weekday": "Sunday"
             },
             "lowest": {
               "date": "2016-03-26",
@@ -2972,7 +3134,11 @@
               "value": 191.0,
               "below_mean": 193.9,
               "value_text": "3 h 11 min",
-              "below_mean_text": "3 h 14 min"
+              "value_hours": 3.18,
+              "below_mean_text": "3 h 14 min",
+              "below_mean_hours": 3.23,
+              "night_of": "2016-03-25",
+              "night_of_weekday": "Friday"
             },
             "range": 394.0,
             "daily": [
@@ -2980,48 +3146,65 @@
                 "date": "2016-03-26",
                 "weekday": "Saturday",
                 "value": 191.0,
-                "value_text": "3 h 11 min"
+                "value_text": "3 h 11 min",
+                "night_of": "2016-03-25",
+                "night_of_weekday": "Friday"
               },
               {
                 "date": "2016-03-27",
                 "weekday": "Sunday",
                 "value": 523.0,
-                "value_text": "8 h 43 min"
+                "value_text": "8 h 43 min",
+                "night_of": "2016-03-26",
+                "night_of_weekday": "Saturday"
               },
               {
                 "date": "2016-03-28",
                 "weekday": "Monday",
                 "value": 585.0,
-                "value_text": "9 h 45 min"
+                "value_text": "9 h 45 min",
+                "night_of": "2016-03-27",
+                "night_of_weekday": "Sunday"
               },
               {
                 "date": "2016-03-29",
                 "weekday": "Tuesday",
                 "value": 347.0,
-                "value_text": "5 h 47 min"
+                "value_text": "5 h 47 min",
+                "night_of": "2016-03-28",
+                "night_of_weekday": "Monday"
               },
               {
                 "date": "2016-03-30",
                 "weekday": "Wednesday",
                 "value": 271.0,
-                "value_text": "4 h 31 min"
+                "value_text": "4 h 31 min",
+                "night_of": "2016-03-29",
+                "night_of_weekday": "Tuesday"
               },
               {
                 "date": "2016-03-31",
                 "weekday": "Thursday",
                 "value": 412.0,
-                "value_text": "6 h 52 min"
+                "value_text": "6 h 52 min",
+                "night_of": "2016-03-30",
+                "night_of_weekday": "Wednesday"
               },
               {
                 "date": "2016-04-01",
                 "weekday": "Friday",
                 "value": 365.0,
-                "value_text": "6 h 05 min"
+                "value_text": "6 h 05 min",
+                "night_of": "2016-03-31",
+                "night_of_weekday": "Thursday"
               }
             ],
             "mean_text": "6 h 25 min",
+            "mean_hours": 6.42,
             "median_text": "6 h 05 min",
-            "range_text": "6 h 34 min"
+            "median_hours": 6.08,
+            "range_text": "6 h 34 min",
+            "range_hours": 6.57
           }
         }
       ],
@@ -3073,7 +3256,11 @@
               "value": 607.0,
               "above_mean": 172.0,
               "value_text": "10 h 07 min",
-              "above_mean_text": "2 h 52 min"
+              "value_hours": 10.12,
+              "above_mean_text": "2 h 52 min",
+              "above_mean_hours": 2.87,
+              "night_of": "2016-03-24",
+              "night_of_weekday": "Thursday"
             },
             "lowest": {
               "date": "2016-03-26",
@@ -3081,7 +3268,11 @@
               "value": 191.0,
               "below_mean": 244.0,
               "value_text": "3 h 11 min",
-              "below_mean_text": "4 h 04 min"
+              "value_hours": 3.18,
+              "below_mean_text": "4 h 04 min",
+              "below_mean_hours": 4.07,
+              "night_of": "2016-03-25",
+              "night_of_weekday": "Friday"
             },
             "range": 416.0,
             "daily": [
@@ -3089,48 +3280,65 @@
                 "date": "2016-03-22",
                 "weekday": "Tuesday",
                 "value": 526.0,
-                "value_text": "8 h 46 min"
+                "value_text": "8 h 46 min",
+                "night_of": "2016-03-21",
+                "night_of_weekday": "Monday"
               },
               {
                 "date": "2016-03-23",
                 "weekday": "Wednesday",
                 "value": 249.0,
-                "value_text": "4 h 09 min"
+                "value_text": "4 h 09 min",
+                "night_of": "2016-03-22",
+                "night_of_weekday": "Tuesday"
               },
               {
                 "date": "2016-03-24",
                 "weekday": "Thursday",
                 "value": 364.0,
-                "value_text": "6 h 04 min"
+                "value_text": "6 h 04 min",
+                "night_of": "2016-03-23",
+                "night_of_weekday": "Wednesday"
               },
               {
                 "date": "2016-03-25",
                 "weekday": "Friday",
                 "value": 607.0,
-                "value_text": "10 h 07 min"
+                "value_text": "10 h 07 min",
+                "night_of": "2016-03-24",
+                "night_of_weekday": "Thursday"
               },
               {
                 "date": "2016-03-26",
                 "weekday": "Saturday",
                 "value": 191.0,
-                "value_text": "3 h 11 min"
+                "value_text": "3 h 11 min",
+                "night_of": "2016-03-25",
+                "night_of_weekday": "Friday"
               },
               {
                 "date": "2016-03-27",
                 "weekday": "Sunday",
                 "value": 523.0,
-                "value_text": "8 h 43 min"
+                "value_text": "8 h 43 min",
+                "night_of": "2016-03-26",
+                "night_of_weekday": "Saturday"
               },
               {
                 "date": "2016-03-28",
                 "weekday": "Monday",
                 "value": 585.0,
-                "value_text": "9 h 45 min"
+                "value_text": "9 h 45 min",
+                "night_of": "2016-03-27",
+                "night_of_weekday": "Sunday"
               }
             ],
             "mean_text": "7 h 15 min",
+            "mean_hours": 7.25,
             "median_text": "8 h 43 min",
-            "range_text": "6 h 56 min"
+            "median_hours": 8.72,
+            "range_text": "6 h 56 min",
+            "range_hours": 6.93
           }
         }
       ],
