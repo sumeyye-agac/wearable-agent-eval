@@ -1,48 +1,39 @@
 # wearable-agent-eval
 
-> **Status: in progress** (updated 2026-11-22)
+> **Status: in progress** (updated 2026-11-24)
 >
-> ✅ **Last done:** runner and scorer: every run is saved to `runs/` and scored from the saved files only.
+> ✅ **Last done:** a Claude Haiku 5.5 pilot run on questions v1 (not reported as a result: the scorer is not validated yet), and a LiteRT-LM spike on my Mac (go: valid tool calls, deterministic at temperature 0).
 >
-> 🔜 **Next:** run and score the Claude Haiku 5.5 baseline.
+> 🔜 **Next:** question set v1.1.
 
 <details>
 <summary><b>Plan and progress</b></summary>
 
-**Phase 0: Can a small model run on my phone at all?**
-- [x] Installed Gemma-4-E2B-it on my Android phone with Google AI Edge Gallery
-- [x] Measured speed on GPU and CPU: ~10 vs ~6.5 tok/s decode, ~3.0 vs ~2.2 GB RAM
-- [x] Sanity check: one tool call came back as valid JSON with the right tool and date
-- [x] Sanity check: asked for data no tool provides (blood oxygen); the model said it had no tool for it instead of inventing one
-- [x] Measured time-to-first-token with the full agent prompt: 5,145 tokens (Gemma tokenizer), 29.6 s on GPU
-
-**Phase 1: Evaluation harness**
+**Done so far**
 - [x] Set up the repo and copied the tools and demo data from [ask-your-wearable](https://github.com/sumeyye-agac/ask-your-wearable), with its tests passing
-- [x] Wrote a 28-question pilot set; every expected answer is computed by the tools, none written by hand
-- [x] Added questions built on real gaps in the data, where the right answer is a refusal or must say how many days it covers
-- [x] Metrics as regex checks, no LLM judge: coverage mentioned, and the set of numbers the tools support (the unsupported-number check that uses it is not built yet)
-- [ ] Build the scoring: tool selection, numeric accuracy, unsupported numbers, refusal
-- [x] Save every run to `runs/` (config, full transcripts, timings) and score from saved runs only
-- [ ] Run each question 3 times and report the spread
-- [ ] Run the Claude Haiku 5.5 baseline on the pilot set
-- [ ] Grow the set to 100–150 questions
+- [x] Gemma-4-E2B-it runs on my Android phone (Google AI Edge Gallery): ~10 vs ~6.5 tok/s decode on GPU vs CPU, ~3.0 vs ~2.2 GB RAM; time-to-first-token with the full agent prompt (5,145 tokens, Gemma tokenizer): 29.6 s on GPU
+- [x] A 28-question pilot set (questions v1); every expected answer is computed by the tools, none written by hand
+- [x] A runner that saves every run to `runs/`, and a scorer that reads only the saved runs
+- [x] A Claude Haiku 5.5 pilot run on questions v1 (not reported as a result: the scorer is not validated yet)
+- [x] A LiteRT-LM spike on my Mac: Gemma-4-E2B-it makes valid tool calls and is deterministic at temperature 0
 
-**Phase 2: Small model on my Mac**
-- [ ] Per-model format adapter (Anthropic tool use, LiteRT-LM tool format), one shared loop and the same tools
-- [ ] Run Gemma-4-E2B-it through the same harness
-- [ ] Check whether Gemma corrects itself after a tool error (e.g. invalid dates)
-- [ ] Optional second small model (Qwen3-1.7B)
-- [ ] Results table and error analysis: wrong tool, invented numbers, broken format
+**A. Freeze the inputs**
+- [ ] Question set v1.1
+- [ ] Prompt v1
+- [ ] Scorer v1 with validation: null baseline, mutation test, labeling policy, and decision rules written before any Gemma output is read
 
-**Phase 3: Android app**
-- [ ] Minimal app with the model and the tools running on the phone
-- [ ] Port the tools to Kotlin and check them against the Python outputs
-- [ ] Measure latency with and without caching the fixed part of the prompt
-- [ ] Run a 20-question subset on the phone and compare answers with the Mac runs
-- [ ] One-minute demo video
+**B. Runs on the frozen inputs**
+- [ ] Claude Haiku 5.5 with thinking on and with thinking off
+- [ ] Gemma-4-E2B-it on my Mac
+- [ ] Blind labeling of 60 answers
+- [ ] First comparison table and failure taxonomy
 
-**Phase 4: Write-up**
-- [ ] Results table at the top of this README, with limits
+**C. Phone and questions v2**
+- [ ] KV cache for the fixed part of the prompt
+- [ ] Latency and RAM on the phone
+- [ ] 20-question parity between the phone and the Mac runs
+- [ ] Demo video
+- [ ] Question set v2
 
 </details>
 
