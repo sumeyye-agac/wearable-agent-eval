@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "questions_version": "v1.2",
+  "questions_version": "v1.3",
   "numeric_tolerance": 0.01,
   "text_tolerance_minutes": 1,
   "questions": [
@@ -26,14 +26,17 @@
               "path": "most_active.steps",
               "value": 26100,
               "text": null
-            },
-            {
-              "path": "most_active.steps_above_second",
-              "value": 3029,
-              "text": null
             }
           ],
-          "answer_dates": [],
+          "answer_dates": [
+            {
+              "path": "most_active.date",
+              "value": "2016-03-17",
+              "accepted": [
+                "2016-03-17"
+              ]
+            }
+          ],
           "coverage": null,
           "output": {
             "metric": "steps",
@@ -1277,11 +1280,6 @@
               "path": "r",
               "value": 0.728,
               "text": null
-            },
-            {
-              "path": "n",
-              "value": 39,
-              "text": null
             }
           ],
           "answer_dates": [],
@@ -1335,11 +1333,6 @@
               "path": "difference_b_minus_a",
               "value": -4228,
               "text": null
-            },
-            {
-              "path": "percent_change",
-              "value": -29.7,
-              "text": null
             }
           ],
           "answer_dates": [],
@@ -1375,7 +1368,59 @@
           }
         }
       ],
-      "alternative_routes": []
+      "alternative_routes": [
+        [
+          {
+            "tool": "compare_periods",
+            "args": {
+              "metric": "steps",
+              "preset": "first_half_vs_second_half"
+            },
+            "match_on": {
+              "difference_b_minus_a": -4228,
+              "percent_change": -29.7
+            },
+            "answer": [
+              {
+                "path": "percent_change",
+                "value": -29.7,
+                "text": null
+              }
+            ],
+            "answer_dates": [],
+            "coverage": null,
+            "output": {
+              "metric": "steps",
+              "unit": "steps",
+              "preset": "first_half_vs_second_half",
+              "period_a": {
+                "start": "2016-03-12",
+                "start_weekday": "Saturday",
+                "end": "2016-04-11",
+                "end_weekday": "Monday",
+                "days_with_data": 31,
+                "mean": 14230,
+                "std": 4127
+              },
+              "period_b": {
+                "start": "2016-04-12",
+                "start_weekday": "Tuesday",
+                "end": "2016-05-12",
+                "end_weekday": "Thursday",
+                "days_with_data": 30,
+                "mean": 10002,
+                "std": 3834
+              },
+              "difference_b_minus_a": -4228,
+              "percent_change": -29.7,
+              "higher_period": "period_a",
+              "enough_data": true,
+              "note": null,
+              "significance_test": "This tool does not run a significance test. It reports the two means and their difference only, so it cannot say whether the difference is statistically significant."
+            }
+          }
+        ]
+      ]
     },
     {
       "id": "trd-02",
@@ -1479,11 +1524,6 @@
             {
               "path": "r",
               "value": -0.517,
-              "text": null
-            },
-            {
-              "path": "n",
-              "value": 57,
               "text": null
             }
           ],
@@ -1784,11 +1824,6 @@
             {
               "path": "period_b.mean",
               "value": 99,
-              "text": null
-            },
-            {
-              "path": "difference_b_minus_a",
-              "value": 17,
               "text": null
             }
           ],
@@ -2132,7 +2167,15 @@
               "text": null
             }
           ],
-          "answer_dates": [],
+          "answer_dates": [
+            {
+              "path": "most_active.date",
+              "value": "2016-05-10",
+              "accepted": [
+                "2016-05-10"
+              ]
+            }
+          ],
           "coverage": [
             {
               "path": "days_with_data",
@@ -3369,11 +3412,6 @@
             {
               "path": "r",
               "value": 0.301,
-              "text": null
-            },
-            {
-              "path": "n",
-              "value": 30,
               "text": null
             }
           ],

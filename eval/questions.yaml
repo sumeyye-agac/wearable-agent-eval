@@ -8,10 +8,10 @@
 #   5577150313  steps missing 2016-05-07..08, sleep missing 2016-05-05..09
 schema_version: 1
 
-# Frozen per version (git tags questions-v1, questions-v1.1, questions-v1.2). Any change to a
-# question, an expected call or a reference date needs a new version; results are only
-# compared within one version. Changes between versions: eval/README.md.
-version: v1.2
+# Frozen per version (git tags questions-v1 to questions-v1.3; v1.3 is final for phase A).
+# Any change to a question, an expected call or a reference date needs a new version;
+# results are only compared within one version. Changes between versions: eval/README.md.
+version: v1.3
 
 # The pinned "today" per user. "This week" is the 7 days ending on it, "last 4 weeks" the 28
 # days ending on it. It is each user's last complete day; the build fails if it is not,
@@ -30,7 +30,8 @@ questions:
     expected_calls:
       - tool: most_active_day
         args: {}
-        answer: [most_active.steps, most_active.steps_above_second]
+        answer: [most_active.steps]
+        answer_dates: [most_active.date]
         match_on: [most_active.date, most_active.steps, most_active.steps_above_second]
 
   - id: act-02
@@ -143,7 +144,8 @@ questions:
     expected_calls:
       - tool: correlation
         args: {metric_x: steps, metric_y: mean_hr}
-        answer: [r, n]
+        answer: [r]
+        match_on: [r, n]
 
   # --- trend ----------------------------------------------------------------------------
   - id: trd-01
@@ -153,7 +155,14 @@ questions:
     expected_calls:
       - tool: compare_periods
         args: {metric: steps, preset: first_half_vs_second_half}
-        answer: [difference_b_minus_a, percent_change]
+        answer: [difference_b_minus_a]
+        match_on: [difference_b_minus_a, percent_change]
+    # Same call; the change may be stated in percent instead of steps.
+    alternative_routes:
+      - - tool: compare_periods
+          args: {metric: steps, preset: first_half_vs_second_half}
+          answer: [percent_change]
+          match_on: [difference_b_minus_a, percent_change]
 
   - id: trd-02
     user_id: "5577150313"
@@ -176,7 +185,8 @@ questions:
     expected_calls:
       - tool: correlation
         args: {metric_x: minutes_asleep, metric_y: steps}
-        answer: [r, n]
+        answer: [r]
+        match_on: [r, n]
 
   # --- comparison -----------------------------------------------------------------------
   - id: cmp-01
@@ -211,7 +221,8 @@ questions:
         args: {metric: very_active_minutes, period_a_start: "2016-03-01",
                period_a_end: "2016-03-31", period_b_start: "2016-04-01",
                period_b_end: "2016-04-30"}
-        answer: [period_a.mean, period_b.mean, difference_b_minus_a]
+        answer: [period_a.mean, period_b.mean]
+        match_on: [period_a.mean, period_b.mean, difference_b_minus_a]
         coverage: [period_a.days_with_data, period_b.days_with_data]
 
   # --- unanswerable or incomplete data --------------------------------------------------
@@ -272,6 +283,7 @@ questions:
       - tool: most_active_day
         args: {start_date: "2016-05-04", end_date: "2016-05-10"}
         answer: [most_active.steps]
+        answer_dates: [most_active.date]
         coverage: days_with_data
         match_on: [start, end, most_active.date, most_active.steps]
 
@@ -409,7 +421,8 @@ questions:
       - tool: correlation
         args: {metric_x: steps, metric_y: fairly_active_minutes, start_date: "2016-04-01",
                end_date: "2016-04-30"}
-        answer: [r, n]
+        answer: [r]
+        match_on: [r, n]
 
   - id: cmp-03
     user_id: "6962181067"

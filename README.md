@@ -2,7 +2,7 @@
 
 > **Status: in progress** (updated 2026-11-24)
 >
-> ✅ **Last done:** the tools now return sleep in decimal hours and each night's date, so the model never converts or dates anything itself (prompt v1.1, 3,591 Gemma tokens on the first turn); question set v1.2.
+> ✅ **Last done:** question set v1.3, final for phase A: each expected answer now holds only what its question asks (7 questions changed).
 >
 > 🔜 **Next:** scorer v1 with validation.
 
@@ -18,7 +18,7 @@
 - [x] A LiteRT-LM spike on my Mac: Gemma-4-E2B-it makes valid tool calls and is deterministic at temperature 0
 
 **A. Freeze the inputs**
-- [x] Question set v1.2
+- [x] Question set v1.3
 - [x] Prompt v1.1
 - [ ] Scorer v1 with validation: null baseline, mutation test, labeling policy, and decision rules written before any Gemma output is read
 

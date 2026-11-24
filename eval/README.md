@@ -8,7 +8,7 @@
 
 ```yaml
 schema_version: 1                 # the file format
-version: v1.2                     # the question set; required, see below
+version: v1.3                     # the question set; required, see below
 reference_dates:                  # the pinned "today" per user, required for every user
   "5553957443": "2016-05-11"
 questions:
@@ -30,11 +30,10 @@ questions:
       - - tool: ...               # each route is a list of calls, all of them needed
 ```
 
-**Version:** the question set is frozen per version and tagged in git (`questions-v1`,
-`questions-v1.1`, `questions-v1.2`). Any change to a question, an expected call or a
-reference date makes a new version (`v1.1`, `v2`, ...); results are compared only within one
-version. The ground truth copies it as `questions_version`. Changes are listed under
-"Changelog" below.
+**Version:** the question set is frozen per version and tagged in git (`questions-v1` to
+`questions-v1.3`). Any change to a question, an expected call or a reference date makes a
+new version (`v1.1`, `v2`, ...); results are compared only within one version. The ground
+truth copies it as `questions_version`. Changes are listed under "Changelog" below.
 
 **Pinned "today":** `reference_dates` makes explicit what "this week", "last night" and "the
 last 4 weeks" mean for each user: the 7 or 28 days ending on that date. It must equal the
@@ -52,9 +51,10 @@ Paths are dotted keys into the tool output. Integer parts index lists (`top_days
 A `key=value` part picks the first list item with that key and value
 (`daily.date=2016-04-01.value`), so the path finds a day wherever it sits in the window.
 
-- **answer:** each path must resolve to a number. If the output also has a `<path>_text`
-  sibling (hours and minutes for the sleep metrics), the ground truth keeps it as an accepted
-  written form.
+- **answer:** each path must resolve to a number. Only what the question literally asks
+  goes here; values that only confirm the call go in `match_on`. If the output also has a
+  `<path>_text` sibling (hours and minutes for the sleep metrics), the ground truth keeps it
+  as an accepted written form.
 - **match_on:** defaults to `answer`. It defines when a model's call counts as the expected
   call: same tool, and running the model's arguments gives the same values at these paths.
   The rule compares results instead of arguments, so these count as correct: `end_date`
@@ -122,7 +122,7 @@ date's weekday. The data range the system prompt states ("the data covers 2016-0
 The refusal phrase list was written for the 8 pilot refusal questions and may miss other
 wordings; refusal answers are checked by eye after each run.
 
-## Question set v1.2 (34 questions)
+## Question set v1.3 (34 questions)
 
 | Category | n | tagged missing_data |
 | --- | --- | --- |
@@ -148,6 +148,18 @@ Known gaps: no multi-tool questions yet, no guideline (`get_guideline`)
 questions, no medical-advice or off-topic questions. They are planned for the full set.
 
 ## Changelog
+
+**v1.3** (34 questions; final for phase A)
+
+- `answer` now holds only what the question literally asks; values that only confirm the
+  call stay in `match_on`. An answer that left out an extra value was scored wrong.
+  - act-01: the most active day's date (new `answer_dates`) and steps; the lead over the
+    second day (3,029) moves to `match_on`.
+  - act-07: the most active day's date added to `answer_dates` ("which day").
+  - hr-02, trd-03, trd-04: r only; n moves to `match_on`.
+  - trd-01: the change in steps or in percent, through a second route with the same call;
+    v1.2 required both.
+  - cmp-02: the two monthly means; the difference moves to `match_on`.
 
 **v1.2** (34 questions)
 

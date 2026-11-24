@@ -180,7 +180,7 @@ def test_ground_truth_file_is_valid_json():
     data = json.loads((REPO / "eval/ground_truth.json").read_text(encoding="utf-8"))
     assert data["numeric_tolerance"] == 0.01
     assert data["text_tolerance_minutes"] == 1
-    assert data["questions_version"] == "v1.2"
+    assert data["questions_version"] == "v1.3"
 
 
 @pytest.mark.parametrize("version", [None, 1, "1", "v0", "v1.0", "v1.1.1", "V1"])
