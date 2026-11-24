@@ -4,7 +4,7 @@
 >
 > ✅ **Last done:** question set v1.3, final for phase A: each expected answer now holds only what its question asks (7 questions changed).
 >
-> 🔜 **Next:** scorer v1 with validation.
+> 🔜 **Next:** scorer v1: the rules are built; validation (fake agents, null baseline, mutation test) comes next.
 
 <details>
 <summary><b>Plan and progress</b></summary>

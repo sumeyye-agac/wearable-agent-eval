@@ -14,9 +14,15 @@ Written as general rules, not for one model's wording. Recognised forms:
 Month names must be capitalised ("May", not "may"). Years default to the reference year.
 
 A day counts as supported when it appears in a tool output (any ISO date, or any day of a
-start-to-end window), in the question (any day of a range it names), or is the reference
-date or in the "this week" / "last week" windows the system prompt derives from it. A month counts as supported when a supported day falls in it or the question names
-it. A weekday written next to a date must be that date's weekday.
+start-to-end window), in the question (any day of a range it names), or in the system
+prompt: the data range's first and last day, the reference date (last complete day), and
+the "this week" / "last week" windows. A month counts as supported when a supported day
+falls in it or the question names it. A weekday written next to a date must be that date's
+weekday.
+
+Fallback (counted, not silent): the evening before a day of a sleep result (the day a
+night began) is accepted when no source has it. The tools give it as night_of, so a firing
+means the model worked the date out itself.
 """
 
 from __future__ import annotations
@@ -59,7 +65,8 @@ _PATTERNS = [  # tried in this order; a later pattern never takes text an earlie
     ("month_day", re.compile(rf"(?:(?P<wd>{WEEKDAY}),?\s+)?(?P<month>{MONTH})\s+{DAY}"
                              rf"(?:{_SEP}{DAY})*{_YEAR}")),
     ("month_year", re.compile(rf"(?P<month>{MONTH})\s+(?P<year>\d{{4}})(?!\d)")),
-    ("weekday_day", re.compile(rf"(?P<wd>{WEEKDAY}),?\s+(?:the\s+)?(?P<day>{DAY})"
+    # "(?![.,]\d)": the start of a longer number is not a day ("Friday, 23,071 steps").
+    ("weekday_day", re.compile(rf"(?P<wd>{WEEKDAY}),?\s+(?:the\s+)?(?P<day>{DAY})(?![.,]\d)"
                                r"(?!\s*(?:h|hr|hrs|hours?|min|minutes?|steps|bpm|%)\b)")),
 ]
 _ITEM_RE = re.compile(rf"(?:(?P<wd>{WEEKDAY}),?\s+)?(?:the\s+)?(?P<day>{DAY})")
@@ -227,28 +234,89 @@ def supported_days(outputs: list[Any], question: str, reference: date) -> set[da
     return days
 
 
+def prompt_days(first: date, last: date, reference: date) -> set[date]:
+    """The days the system prompt states: the data range's ends, the reference date and
+    the "this week" / "last week" windows."""
+    return {first, last, reference} | prompt_weeks(reference)
+
+
+SLEEP_METRICS = ("minutes_asleep", "minutes_in_bed")
+FALLBACK = "fallback:evening_before"
+
+
+def _sleep_days(call: dict[str, Any]) -> set[date]:
+    """The days of a call's result that are sleep rows (dated by the wake-up day)."""
+    days: set[date] = set()
+    args = call.get("input") if isinstance(call.get("input"), dict) else {}
+    if args.get("metric") in SLEEP_METRICS:
+        _collect(call["output"], days)
+    elif call["name"] == "missing_data_report" and isinstance(call["output"], dict):
+        for metric in SLEEP_METRICS:
+            _collect((call["output"].get("metrics") or {}).get(metric), days)
+    return days
+
+
+def day_sources(calls: list[dict[str, Any]], question: str, reference: date,
+                prompt: set[date]) -> dict[date, str]:
+    """Every day an answer may state, with where it comes from: "tool:<name>", "question",
+    "prompt", or the counted fallback (see FALLBACK). The first source found wins."""
+    sources: dict[date, str] = {}
+    for call in calls:
+        if call["is_error"]:
+            continue
+        days: set[date] = set()
+        _collect(call["output"], days)
+        for d in days:
+            sources.setdefault(d, f"tool:{call['name']}")
+    for d in range_days(question, find_dates(question, reference)):
+        sources.setdefault(d, "question")
+    for d in prompt | {reference} | prompt_weeks(reference):
+        sources.setdefault(d, "prompt")
+    for call in calls:
+        if not call["is_error"]:
+            for d in _sleep_days(call):
+                sources.setdefault(d - timedelta(1), FALLBACK)
+    return sources
+
+
 def check(mentions: list[Mention], supported: set[date], question_months: set[tuple[int, int]]
           ) -> list[str]:
     """The unsupported date items, each as '<text as written>: <reason>'."""
-    months = {(d.year, d.month) for d in supported} | question_months
-    problems = []
+    return check_sourced(mentions, dict.fromkeys(supported, ""), question_months)[0]
+
+
+def check_sourced(mentions: list[Mention], sources: dict[date, str],
+                  question_months: set[tuple[int, int]]
+                  ) -> tuple[list[str], list[dict[str, str]]]:
+    """The unsupported date items ('<text as written>: <reason>'), and the supported ones
+    with their source ({"text", "source"}). A month's source is "month"."""
+    months = {(d.year, d.month) for d in sources} | question_months
+    problems: list[str] = []
+    tagged: list[dict[str, str]] = []
     for mention in mentions:
         if mention.either and all(i.day for i in mention.items):
-            if not any(i.day in supported for i in mention.items):
+            found = [sources[i.day] for i in mention.items if i.day in sources]
+            if found:
+                tagged.append({"text": mention.text, "source": found[0]})
+            else:
                 problems.append(f"{mention.text}: not in the tool outputs or the question")
             continue
         for item in mention.items:
             if item.problem:
                 problems.append(f"{mention.text}: {item.problem}")
             elif item.month:
-                if item.month not in months:
+                if item.month in months:
+                    tagged.append({"text": mention.text, "source": "month"})
+                else:
                     problems.append(f"{mention.text}: month not in the tool outputs or the question")
-            elif item.day not in supported:
+            elif item.day not in sources:
                 problems.append(f"{mention.text}: {item.day} not in the tool outputs or the question")
             elif item.weekday and _WEEKDAYS[item.weekday] != item.day.weekday():
                 problems.append(f"{mention.text}: {item.day} is a {_NAMES[item.day.weekday()]}, "
                                 f"not {item.weekday}")
-    return problems
+            else:
+                tagged.append({"text": mention.text, "source": sources[item.day]})
+    return problems, tagged
 
 
 def question_months(question: str, reference: date) -> set[tuple[int, int]]:

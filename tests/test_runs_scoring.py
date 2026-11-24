@@ -113,8 +113,9 @@ def values(text):
 
 
 def test_answer_numbers():
+    # scorer v1: a duration is one value, in minutes ("7 h 31 min" = 451).
     assert values("On 11 May 2016 and May 5th you slept 7 h 31 min, 1,234.5 in "
-                  "total; SpO2 and E2B are not numbers.") == [7, 31, 1234.5]
+                  "total; SpO2 and E2B are not numbers.") == [451, 1234.5]
     assert values("1. First\n2. Second: 12%") == [12]
     assert answer_numbers(None, REF) == []
 
@@ -133,10 +134,12 @@ def test_an_explicit_sign_must_match_the_tool(text, ok):
 
 
 def test_text_fields_and_the_question_support_numbers():
-    calls = [{"output": {"mean": 451.3, "mean_text": "7 h 31 min"}, "is_error": False},
-             {"output": "end_date 2030-01-01 is after the data; use 1 to 10", "is_error": True}]
+    calls = [{"name": "weekly_summary", "output": {"mean": 451.3, "mean_text": "7 h 31 min"},
+              "is_error": False},
+             {"name": "weekly_summary",
+              "output": "end_date 2030-01-01 is after the data; use 1 to 10", "is_error": True}]
     values = supported_values(calls, "Did I reach 10,000 steps?", REF)
-    assert {451.3, 7, 31, 10000} <= values
+    assert {451.3, 451, 10000} <= values  # 451: the minutes in "7 h 31 min"
     assert 10 not in values  # numbers in an error message support nothing
 
 
