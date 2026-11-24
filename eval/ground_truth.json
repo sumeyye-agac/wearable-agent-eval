@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "questions_version": "v1.1",
+  "questions_version": "v1.2",
   "numeric_tolerance": 0.01,
   "text_tolerance_minutes": 1,
   "questions": [
@@ -1472,7 +1472,178 @@
           }
         }
       ],
-      "alternative_routes": []
+      "alternative_routes": [
+        [
+          {
+            "tool": "weekly_summary",
+            "args": {
+              "metric": "steps",
+              "end_date": "2016-04-10"
+            },
+            "match_on": {
+              "start": "2016-04-04",
+              "end": "2016-04-10",
+              "total": 93860
+            },
+            "answer": [
+              {
+                "path": "total",
+                "value": 93860,
+                "text": null
+              }
+            ],
+            "answer_dates": [],
+            "coverage": null,
+            "output": {
+              "metric": "steps",
+              "unit": "steps",
+              "start": "2016-04-04",
+              "start_weekday": "Monday",
+              "end": "2016-04-10",
+              "end_weekday": "Sunday",
+              "days_with_data": 7,
+              "missing_dates": [],
+              "mean": 13409,
+              "median": 12495,
+              "highest": {
+                "date": "2016-04-04",
+                "weekday": "Monday",
+                "value": 18952,
+                "above_mean": 5543
+              },
+              "lowest": {
+                "date": "2016-04-10",
+                "weekday": "Sunday",
+                "value": 10148,
+                "below_mean": 3261
+              },
+              "range": 8804,
+              "daily": [
+                {
+                  "date": "2016-04-04",
+                  "weekday": "Monday",
+                  "value": 18952
+                },
+                {
+                  "date": "2016-04-05",
+                  "weekday": "Tuesday",
+                  "value": 12010
+                },
+                {
+                  "date": "2016-04-06",
+                  "weekday": "Wednesday",
+                  "value": 12480
+                },
+                {
+                  "date": "2016-04-07",
+                  "weekday": "Thursday",
+                  "value": 13417
+                },
+                {
+                  "date": "2016-04-08",
+                  "weekday": "Friday",
+                  "value": 14358
+                },
+                {
+                  "date": "2016-04-09",
+                  "weekday": "Saturday",
+                  "value": 12495
+                },
+                {
+                  "date": "2016-04-10",
+                  "weekday": "Sunday",
+                  "value": 10148
+                }
+              ],
+              "total": 93860
+            }
+          },
+          {
+            "tool": "weekly_summary",
+            "args": {
+              "metric": "steps",
+              "end_date": "2016-04-17"
+            },
+            "match_on": {
+              "start": "2016-04-11",
+              "end": "2016-04-17",
+              "total": 58689
+            },
+            "answer": [
+              {
+                "path": "total",
+                "value": 58689,
+                "text": null
+              }
+            ],
+            "answer_dates": [],
+            "coverage": null,
+            "output": {
+              "metric": "steps",
+              "unit": "steps",
+              "start": "2016-04-11",
+              "start_weekday": "Monday",
+              "end": "2016-04-17",
+              "end_weekday": "Sunday",
+              "days_with_data": 7,
+              "missing_dates": [],
+              "mean": 8384,
+              "median": 10145,
+              "highest": {
+                "date": "2016-04-16",
+                "weekday": "Saturday",
+                "value": 13217,
+                "above_mean": 4833
+              },
+              "lowest": {
+                "date": "2016-04-14",
+                "weekday": "Thursday",
+                "value": 1551,
+                "below_mean": 6833
+              },
+              "range": 11666,
+              "daily": [
+                {
+                  "date": "2016-04-11",
+                  "weekday": "Monday",
+                  "value": 12362
+                },
+                {
+                  "date": "2016-04-12",
+                  "weekday": "Tuesday",
+                  "value": 10199
+                },
+                {
+                  "date": "2016-04-13",
+                  "weekday": "Wednesday",
+                  "value": 5652
+                },
+                {
+                  "date": "2016-04-14",
+                  "weekday": "Thursday",
+                  "value": 1551
+                },
+                {
+                  "date": "2016-04-15",
+                  "weekday": "Friday",
+                  "value": 5563
+                },
+                {
+                  "date": "2016-04-16",
+                  "weekday": "Saturday",
+                  "value": 13217
+                },
+                {
+                  "date": "2016-04-17",
+                  "weekday": "Sunday",
+                  "value": 10145
+                }
+              ],
+              "total": 58689
+            }
+          }
+        ]
+      ]
     },
     {
       "id": "cmp-02",

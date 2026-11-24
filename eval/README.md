@@ -8,7 +8,7 @@
 
 ```yaml
 schema_version: 1                 # the file format
-version: v1.1                     # the question set; required, see below
+version: v1.2                     # the question set; required, see below
 reference_dates:                  # the pinned "today" per user, required for every user
   "5553957443": "2016-05-11"
 questions:
@@ -31,9 +31,10 @@ questions:
 ```
 
 **Version:** the question set is frozen per version and tagged in git (`questions-v1`,
-`questions-v1.1`). Any change to a question, an expected call or a reference date makes a
-new version (`v1.1`, `v2`, ...); results are compared only within one version. The ground
-truth copies it as `questions_version`. Changes are listed under "Changelog" below.
+`questions-v1.1`, `questions-v1.2`). Any change to a question, an expected call or a
+reference date makes a new version (`v1.1`, `v2`, ...); results are compared only within one
+version. The ground truth copies it as `questions_version`. Changes are listed under
+"Changelog" below.
 
 **Pinned "today":** `reference_dates` makes explicit what "this week", "last night" and "the
 last 4 weeks" mean for each user: the 7 or 28 days ending on that date. It must equal the
@@ -121,7 +122,7 @@ date's weekday. The data range the system prompt states ("the data covers 2016-0
 The refusal phrase list was written for the 8 pilot refusal questions and may miss other
 wordings; refusal answers are checked by eye after each run.
 
-## Question set v1.1 (34 questions)
+## Question set v1.2 (34 questions)
 
 | Category | n | tagged missing_data |
 | --- | --- | --- |
@@ -147,6 +148,13 @@ Known gaps: no multi-tool questions yet, no guideline (`get_guideline`)
 questions, no medical-advice or off-topic questions. They are planned for the full set.
 
 ## Changelog
+
+**v1.2** (34 questions)
+
+- cmp-01: two `weekly_summary` calls (weekly totals) added as an alternative route, as for
+  cmp-03. Both weeks have step data on all 7 days, so the totals answer the question as
+  well as the means. Without the route a correct answer from two weekly totals failed
+  `tool_result_correct`.
 
 **v1.1** (34 questions)
 

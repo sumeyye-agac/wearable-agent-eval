@@ -8,10 +8,10 @@
 #   5577150313  steps missing 2016-05-07..08, sleep missing 2016-05-05..09
 schema_version: 1
 
-# Frozen per version (git tags questions-v1, questions-v1.1). Any change to a question, an
-# expected call or a reference date needs a new version; results are only compared within
-# one version. Changes between versions: eval/README.md.
-version: v1.1
+# Frozen per version (git tags questions-v1, questions-v1.1, questions-v1.2). Any change to a
+# question, an expected call or a reference date needs a new version; results are only
+# compared within one version. Changes between versions: eval/README.md.
+version: v1.2
 
 # The pinned "today" per user. "This week" is the 7 days ending on it, "last 4 weeks" the 28
 # days ending on it. It is each user's last complete day; the build fails if it is not,
@@ -189,6 +189,15 @@ questions:
                period_b_start: "2016-04-11", period_b_end: "2016-04-17"}
         answer: [difference_b_minus_a]
         match_on: [period_a.mean, period_b.mean, difference_b_minus_a]
+    alternative_routes:
+      - - tool: weekly_summary
+          args: {metric: steps, end_date: "2016-04-10"}
+          answer: [total]
+          match_on: [start, end, total]
+        - tool: weekly_summary
+          args: {metric: steps, end_date: "2016-04-17"}
+          answer: [total]
+          match_on: [start, end, total]
 
   - id: cmp-02
     user_id: "5577150313"
