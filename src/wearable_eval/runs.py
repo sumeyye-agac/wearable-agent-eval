@@ -6,9 +6,10 @@ A run is a folder runs/<dev|final>/<date>_<model>/ holding
   the answer, and the time and token usage of every model request.
 Scoring reads these files only (scoring.py) and never calls a model.
 
-Only the Anthropic backend exists so far. A backend takes (client, df, question, model)
-and returns the fields of one transcript line, so a LiteRT-LM backend can sit next to it
-without changing the runner or the scorer.
+Two backends: Anthropic (Claude) and LiteRT-LM (Gemma on this machine). Both go through
+the same agent loop (wearable.agent.ask) with the same prompt and tools; the LiteRT-LM
+client (litert_client.py) has the shape of the Anthropic client. A backend takes (client,
+df, question, model) and returns the fields of one transcript line.
 """
 
 from __future__ import annotations
@@ -34,6 +35,12 @@ from wearable_eval import prompt_v1
 MAX_TOKENS = 8192
 TOKEN_FIELDS = ("input_tokens", "output_tokens", "thinking_tokens",
                 "cache_creation_input_tokens", "cache_read_input_tokens")
+# Claude's thinking setting. "on" sends nothing: adaptive thinking is Haiku 5.5's default.
+# "off" sends thinking {"type": "disabled"}, which Haiku 5.5 accepts at effort high or below
+# (https://platform.claude.com/docs/en/build-with-claude/thinking-troubleshooting).
+THINKING = {"on": None, "off": {"type": "disabled"}}
+THINKING_CONFIG = {"on": "adaptive (API default, not sent)",
+                   "off": "disabled (thinking: {type: disabled} sent)"}
 
 
 def sha256_file(path: Path) -> str:
@@ -72,14 +79,17 @@ class RecordingClient:
       signature, text, tool_use with id, name and input), stop_reason and usage;
     - seconds: wall-clock time of the request."""
 
-    def __init__(self, client: Any, max_tokens: int = MAX_TOKENS):
+    def __init__(self, client: Any, max_tokens: int = MAX_TOKENS,
+                 extra: dict[str, Any] | None = None):
         self._client = client
         self._max_tokens = max_tokens
+        self._extra = extra or {}   # fields added to every request (thinking: disabled)
         self.requests: list[dict[str, Any]] = []
         self.messages = SimpleNamespace(create=self._create)
 
     def _create(self, **kwargs: Any) -> Any:
         kwargs["max_tokens"] = self._max_tokens
+        kwargs.update(self._extra)
         messages = kwargs["messages"]
         sent = {k: to_json(v) for k, v in kwargs.items()
                 if k not in ("system", "tools", "messages")}
@@ -111,23 +121,45 @@ def token_totals(requests: list[dict[str, Any]]) -> dict[str, int]:
     return totals
 
 
-def run_anthropic(client: Any, df: pd.DataFrame, question: str, model: str) -> dict[str, Any]:
+def run_anthropic(client: Any, df: pd.DataFrame, question: str, model: str,
+                  thinking: str = "on") -> dict[str, Any]:
     """One question through the agent loop (src/wearable/agent.py), with the frozen prompt
     (src/wearable_eval/prompt_v1.py, version in PROMPT_VERSION) as system prompt and tool
-    specs.
+    specs. thinking: "on" (the API default) or "off" (see THINKING).
 
     API errors are recorded in the line instead of stopping the run. The cost is summed
     from the recorded usage, so a question that failed half way still counts what it spent.
     """
     import anthropic
 
-    recorder = RecordingClient(client)
+    extra = {"thinking": THINKING[thinking]} if THINKING[thinking] else None
+    return _run(RecordingClient(client, extra=extra), df, question, model, anthropic.APIError)
+
+
+def run_litert(client: Any, df: pd.DataFrame, question: str, model: str) -> dict[str, Any]:
+    """One question through the same agent loop on a local model, with a LiteRTClient
+    (litert_client.py). A RuntimeError from the library (its status errors, for example a
+    context overflow) is recorded in the line as an error, like an API error."""
+    _register_local_price(model)
+    return _run(RecordingClient(client), df, question, model, RuntimeError)
+
+
+def _register_local_price(model: str) -> None:
+    """ask() refuses a model without a price, to keep its spend guard working. A model run
+    on this machine costs nothing per token, so it gets a price of 0 (the spend guard then
+    never stops it; the step cap still does)."""
+    agent.PRICES.setdefault(model, {"input": 0.0, "output": 0.0, "cache_write": 0.0,
+                                    "cache_read": 0.0})
+
+
+def _run(recorder: RecordingClient, df: pd.DataFrame, question: str, model: str,
+         errors: type[BaseException]) -> dict[str, Any]:
     start = time.perf_counter()
     result, error = None, None
     try:
         result = agent.ask(recorder, df, question, model=model,
                            system=prompt_v1.system_prompt(df), tools=prompt_v1.TOOL_SPECS)
-    except anthropic.APIError as err:
+    except errors as err:
         error = f"{type(err).__name__}: {err}"
     seconds = round(time.perf_counter() - start, 3)
     cost = sum(agent.request_cost(SimpleNamespace(**r["usage"]), model)
@@ -155,15 +187,31 @@ def _git(*args: str) -> str:
 
 def build_config(*, model: str, repeats: int, questions_version: str, question_ids: list[str],
                  questions_path: Path, ground_truth_path: Path, data_path: Path,
-                 users: dict[str, pd.DataFrame]) -> dict[str, Any]:
-    import anthropic
+                 users: dict[str, pd.DataFrame], backend: str = "anthropic",
+                 thinking: str = "on", litert: dict[str, Any] | None = None
+                 ) -> dict[str, Any]:
+    """The run's settings and input hashes. backend "anthropic" takes thinking ("on" or
+    "off"); backend "litert" takes litert: the LiteRTClient settings, the model file's
+    sha256 and the schema keys lost in the chat template (all part of the resume check)."""
+    if backend == "anthropic":
+        import anthropic
+        versions = {"python": platform.python_version(), "anthropic": anthropic.__version__}
+        temperature: Any = None  # Haiku 5.5 rejects a non-default temperature; none is sent
+        thinking_text, effort = THINKING_CONFIG[thinking], agent.EFFORT
+    else:
+        versions = {"python": platform.python_version(),
+                    "litert_lm_api": (litert or {}).get("litert_lm_api")}
+        temperature = (litert or {}).get("temperature")
+        thinking_text = "off" if not (litert or {}).get("thinking") else "on"
+        effort = None  # an Anthropic setting; the LiteRT-LM client ignores it
 
     return {
         "model": model,
-        "backend": "anthropic",
-        "temperature": None,  # Claude Haiku 5.5 rejects a non-default temperature; none is sent
-        "thinking": "adaptive (API default, not sent)",
-        "effort": agent.EFFORT,
+        "backend": backend,
+        "temperature": temperature,
+        "thinking": thinking_text,
+        "effort": effort,
+        "litert": litert,
         "max_tokens": MAX_TOKENS,  # set by the runner; agent.py's own value is 4096
         "max_steps": agent.MAX_STEPS,
         "max_usd_per_question": agent.MAX_USD_PER_QUESTION,
@@ -181,7 +229,7 @@ def build_config(*, model: str, repeats: int, questions_version: str, question_i
         },
         "git_commit": _git("rev-parse", "HEAD"),
         "git_dirty": bool(_git("status", "--porcelain")),
-        "versions": {"python": platform.python_version(), "anthropic": anthropic.__version__},
+        "versions": versions,
         "started_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "finished_at": None,
     }
@@ -234,9 +282,9 @@ def finished_pairs(lines: list[dict[str, Any]]) -> set[tuple[str, int]]:
     return {(r["question_id"], r["repeat"]) for r in lines if r["status"] != "error"}
 
 
-RESUME_KEYS = ("model", "backend", "temperature", "thinking", "effort", "max_tokens",
-               "max_steps", "max_usd_per_question", "repeats", "questions_version",
-               "prompt_version", "question_ids", "sha256")
+RESUME_KEYS = ("model", "backend", "temperature", "thinking", "effort", "litert",
+               "max_tokens", "max_steps", "max_usd_per_question", "repeats",
+               "questions_version", "prompt_version", "question_ids", "sha256")
 
 
 def resume_mismatches(old: dict[str, Any], new: dict[str, Any]) -> list[str]:

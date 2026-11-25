@@ -26,8 +26,10 @@ interval is wider: 0.70 to 0.97 at n = 20.
 
 An ablation with dates as enums in the tool schemas is run if, in the Gemma main run:
 
-- 20% or more of the tool calls are `malformed_args` or `schema_invalid`, or
-- those two labels together are the most common failure type.
+- 20% or more of the tool calls are `malformed_args`, `schema_invalid` or a parse error (a
+  call the client could not read, recorded as `parse_errors` in the run record), counting
+  each parse error as one call, or
+- those three together are the most common failure type.
 
 ## 3. Runs and repeats
 

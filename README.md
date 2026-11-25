@@ -65,6 +65,7 @@ Gemma-4-E2B-it.
 ```bash
 python3.11 -m venv .venv
 .venv/bin/pip install -r requirements-dev.txt
+.venv/bin/pip install -r requirements-litert.txt   # only for Gemma runs
 .venv/bin/python -m pytest
 .venv/bin/python scripts/build_ground_truth.py
 

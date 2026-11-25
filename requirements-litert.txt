@@ -1,0 +1,4 @@
+# Gemma runs only (LiteRT-LM backend). src/wearable_eval/litert_client.py refuses any other
+# litert-lm-api version, because it relies on this version's reply format.
+-r requirements-dev.txt
+litert-lm-api==0.19.2
