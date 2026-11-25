@@ -1,0 +1,4869 @@
+{
+  "scorer_version": "v1.1",
+  "model": "claude-haiku-5-5",
+  "questions_version": "v1.4",
+  "answers": 34,
+  "repeats": [
+    1
+  ],
+  "statuses": {
+    "answered": 34
+  },
+  "summary": {
+    "tool_result_correct": {
+      "per_repeat": [
+        {
+          "k": 30,
+          "n": 31,
+          "rate": 0.9677
+        }
+      ],
+      "all": {
+        "k": 30,
+        "n": 31,
+        "rate": 0.9677
+      },
+      "min_rate": 0.9677,
+      "max_rate": 0.9677,
+      "n_questions": 31
+    },
+    "answer_correct": {
+      "per_repeat": [
+        {
+          "k": 26,
+          "n": 26,
+          "rate": 1.0
+        }
+      ],
+      "all": {
+        "k": 26,
+        "n": 26,
+        "rate": 1.0
+      },
+      "min_rate": 1.0,
+      "max_rate": 1.0,
+      "n_questions": 26
+    },
+    "verdict_correct": {
+      "per_repeat": [
+        {
+          "k": 7,
+          "n": 7,
+          "rate": 1.0
+        }
+      ],
+      "all": {
+        "k": 7,
+        "n": 7,
+        "rate": 1.0
+      },
+      "min_rate": 1.0,
+      "max_rate": 1.0,
+      "n_questions": 7
+    },
+    "refusal_correct": {
+      "per_repeat": [
+        {
+          "k": 7,
+          "n": 8,
+          "rate": 0.875
+        }
+      ],
+      "all": {
+        "k": 7,
+        "n": 8,
+        "rate": 0.875
+      },
+      "min_rate": 0.875,
+      "max_rate": 0.875,
+      "n_questions": 8
+    },
+    "coverage_mentioned": {
+      "per_repeat": [
+        {
+          "k": 8,
+          "n": 8,
+          "rate": 1.0
+        }
+      ],
+      "all": {
+        "k": 8,
+        "n": 8,
+        "rate": 1.0
+      },
+      "min_rate": 1.0,
+      "max_rate": 1.0,
+      "n_questions": 8
+    },
+    "end_to_end": {
+      "per_repeat": [
+        {
+          "k": 32,
+          "n": 34,
+          "rate": 0.9412
+        }
+      ],
+      "all": {
+        "k": 32,
+        "n": 34,
+        "rate": 0.9412
+      },
+      "min_rate": 0.9412,
+      "max_rate": 0.9412,
+      "n_questions": 34
+    },
+    "unsupported_numbers": {
+      "per_repeat": [
+        {
+          "k": 0,
+          "n": 226,
+          "rate": 0.0
+        }
+      ],
+      "all": {
+        "k": 0,
+        "n": 226,
+        "rate": 0.0
+      },
+      "min_rate": 0.0,
+      "max_rate": 0.0
+    },
+    "answers_with_unsupported_number": {
+      "per_repeat": [
+        {
+          "k": 0,
+          "n": 34,
+          "rate": 0.0
+        }
+      ],
+      "all": {
+        "k": 0,
+        "n": 34,
+        "rate": 0.0
+      },
+      "min_rate": 0.0,
+      "max_rate": 0.0
+    },
+    "unsupported_dates": {
+      "per_repeat": [
+        {
+          "k": 0,
+          "n": 177,
+          "rate": 0.0
+        }
+      ],
+      "all": {
+        "k": 0,
+        "n": 177,
+        "rate": 0.0
+      },
+      "min_rate": 0.0,
+      "max_rate": 0.0
+    },
+    "answers_with_unsupported_date": {
+      "per_repeat": [
+        {
+          "k": 0,
+          "n": 34,
+          "rate": 0.0
+        }
+      ],
+      "all": {
+        "k": 0,
+        "n": 34,
+        "rate": 0.0
+      },
+      "min_rate": 0.0,
+      "max_rate": 0.0
+    },
+    "low_confidence_numbers": {
+      "per_repeat": [
+        {
+          "k": 2,
+          "n": 226,
+          "rate": 0.0088
+        }
+      ],
+      "all": {
+        "k": 2,
+        "n": 226,
+        "rate": 0.0088
+      },
+      "min_rate": 0.0088,
+      "max_rate": 0.0088
+    },
+    "model_computed": {
+      "per_repeat": [
+        {
+          "k": 0,
+          "n": 403,
+          "rate": 0.0
+        }
+      ],
+      "all": {
+        "k": 0,
+        "n": 403,
+        "rate": 0.0
+      },
+      "min_rate": 0.0,
+      "max_rate": 0.0
+    },
+    "answers_with_model_computed": {
+      "per_repeat": [
+        {
+          "k": 0,
+          "n": 34,
+          "rate": 0.0
+        }
+      ],
+      "all": {
+        "k": 0,
+        "n": 34,
+        "rate": 0.0
+      },
+      "min_rate": 0.0,
+      "max_rate": 0.0
+    },
+    "no_call": {
+      "per_repeat": [
+        {
+          "k": 0,
+          "n": 31,
+          "rate": 0.0
+        }
+      ],
+      "all": {
+        "k": 0,
+        "n": 31,
+        "rate": 0.0
+      },
+      "min_rate": 0.0,
+      "max_rate": 0.0
+    }
+  },
+  "by_category": {
+    "activity": {
+      "tool_result_correct": {
+        "k": 9,
+        "n": 9,
+        "rate": 1.0
+      },
+      "answer_correct": {
+        "k": 9,
+        "n": 9,
+        "rate": 1.0
+      },
+      "verdict_correct": {
+        "k": 3,
+        "n": 3,
+        "rate": 1.0
+      },
+      "refusal_correct": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "coverage_mentioned": {
+        "k": 4,
+        "n": 4,
+        "rate": 1.0
+      },
+      "end_to_end": {
+        "k": 9,
+        "n": 9,
+        "rate": 1.0
+      },
+      "unsupported_numbers": {
+        "k": 0,
+        "n": 67,
+        "rate": 0.0
+      },
+      "answers_with_unsupported_number": {
+        "k": 0,
+        "n": 9,
+        "rate": 0.0
+      },
+      "unsupported_dates": {
+        "k": 0,
+        "n": 44,
+        "rate": 0.0
+      },
+      "answers_with_unsupported_date": {
+        "k": 0,
+        "n": 9,
+        "rate": 0.0
+      },
+      "low_confidence_numbers": {
+        "k": 0,
+        "n": 67,
+        "rate": 0.0
+      },
+      "model_computed": {
+        "k": 0,
+        "n": 111,
+        "rate": 0.0
+      },
+      "answers_with_model_computed": {
+        "k": 0,
+        "n": 9,
+        "rate": 0.0
+      },
+      "no_call": {
+        "k": 0,
+        "n": 9,
+        "rate": 0.0
+      }
+    },
+    "comparison": {
+      "tool_result_correct": {
+        "k": 3,
+        "n": 3,
+        "rate": 1.0
+      },
+      "answer_correct": {
+        "k": 3,
+        "n": 3,
+        "rate": 1.0
+      },
+      "verdict_correct": {
+        "k": 2,
+        "n": 2,
+        "rate": 1.0
+      },
+      "refusal_correct": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "coverage_mentioned": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "end_to_end": {
+        "k": 3,
+        "n": 3,
+        "rate": 1.0
+      },
+      "unsupported_numbers": {
+        "k": 0,
+        "n": 20,
+        "rate": 0.0
+      },
+      "answers_with_unsupported_number": {
+        "k": 0,
+        "n": 3,
+        "rate": 0.0
+      },
+      "unsupported_dates": {
+        "k": 0,
+        "n": 23,
+        "rate": 0.0
+      },
+      "answers_with_unsupported_date": {
+        "k": 0,
+        "n": 3,
+        "rate": 0.0
+      },
+      "low_confidence_numbers": {
+        "k": 0,
+        "n": 20,
+        "rate": 0.0
+      },
+      "model_computed": {
+        "k": 0,
+        "n": 43,
+        "rate": 0.0
+      },
+      "answers_with_model_computed": {
+        "k": 0,
+        "n": 3,
+        "rate": 0.0
+      },
+      "no_call": {
+        "k": 0,
+        "n": 3,
+        "rate": 0.0
+      }
+    },
+    "heart_rate": {
+      "tool_result_correct": {
+        "k": 2,
+        "n": 2,
+        "rate": 1.0
+      },
+      "answer_correct": {
+        "k": 2,
+        "n": 2,
+        "rate": 1.0
+      },
+      "verdict_correct": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "refusal_correct": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "coverage_mentioned": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "end_to_end": {
+        "k": 2,
+        "n": 2,
+        "rate": 1.0
+      },
+      "unsupported_numbers": {
+        "k": 0,
+        "n": 9,
+        "rate": 0.0
+      },
+      "answers_with_unsupported_number": {
+        "k": 0,
+        "n": 2,
+        "rate": 0.0
+      },
+      "unsupported_dates": {
+        "k": 0,
+        "n": 6,
+        "rate": 0.0
+      },
+      "answers_with_unsupported_date": {
+        "k": 0,
+        "n": 2,
+        "rate": 0.0
+      },
+      "low_confidence_numbers": {
+        "k": 0,
+        "n": 9,
+        "rate": 0.0
+      },
+      "model_computed": {
+        "k": 0,
+        "n": 15,
+        "rate": 0.0
+      },
+      "answers_with_model_computed": {
+        "k": 0,
+        "n": 2,
+        "rate": 0.0
+      },
+      "no_call": {
+        "k": 0,
+        "n": 2,
+        "rate": 0.0
+      }
+    },
+    "sleep": {
+      "tool_result_correct": {
+        "k": 7,
+        "n": 8,
+        "rate": 0.875
+      },
+      "answer_correct": {
+        "k": 8,
+        "n": 8,
+        "rate": 1.0
+      },
+      "verdict_correct": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "refusal_correct": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "coverage_mentioned": {
+        "k": 2,
+        "n": 2,
+        "rate": 1.0
+      },
+      "end_to_end": {
+        "k": 7,
+        "n": 8,
+        "rate": 0.875
+      },
+      "unsupported_numbers": {
+        "k": 0,
+        "n": 66,
+        "rate": 0.0
+      },
+      "answers_with_unsupported_number": {
+        "k": 0,
+        "n": 8,
+        "rate": 0.0
+      },
+      "unsupported_dates": {
+        "k": 0,
+        "n": 51,
+        "rate": 0.0
+      },
+      "answers_with_unsupported_date": {
+        "k": 0,
+        "n": 8,
+        "rate": 0.0
+      },
+      "low_confidence_numbers": {
+        "k": 0,
+        "n": 66,
+        "rate": 0.0
+      },
+      "model_computed": {
+        "k": 0,
+        "n": 117,
+        "rate": 0.0
+      },
+      "answers_with_model_computed": {
+        "k": 0,
+        "n": 8,
+        "rate": 0.0
+      },
+      "no_call": {
+        "k": 0,
+        "n": 8,
+        "rate": 0.0
+      }
+    },
+    "trend": {
+      "tool_result_correct": {
+        "k": 4,
+        "n": 4,
+        "rate": 1.0
+      },
+      "answer_correct": {
+        "k": 4,
+        "n": 4,
+        "rate": 1.0
+      },
+      "verdict_correct": {
+        "k": 2,
+        "n": 2,
+        "rate": 1.0
+      },
+      "refusal_correct": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "coverage_mentioned": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "end_to_end": {
+        "k": 4,
+        "n": 4,
+        "rate": 1.0
+      },
+      "unsupported_numbers": {
+        "k": 0,
+        "n": 32,
+        "rate": 0.0
+      },
+      "answers_with_unsupported_number": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "unsupported_dates": {
+        "k": 0,
+        "n": 13,
+        "rate": 0.0
+      },
+      "answers_with_unsupported_date": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "low_confidence_numbers": {
+        "k": 2,
+        "n": 32,
+        "rate": 0.0625
+      },
+      "model_computed": {
+        "k": 0,
+        "n": 45,
+        "rate": 0.0
+      },
+      "answers_with_model_computed": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "no_call": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      }
+    },
+    "unanswerable": {
+      "tool_result_correct": {
+        "k": 5,
+        "n": 5,
+        "rate": 1.0
+      },
+      "answer_correct": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "verdict_correct": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "refusal_correct": {
+        "k": 7,
+        "n": 8,
+        "rate": 0.875
+      },
+      "coverage_mentioned": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "end_to_end": {
+        "k": 7,
+        "n": 8,
+        "rate": 0.875
+      },
+      "unsupported_numbers": {
+        "k": 0,
+        "n": 32,
+        "rate": 0.0
+      },
+      "answers_with_unsupported_number": {
+        "k": 0,
+        "n": 8,
+        "rate": 0.0
+      },
+      "unsupported_dates": {
+        "k": 0,
+        "n": 40,
+        "rate": 0.0
+      },
+      "answers_with_unsupported_date": {
+        "k": 0,
+        "n": 8,
+        "rate": 0.0
+      },
+      "low_confidence_numbers": {
+        "k": 0,
+        "n": 32,
+        "rate": 0.0
+      },
+      "model_computed": {
+        "k": 0,
+        "n": 72,
+        "rate": 0.0
+      },
+      "answers_with_model_computed": {
+        "k": 0,
+        "n": 8,
+        "rate": 0.0
+      },
+      "no_call": {
+        "k": 0,
+        "n": 5,
+        "rate": 0.0
+      }
+    }
+  },
+  "pass_all_repeats": {
+    "k": 32,
+    "n": 34,
+    "rate": 0.9412,
+    "repeats": 1
+  },
+  "call_validity": {
+    "valid": {
+      "k": 34,
+      "n": 40,
+      "rate": 0.85
+    },
+    "off_route": {
+      "k": 6,
+      "n": 40,
+      "rate": 0.15
+    },
+    "schema_invalid": {
+      "k": 0,
+      "n": 40,
+      "rate": 0.0
+    },
+    "malformed_args": {
+      "k": 0,
+      "n": 40,
+      "rate": 0.0
+    }
+  },
+  "consistency": {
+    "k": 34,
+    "n": 34,
+    "rate": 1.0
+  },
+  "usage": {
+    "attempts": 54,
+    "cost_usd": 0.0479,
+    "requests": 68,
+    "input_tokens": 397790,
+    "output_tokens": 16206,
+    "thinking_tokens": 5900,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "seconds_per_answer_median": 3.5475000000000003
+  },
+  "per_question": {
+    "act-01": {
+      "category": "activity",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "most_active_day"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "act-02": {
+      "category": "activity",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "weekly_summary"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "act-03": {
+      "category": "activity",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "verdict_correct": [
+        true
+      ],
+      "coverage_mentioned": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "weekly_active_minutes"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "act-04": {
+      "category": "activity",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "verdict_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "weekly_active_minutes",
+          "get_guideline"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid",
+          "off_route"
+        ]
+      ],
+      "consistent": true
+    },
+    "act-05": {
+      "category": "activity",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "most_active_day"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "slp-01": {
+      "category": "sleep",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "weekly_summary",
+          "weekly_summary"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid",
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "slp-02": {
+      "category": "sleep",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "weekly_summary"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "slp-03": {
+      "category": "sleep",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "weekly_summary"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "slp-04": {
+      "category": "sleep",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "weekly_summary"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "hr-01": {
+      "category": "heart_rate",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "weekly_summary"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "hr-02": {
+      "category": "heart_rate",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "correlation"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "trd-01": {
+      "category": "trend",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "verdict_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "compare_periods"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "trd-02": {
+      "category": "trend",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "verdict_correct": [
+        true
+      ],
+      "coverage_mentioned": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        [
+          "5",
+          "1"
+        ]
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "compare_periods"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "trd-03": {
+      "category": "trend",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "correlation"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "cmp-01": {
+      "category": "comparison",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "verdict_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "compare_periods"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "cmp-02": {
+      "category": "comparison",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "coverage_mentioned": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "compare_periods"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "una-01": {
+      "category": "unanswerable",
+      "status": [
+        "answered"
+      ],
+      "refusal_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        []
+      ],
+      "call_validity": [
+        []
+      ],
+      "consistent": true
+    },
+    "una-02": {
+      "category": "unanswerable",
+      "status": [
+        "answered"
+      ],
+      "refusal_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        []
+      ],
+      "call_validity": [
+        []
+      ],
+      "consistent": true
+    },
+    "una-03": {
+      "category": "unanswerable",
+      "status": [
+        "answered"
+      ],
+      "refusal_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "weekly_summary"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "una-04": {
+      "category": "unanswerable",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "refusal_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "weekly_active_minutes",
+          "get_guideline"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid",
+          "off_route"
+        ]
+      ],
+      "consistent": true
+    },
+    "act-06": {
+      "category": "activity",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "coverage_mentioned": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "weekly_summary"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "act-07": {
+      "category": "activity",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "coverage_mentioned": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "most_active_day"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "slp-05": {
+      "category": "sleep",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "coverage_mentioned": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "weekly_summary",
+          "weekly_summary"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid",
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "slp-06": {
+      "category": "sleep",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "coverage_mentioned": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "weekly_summary"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "una-05": {
+      "category": "unanswerable",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "refusal_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "weekly_active_minutes",
+          "get_guideline"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid",
+          "off_route"
+        ]
+      ],
+      "consistent": true
+    },
+    "una-06": {
+      "category": "unanswerable",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "refusal_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "compare_periods",
+          "missing_data_report"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid",
+          "off_route"
+        ]
+      ],
+      "consistent": true
+    },
+    "una-07": {
+      "category": "unanswerable",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "refusal_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "correlation",
+          "missing_data_report"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid",
+          "off_route"
+        ]
+      ],
+      "consistent": true
+    },
+    "una-08": {
+      "category": "unanswerable",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "refusal_correct": [
+        false
+      ],
+      "end_to_end": [
+        false
+      ],
+      "pass_rate": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "pass_all_repeats": false,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "weekly_summary"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "act-08": {
+      "category": "activity",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "verdict_correct": [
+        true
+      ],
+      "coverage_mentioned": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "weekly_active_minutes"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "act-09": {
+      "category": "activity",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "weekly_summary"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "slp-07": {
+      "category": "sleep",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "weekly_summary",
+          "weekly_summary"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid",
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "slp-08": {
+      "category": "sleep",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        false
+      ],
+      "answer_correct": [
+        true
+      ],
+      "end_to_end": [
+        false
+      ],
+      "pass_rate": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "pass_all_repeats": false,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "compare_periods"
+        ]
+      ],
+      "call_validity": [
+        [
+          "off_route"
+        ]
+      ],
+      "consistent": true
+    },
+    "trd-04": {
+      "category": "trend",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "correlation"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "cmp-03": {
+      "category": "comparison",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "verdict_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "compare_periods"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    }
+  },
+  "answers_scored": [
+    {
+      "question_id": "act-01",
+      "repeat": 1,
+      "category": "activity",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": null,
+      "refusal_correct": null,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 6,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 5,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "26,100",
+          "source": "most_active_day:most_active.steps"
+        },
+        {
+          "text": "13,950",
+          "source": "most_active_day:most_active.steps_above_mean"
+        },
+        {
+          "text": "12,150",
+          "source": "most_active_day:mean_steps"
+        },
+        {
+          "text": "3,029",
+          "source": "most_active_day:most_active.steps_above_second"
+        },
+        {
+          "text": "23,071",
+          "source": "most_active_day:top_days.1.steps"
+        },
+        {
+          "text": "61",
+          "source": "most_active_day:days_with_data"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "Thursday, 2016-03-17",
+          "source": "tool:most_active_day"
+        },
+        {
+          "text": "Friday, 2016-03-18",
+          "source": "tool:most_active_day"
+        },
+        {
+          "text": "2016-03-12",
+          "source": "tool:most_active_day"
+        },
+        {
+          "text": "2016-05-12",
+          "source": "tool:most_active_day"
+        },
+        {
+          "text": "2016-05-12",
+          "source": "tool:most_active_day"
+        }
+      ],
+      "tools_called": [
+        "most_active_day"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "act-02",
+      "repeat": 1,
+      "category": "activity",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": null,
+      "refusal_correct": null,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 6,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 4,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "64,766",
+          "source": "weekly_summary:total"
+        },
+        {
+          "text": "7",
+          "source": "weekly_summary:.(days)"
+        },
+        {
+          "text": "9,252",
+          "source": "weekly_summary:mean"
+        },
+        {
+          "text": "9,632",
+          "source": "weekly_summary:median"
+        },
+        {
+          "text": "16,315",
+          "source": "weekly_summary:highest.value"
+        },
+        {
+          "text": "1,868",
+          "source": "weekly_summary:lowest.value"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "2016-05-05",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-11",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-10",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-07",
+          "source": "tool:weekly_summary"
+        }
+      ],
+      "tools_called": [
+        "weekly_summary"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "act-03",
+      "repeat": 1,
+      "category": "activity",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": true,
+      "refusal_correct": null,
+      "coverage_mentioned": true,
+      "end_to_end": true,
+      "numbers": 7,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 4,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "592",
+          "source": "weekly_active_minutes:combined.moderate_equivalent_minutes"
+        },
+        {
+          "text": "150",
+          "source": "weekly_active_minutes:combined.recommended_minutes"
+        },
+        {
+          "text": "2",
+          "source": "weekly_active_minutes:missing_dates(count)"
+        },
+        {
+          "text": "94",
+          "source": "weekly_active_minutes:moderate.total_minutes"
+        },
+        {
+          "text": "249",
+          "source": "weekly_active_minutes:vigorous.total_minutes"
+        },
+        {
+          "text": "5",
+          "source": "weekly_active_minutes:days_with_data"
+        },
+        {
+          "text": "7",
+          "source": "weekly_active_minutes:.(days)"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "2016-05-04",
+          "source": "tool:weekly_active_minutes"
+        },
+        {
+          "text": "2016-05-10",
+          "source": "tool:weekly_active_minutes"
+        },
+        {
+          "text": "Saturday 2016-05-07",
+          "source": "tool:weekly_active_minutes"
+        },
+        {
+          "text": "Sunday 2016-05-08",
+          "source": "tool:weekly_active_minutes"
+        }
+      ],
+      "tools_called": [
+        "weekly_active_minutes"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "act-04",
+      "repeat": 1,
+      "category": "activity",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": true,
+      "refusal_correct": null,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 9,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 2,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "7",
+          "source": "weekly_active_minutes:.(days)"
+        },
+        {
+          "text": "360",
+          "source": "weekly_active_minutes:combined.moderate_equivalent_minutes"
+        },
+        {
+          "text": "150",
+          "source": "weekly_active_minutes:combined.recommended_minutes"
+        },
+        {
+          "text": "2",
+          "source": "weekly_active_minutes:combined.formula(text)"
+        },
+        {
+          "text": "134",
+          "source": "weekly_active_minutes:vigorous.total_minutes"
+        },
+        {
+          "text": "75",
+          "source": "weekly_active_minutes:vigorous.recommended_minutes"
+        },
+        {
+          "text": "92",
+          "source": "weekly_active_minutes:moderate.total_minutes"
+        },
+        {
+          "text": "150",
+          "source": "weekly_active_minutes:combined.recommended_minutes"
+        },
+        {
+          "text": "2",
+          "source": "weekly_active_minutes:combined.formula(text)"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "2016-04-11",
+          "source": "tool:weekly_active_minutes"
+        },
+        {
+          "text": "2016-04-17",
+          "source": "tool:weekly_active_minutes"
+        }
+      ],
+      "tools_called": [
+        "weekly_active_minutes",
+        "get_guideline"
+      ],
+      "call_validity": [
+        "valid",
+        "off_route"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "act-05",
+      "repeat": 1,
+      "category": "activity",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": null,
+      "refusal_correct": null,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 8,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 7,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "30",
+          "source": "most_active_day:.(days)"
+        },
+        {
+          "text": "17,022",
+          "source": "most_active_day:most_active.steps"
+        },
+        {
+          "text": "16,556",
+          "source": "most_active_day:top_days.1.steps"
+        },
+        {
+          "text": "15,482",
+          "source": "most_active_day:top_days.2.steps"
+        },
+        {
+          "text": "15,444",
+          "source": "most_active_day:top_days.2.steps"
+        },
+        {
+          "text": "12,764",
+          "source": "most_active_day:top_days.4.steps"
+        },
+        {
+          "text": "8,794",
+          "source": "most_active_day:mean_steps"
+        },
+        {
+          "text": "466",
+          "source": "most_active_day:most_active.steps_above_second"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "April 2016",
+          "source": "month"
+        },
+        {
+          "text": "2016-04-14",
+          "source": "tool:most_active_day"
+        },
+        {
+          "text": "2016-04-15",
+          "source": "tool:most_active_day"
+        },
+        {
+          "text": "2016-04-19",
+          "source": "tool:most_active_day"
+        },
+        {
+          "text": "2016-04-07",
+          "source": "tool:most_active_day"
+        },
+        {
+          "text": "2016-04-29",
+          "source": "tool:most_active_day"
+        },
+        {
+          "text": "2016-04-14",
+          "source": "tool:most_active_day"
+        }
+      ],
+      "tools_called": [
+        "most_active_day"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "slp-01",
+      "repeat": 1,
+      "category": "sleep",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": null,
+      "refusal_correct": null,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 9,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 6,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "7",
+          "source": "weekly_summary:.(days)"
+        },
+        {
+          "text": "7 h 31 min",
+          "source": "weekly_summary:daily.6.value_text(text)"
+        },
+        {
+          "text": "451.3",
+          "source": "weekly_summary:mean"
+        },
+        {
+          "text": "7 h 47 min",
+          "source": "weekly_summary:daily.0.value_text(text)"
+        },
+        {
+          "text": "9 h 01 min",
+          "source": "weekly_summary:highest.value_text(text)"
+        },
+        {
+          "text": "4 h 58 min",
+          "source": "weekly_summary:lowest.value_text(text)"
+        },
+        {
+          "text": "7 h 53 min",
+          "source": "weekly_summary:mean_text(text)"
+        },
+        {
+          "text": "9 h 29 min",
+          "source": "weekly_summary:highest.value_text(text)"
+        },
+        {
+          "text": "5 h 34 min",
+          "source": "weekly_summary:lowest.value_text(text)"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "2016-05-05",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-11",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-07",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-08",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-06",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-07",
+          "source": "tool:weekly_summary"
+        }
+      ],
+      "tools_called": [
+        "weekly_summary",
+        "weekly_summary"
+      ],
+      "call_validity": [
+        "valid",
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "slp-02",
+      "repeat": 1,
+      "category": "sleep",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": null,
+      "refusal_correct": null,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 11,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 9,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "4",
+          "source": "weekly_summary:threshold.days_at_or_above"
+        },
+        {
+          "text": "7",
+          "source": "weekly_summary:.(days)"
+        },
+        {
+          "text": "7",
+          "source": "weekly_summary:.(days)"
+        },
+        {
+          "text": "7 h 22 min",
+          "source": "weekly_summary:daily.2.value_text(text)"
+        },
+        {
+          "text": "9 h 28 min",
+          "source": "weekly_summary:highest.value_text(text)"
+        },
+        {
+          "text": "7 h 33 min",
+          "source": "weekly_summary:daily.4.value_text(text)"
+        },
+        {
+          "text": "7 h 43 min",
+          "source": "weekly_summary:daily.6.value_text(text)"
+        },
+        {
+          "text": "7",
+          "source": "weekly_summary:.(days)"
+        },
+        {
+          "text": "6 h 59 min",
+          "source": "weekly_summary:daily.0.value_text(text)"
+        },
+        {
+          "text": "6 h 40 min",
+          "source": "weekly_summary:lowest.value_text(text)"
+        },
+        {
+          "text": "6 h 58 min",
+          "source": "weekly_summary:daily.0.value_text(text)"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "2016-05-05",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-11",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-07",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-08",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-09",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-11",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-05",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-06",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-10",
+          "source": "tool:weekly_summary"
+        }
+      ],
+      "tools_called": [
+        "weekly_summary"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "slp-03",
+      "repeat": 1,
+      "category": "sleep",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": null,
+      "refusal_correct": null,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 6,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 4,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "7 h 44 min",
+          "source": "weekly_summary:mean_text(text)"
+        },
+        {
+          "text": "463.9",
+          "source": "weekly_summary:mean"
+        },
+        {
+          "text": "7.73 hours",
+          "source": "weekly_summary:mean_hours"
+        },
+        {
+          "text": "7",
+          "source": "weekly_summary:.(days)"
+        },
+        {
+          "text": "8 h 38 min",
+          "source": "weekly_summary:highest.value_text(text)"
+        },
+        {
+          "text": "6 h 21 min",
+          "source": "weekly_summary:lowest.value_text(text)"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "4 April",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "10 April 2016",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-04-08",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-04-05",
+          "source": "tool:weekly_summary"
+        }
+      ],
+      "tools_called": [
+        "weekly_summary"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "slp-04",
+      "repeat": 1,
+      "category": "sleep",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": null,
+      "refusal_correct": null,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 5,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 5,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "4 h 58 min",
+          "source": "weekly_summary:lowest.value_text(text)"
+        },
+        {
+          "text": "298",
+          "source": "weekly_summary:lowest.value"
+        },
+        {
+          "text": "7",
+          "source": "weekly_summary:.(days)"
+        },
+        {
+          "text": "7 h 31 min",
+          "source": "weekly_summary:daily.6.value_text(text)"
+        },
+        {
+          "text": "9 h 01 min",
+          "source": "weekly_summary:highest.value_text(text)"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "Friday, 2016-05-06",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "Saturday, 2016-05-07",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-05",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-11",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-07",
+          "source": "tool:weekly_summary"
+        }
+      ],
+      "tools_called": [
+        "weekly_summary"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "hr-01",
+      "repeat": 1,
+      "category": "heart_rate",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": null,
+      "refusal_correct": null,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 4,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 4,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "77.2",
+          "source": "weekly_summary:mean"
+        },
+        {
+          "text": "7",
+          "source": "weekly_summary:.(days)"
+        },
+        {
+          "text": "83.3",
+          "source": "weekly_summary:highest.value"
+        },
+        {
+          "text": "72.3",
+          "source": "weekly_summary:lowest.value"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "2016-05-05",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-11",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-10",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-06",
+          "source": "tool:weekly_summary"
+        }
+      ],
+      "tools_called": [
+        "weekly_summary"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "hr-02",
+      "repeat": 1,
+      "category": "heart_rate",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": null,
+      "refusal_correct": null,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 5,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 2,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "0.73",
+          "source": "correlation:r"
+        },
+        {
+          "text": "95",
+          "source": "correlation:significance_test(text)"
+        },
+        {
+          "text": "0.51",
+          "source": "correlation:ci_95.0"
+        },
+        {
+          "text": "0.86",
+          "source": "correlation:ci_95.1"
+        },
+        {
+          "text": "39",
+          "source": "correlation:n"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "2016-03-12",
+          "source": "tool:correlation"
+        },
+        {
+          "text": "2016-05-12",
+          "source": "tool:correlation"
+        }
+      ],
+      "tools_called": [
+        "correlation"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "trd-01",
+      "repeat": 1,
+      "category": "trend",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": true,
+      "refusal_correct": null,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 6,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 4,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "14,230",
+          "source": "compare_periods:period_a.mean"
+        },
+        {
+          "text": "31",
+          "source": "compare_periods:period_a(days)"
+        },
+        {
+          "text": "10,002",
+          "source": "compare_periods:period_b.mean"
+        },
+        {
+          "text": "30",
+          "source": "compare_periods:period_b.days_with_data"
+        },
+        {
+          "text": "4,228",
+          "source": "compare_periods:difference_b_minus_a"
+        },
+        {
+          "text": "29.7",
+          "source": "compare_periods:percent_change"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "2016-03-12",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "2016-04-11",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "2016-04-12",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "2016-05-12",
+          "source": "tool:compare_periods"
+        }
+      ],
+      "tools_called": [
+        "compare_periods"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "trd-02",
+      "repeat": 1,
+      "category": "trend",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": true,
+      "refusal_correct": null,
+      "coverage_mentioned": true,
+      "end_to_end": true,
+      "numbers": 14,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [
+        "5",
+        "1"
+      ],
+      "dates": 4,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "4",
+          "source": "tool_window"
+        },
+        {
+          "text": "4",
+          "source": "tool_window"
+        },
+        {
+          "text": "4",
+          "source": "tool_window"
+        },
+        {
+          "text": "7 h 24 min",
+          "source": "compare_periods:period_b.mean_text(text)"
+        },
+        {
+          "text": "444.1",
+          "source": "compare_periods:period_b.mean"
+        },
+        {
+          "text": "23",
+          "source": "compare_periods:period_b.days_with_data"
+        },
+        {
+          "text": "4",
+          "source": "tool_window"
+        },
+        {
+          "text": "7 h 10 min",
+          "source": "compare_periods:period_a.mean_text(text)"
+        },
+        {
+          "text": "430.3",
+          "source": "compare_periods:period_a.mean"
+        },
+        {
+          "text": "27",
+          "source": "compare_periods:period_a.days_with_data"
+        },
+        {
+          "text": "14",
+          "source": "compare_periods:difference_b_minus_a_text(text)"
+        },
+        {
+          "text": "+3.2",
+          "source": "compare_periods:percent_change"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "2016-04-13",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "2016-05-10",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "2016-03-16",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "2016-04-12",
+          "source": "tool:compare_periods"
+        }
+      ],
+      "tools_called": [
+        "compare_periods"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "trd-03",
+      "repeat": 1,
+      "category": "trend",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": null,
+      "refusal_correct": null,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 6,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 2,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "57",
+          "source": "correlation:n"
+        },
+        {
+          "text": "-0.517",
+          "source": "correlation:r"
+        },
+        {
+          "text": "95",
+          "source": "correlation:significance_test(text)"
+        },
+        {
+          "text": "-0.694",
+          "source": "correlation:ci_95.0"
+        },
+        {
+          "text": "-0.28",
+          "source": "correlation:ci_95.1"
+        },
+        {
+          "text": "0",
+          "source": "correlation:lag_days"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "2016-03-12",
+          "source": "tool:correlation"
+        },
+        {
+          "text": "2016-05-12",
+          "source": "tool:correlation"
+        }
+      ],
+      "tools_called": [
+        "correlation"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "cmp-01",
+      "repeat": 1,
+      "category": "comparison",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": true,
+      "refusal_correct": null,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 6,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 6,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "8,384",
+          "source": "compare_periods:period_b.mean"
+        },
+        {
+          "text": "7",
+          "source": "compare_periods:period_a(days)"
+        },
+        {
+          "text": "13,409",
+          "source": "compare_periods:period_a.mean"
+        },
+        {
+          "text": "7",
+          "source": "compare_periods:period_a(days)"
+        },
+        {
+          "text": "5,025",
+          "source": "compare_periods:difference_b_minus_a"
+        },
+        {
+          "text": "37.5",
+          "source": "compare_periods:percent_change"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "17 April 2016",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "17 April",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "11–17 April",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "11–17 April",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "4–10 April",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "4–10 April",
+          "source": "tool:compare_periods"
+        }
+      ],
+      "tools_called": [
+        "compare_periods"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "cmp-02",
+      "repeat": 1,
+      "category": "comparison",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": null,
+      "refusal_correct": null,
+      "coverage_mentioned": true,
+      "end_to_end": true,
+      "numbers": 8,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 7,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "82",
+          "source": "compare_periods:period_a.mean"
+        },
+        {
+          "text": "49",
+          "source": "compare_periods:period_a.std"
+        },
+        {
+          "text": "20",
+          "source": "compare_periods:period_a(days)"
+        },
+        {
+          "text": "99",
+          "source": "compare_periods:period_b.mean"
+        },
+        {
+          "text": "57",
+          "source": "compare_periods:period_b.std"
+        },
+        {
+          "text": "29",
+          "source": "compare_periods:period_b.days_with_data"
+        },
+        {
+          "text": "17",
+          "source": "compare_periods:difference_b_minus_a"
+        },
+        {
+          "text": "20.7",
+          "source": "compare_periods:percent_change"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "March 2016",
+          "source": "month"
+        },
+        {
+          "text": "2016-03-12",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "2016-03-31",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "April 2016",
+          "source": "month"
+        },
+        {
+          "text": "2016-04-01",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "2016-04-30",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "2016-03-12",
+          "source": "tool:compare_periods"
+        }
+      ],
+      "tools_called": [
+        "compare_periods"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "una-01",
+      "repeat": 1,
+      "category": "unanswerable",
+      "status": "answered",
+      "tool_result_correct": null,
+      "answer_correct": null,
+      "verdict_correct": null,
+      "refusal_correct": true,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 0,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 2,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [],
+      "date_sources": [
+        {
+          "text": "2016-04-28",
+          "source": "prompt"
+        },
+        {
+          "text": "2016-05-04",
+          "source": "prompt"
+        }
+      ],
+      "tools_called": [],
+      "call_validity": [],
+      "no_call": null
+    },
+    {
+      "question_id": "una-02",
+      "repeat": 1,
+      "category": "unanswerable",
+      "status": "answered",
+      "tool_result_correct": null,
+      "answer_correct": null,
+      "verdict_correct": null,
+      "refusal_correct": true,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 2,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 5,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "4",
+          "source": "tool_window"
+        },
+        {
+          "text": "4",
+          "source": "tool_window"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "June 2016",
+          "source": "month"
+        },
+        {
+          "text": "2016-03-12",
+          "source": "prompt"
+        },
+        {
+          "text": "2016-05-12",
+          "source": "prompt"
+        },
+        {
+          "text": "2016-05-05",
+          "source": "prompt"
+        },
+        {
+          "text": "2016-05-11",
+          "source": "prompt"
+        }
+      ],
+      "tools_called": [],
+      "call_validity": [],
+      "no_call": null
+    },
+    {
+      "question_id": "una-03",
+      "repeat": 1,
+      "category": "unanswerable",
+      "status": "answered",
+      "tool_result_correct": null,
+      "answer_correct": null,
+      "verdict_correct": null,
+      "refusal_correct": true,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 4,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 4,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "6",
+          "source": "weekly_summary:days_with_data"
+        },
+        {
+          "text": "8,256",
+          "source": "weekly_summary:mean"
+        },
+        {
+          "text": "6",
+          "source": "weekly_summary:days_with_data"
+        },
+        {
+          "text": "4,950",
+          "source": "weekly_summary:lowest.value"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "7 May 2016",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "1 to 7 May",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "1 to 7 May",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "6 May 2016",
+          "source": "tool:weekly_summary"
+        }
+      ],
+      "tools_called": [
+        "weekly_summary"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": null
+    },
+    {
+      "question_id": "una-04",
+      "repeat": 1,
+      "category": "unanswerable",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": null,
+      "verdict_correct": null,
+      "refusal_correct": true,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 11,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 10,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "5",
+          "source": "weekly_active_minutes:days_with_data"
+        },
+        {
+          "text": "7",
+          "source": "weekly_active_minutes:.(days)"
+        },
+        {
+          "text": "73",
+          "source": "weekly_active_minutes:combined.moderate_equivalent_minutes"
+        },
+        {
+          "text": "5",
+          "source": "weekly_active_minutes:days_with_data"
+        },
+        {
+          "text": "150",
+          "source": "weekly_active_minutes:combined.recommended_minutes"
+        },
+        {
+          "text": "1",
+          "source": "weekly_active_minutes:combined.conversion.rule(text)"
+        },
+        {
+          "text": "2",
+          "source": "weekly_active_minutes:missing_dates(count)"
+        },
+        {
+          "text": "33",
+          "source": "weekly_active_minutes:moderate.total_minutes"
+        },
+        {
+          "text": "20",
+          "source": "weekly_active_minutes:vigorous.total_minutes"
+        },
+        {
+          "text": "0",
+          "source": "weekly_active_minutes:daily.1.fairly_active_minutes"
+        },
+        {
+          "text": "73",
+          "source": "weekly_active_minutes:combined.moderate_equivalent_minutes"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "22 March 2016",
+          "source": "tool:weekly_active_minutes"
+        },
+        {
+          "text": "16–22 March",
+          "source": "tool:weekly_active_minutes"
+        },
+        {
+          "text": "16–22 March",
+          "source": "tool:weekly_active_minutes"
+        },
+        {
+          "text": "Saturday 2016-03-19",
+          "source": "tool:weekly_active_minutes"
+        },
+        {
+          "text": "Sunday 2016-03-20",
+          "source": "tool:weekly_active_minutes"
+        },
+        {
+          "text": "Wednesday 2016-03-16",
+          "source": "tool:weekly_active_minutes"
+        },
+        {
+          "text": "2016-03-17",
+          "source": "tool:weekly_active_minutes"
+        },
+        {
+          "text": "2016-03-18",
+          "source": "tool:weekly_active_minutes"
+        },
+        {
+          "text": "2016-03-21",
+          "source": "tool:weekly_active_minutes"
+        },
+        {
+          "text": "2016-03-22",
+          "source": "tool:weekly_active_minutes"
+        }
+      ],
+      "tools_called": [
+        "weekly_active_minutes",
+        "get_guideline"
+      ],
+      "call_validity": [
+        "valid",
+        "off_route"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "act-06",
+      "repeat": 1,
+      "category": "activity",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": null,
+      "refusal_correct": null,
+      "coverage_mentioned": true,
+      "end_to_end": true,
+      "numbers": 9,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 9,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "34,328",
+          "source": "weekly_summary:total"
+        },
+        {
+          "text": "5",
+          "source": "weekly_summary:days_with_data"
+        },
+        {
+          "text": "9,634",
+          "source": "weekly_summary:daily.0.value"
+        },
+        {
+          "text": "11,498",
+          "source": "weekly_summary:highest.value"
+        },
+        {
+          "text": "6,261",
+          "source": "weekly_summary:median"
+        },
+        {
+          "text": "3,689",
+          "source": "weekly_summary:daily.3.value"
+        },
+        {
+          "text": "3,246",
+          "source": "weekly_summary:lowest.value"
+        },
+        {
+          "text": "5",
+          "source": "weekly_summary:days_with_data"
+        },
+        {
+          "text": "6,866",
+          "source": "weekly_summary:mean"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "2016-03-15",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-03-21",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-03-19",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-03-20",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "Tuesday 2016-03-15",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "Wednesday 2016-03-16",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "Thursday 2016-03-17",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "Friday 2016-03-18",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "Monday 2016-03-21",
+          "source": "tool:weekly_summary"
+        }
+      ],
+      "tools_called": [
+        "weekly_summary"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "act-07",
+      "repeat": 1,
+      "category": "activity",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": null,
+      "refusal_correct": null,
+      "coverage_mentioned": true,
+      "end_to_end": true,
+      "numbers": 6,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 6,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "8,869",
+          "source": "most_active_day:most_active.steps"
+        },
+        {
+          "text": "1,319",
+          "source": "most_active_day:most_active.steps_above_second"
+        },
+        {
+          "text": "7,550",
+          "source": "most_active_day:top_days.1.steps"
+        },
+        {
+          "text": "2,870",
+          "source": "most_active_day:most_active.steps_above_mean"
+        },
+        {
+          "text": "5,999",
+          "source": "most_active_day:mean_steps"
+        },
+        {
+          "text": "5",
+          "source": "most_active_day:days_with_data"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "2016-05-04",
+          "source": "tool:most_active_day"
+        },
+        {
+          "text": "2016-05-10",
+          "source": "tool:most_active_day"
+        },
+        {
+          "text": "Tuesday, 2016-05-10",
+          "source": "tool:most_active_day"
+        },
+        {
+          "text": "2016-05-05",
+          "source": "tool:most_active_day"
+        },
+        {
+          "text": "2016-05-07",
+          "source": "tool:most_active_day"
+        },
+        {
+          "text": "2016-05-08",
+          "source": "tool:most_active_day"
+        }
+      ],
+      "tools_called": [
+        "most_active_day"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "slp-05",
+      "repeat": 1,
+      "category": "sleep",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": null,
+      "refusal_correct": null,
+      "coverage_mentioned": true,
+      "end_to_end": true,
+      "numbers": 10,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 8,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "2",
+          "source": "weekly_summary:days_with_data"
+        },
+        {
+          "text": "7",
+          "source": "weekly_summary:.(days)"
+        },
+        {
+          "text": "9 h 16 min",
+          "source": "weekly_summary:mean_text(text)"
+        },
+        {
+          "text": "555.5",
+          "source": "weekly_summary:mean"
+        },
+        {
+          "text": "9 h 49 min",
+          "source": "weekly_summary:mean_text(text)"
+        },
+        {
+          "text": "588.5",
+          "source": "weekly_summary:mean"
+        },
+        {
+          "text": "8 h 28 min",
+          "source": "weekly_summary:lowest.value_text(text)"
+        },
+        {
+          "text": "9 h 03 min",
+          "source": "weekly_summary:lowest.value_text(text)"
+        },
+        {
+          "text": "10 h 03 min",
+          "source": "weekly_summary:highest.value_text(text)"
+        },
+        {
+          "text": "10 h 34 min",
+          "source": "weekly_summary:highest.value_text(text)"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "2016-05-03",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-09",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-05",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-09",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "Monday 2016-05-02",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-03",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "Tuesday 2016-05-03",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-04",
+          "source": "tool:weekly_summary"
+        }
+      ],
+      "tools_called": [
+        "weekly_summary",
+        "weekly_summary"
+      ],
+      "call_validity": [
+        "valid",
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "slp-06",
+      "repeat": 1,
+      "category": "sleep",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": null,
+      "refusal_correct": null,
+      "coverage_mentioned": true,
+      "end_to_end": true,
+      "numbers": 14,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 12,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "3",
+          "source": "weekly_summary:threshold.days_at_or_above"
+        },
+        {
+          "text": "6",
+          "source": "weekly_summary:days_with_data"
+        },
+        {
+          "text": "7",
+          "source": "weekly_summary:.(days)"
+        },
+        {
+          "text": "420",
+          "source": "weekly_summary:threshold.value"
+        },
+        {
+          "text": "7",
+          "source": "weekly_summary:.(days)"
+        },
+        {
+          "text": "8 h 04 min",
+          "source": "weekly_summary:daily.1.value_text(text)"
+        },
+        {
+          "text": "7 h 50 min",
+          "source": "weekly_summary:daily.2.value_text(text)"
+        },
+        {
+          "text": "9 h 30 min",
+          "source": "weekly_summary:highest.value_text(text)"
+        },
+        {
+          "text": "7",
+          "source": "weekly_summary:.(days)"
+        },
+        {
+          "text": "6 h 49 min",
+          "source": "weekly_summary:daily.0.value_text(text)"
+        },
+        {
+          "text": "6 h 12 min",
+          "source": "weekly_summary:daily.5.value_text(text)"
+        },
+        {
+          "text": "5 h 56 min",
+          "source": "weekly_summary:lowest.value_text(text)"
+        },
+        {
+          "text": "6",
+          "source": "weekly_summary:days_with_data"
+        },
+        {
+          "text": "7",
+          "source": "weekly_summary:.(days)"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "2016-03-19",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-03-25",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-03-20",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-03-21",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-03-23",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-03-19",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-03-20",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-03-22",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-03-19",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-03-24",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-03-25",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-03-22",
+          "source": "tool:weekly_summary"
+        }
+      ],
+      "tools_called": [
+        "weekly_summary"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "una-05",
+      "repeat": 1,
+      "category": "unanswerable",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": null,
+      "verdict_correct": null,
+      "refusal_correct": true,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 5,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 6,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "17",
+          "source": "weekly_active_minutes:combined.moderate_equivalent_minutes"
+        },
+        {
+          "text": "15",
+          "source": "weekly_active_minutes:moderate.total_minutes"
+        },
+        {
+          "text": "1",
+          "source": "weekly_active_minutes:combined.conversion.rule(text)"
+        },
+        {
+          "text": "2",
+          "source": "weekly_active_minutes:missing_dates(count)"
+        },
+        {
+          "text": "150",
+          "source": "weekly_active_minutes:combined.recommended_minutes"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "2016-03-19",
+          "source": "tool:weekly_active_minutes"
+        },
+        {
+          "text": "2016-03-25",
+          "source": "tool:weekly_active_minutes"
+        },
+        {
+          "text": "2016-03-19",
+          "source": "tool:weekly_active_minutes"
+        },
+        {
+          "text": "2016-03-20",
+          "source": "tool:weekly_active_minutes"
+        },
+        {
+          "text": "2016-03-21",
+          "source": "tool:weekly_active_minutes"
+        },
+        {
+          "text": "2016-03-25",
+          "source": "tool:weekly_active_minutes"
+        }
+      ],
+      "tools_called": [
+        "weekly_active_minutes",
+        "get_guideline"
+      ],
+      "call_validity": [
+        "valid",
+        "off_route"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "una-06",
+      "repeat": 1,
+      "category": "unanswerable",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": null,
+      "verdict_correct": null,
+      "refusal_correct": true,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 5,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 6,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "0",
+          "source": "compare_periods:period_b.days_with_data"
+        },
+        {
+          "text": "5",
+          "source": "compare_periods:period_a(days)"
+        },
+        {
+          "text": "466.6",
+          "source": "compare_periods:period_a.mean"
+        },
+        {
+          "text": "7 h 47 min",
+          "source": "compare_periods:period_a.mean_text(text)"
+        },
+        {
+          "text": "5",
+          "source": "compare_periods:period_a(days)"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "5 to 9 May 2016",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "5 to 9 May 2016",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "30 April",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "4 May 2016",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "5 to 9 May",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "5 to 9 May",
+          "source": "tool:compare_periods"
+        }
+      ],
+      "tools_called": [
+        "compare_periods",
+        "missing_data_report"
+      ],
+      "call_validity": [
+        "valid",
+        "off_route"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "una-07",
+      "repeat": 1,
+      "category": "unanswerable",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": null,
+      "verdict_correct": null,
+      "refusal_correct": true,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 4,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 2,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "0",
+          "source": "correlation:lag_days"
+        },
+        {
+          "text": "31",
+          "source": "correlation:.(days)"
+        },
+        {
+          "text": "0",
+          "source": "correlation:lag_days"
+        },
+        {
+          "text": "10",
+          "source": "correlation:note(text)"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "March 2016",
+          "source": "month"
+        },
+        {
+          "text": "18 March",
+          "source": "tool:correlation"
+        }
+      ],
+      "tools_called": [
+        "correlation",
+        "missing_data_report"
+      ],
+      "call_validity": [
+        "valid",
+        "off_route"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "una-08",
+      "repeat": 1,
+      "category": "unanswerable",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": null,
+      "verdict_correct": null,
+      "refusal_correct": false,
+      "coverage_mentioned": null,
+      "end_to_end": false,
+      "numbers": 1,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 5,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "7",
+          "source": "weekly_summary:.(days)"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "25 March 2016",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-03-19",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-03-25",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-03-12",
+          "source": "prompt"
+        },
+        {
+          "text": "2016-05-12",
+          "source": "prompt"
+        }
+      ],
+      "tools_called": [
+        "weekly_summary"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "act-08",
+      "repeat": 1,
+      "category": "activity",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": true,
+      "refusal_correct": null,
+      "coverage_mentioned": true,
+      "end_to_end": true,
+      "numbers": 10,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 3,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "150",
+          "source": "weekly_active_minutes:combined.recommended_minutes"
+        },
+        {
+          "text": "221",
+          "source": "weekly_active_minutes:combined.moderate_equivalent_minutes"
+        },
+        {
+          "text": "221",
+          "source": "weekly_active_minutes:combined.moderate_equivalent_minutes"
+        },
+        {
+          "text": "150",
+          "source": "weekly_active_minutes:combined.recommended_minutes"
+        },
+        {
+          "text": "2",
+          "source": "weekly_active_minutes:combined.formula(text)"
+        },
+        {
+          "text": "79",
+          "source": "weekly_active_minutes:moderate.total_minutes"
+        },
+        {
+          "text": "71",
+          "source": "weekly_active_minutes:combined.total_minus_recommended"
+        },
+        {
+          "text": "6",
+          "source": "weekly_active_minutes:days_with_data"
+        },
+        {
+          "text": "7",
+          "source": "tool_window"
+        },
+        {
+          "text": "150",
+          "source": "weekly_active_minutes:combined.recommended_minutes"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "2016-03-13",
+          "source": "tool:weekly_active_minutes"
+        },
+        {
+          "text": "2016-03-19",
+          "source": "tool:weekly_active_minutes"
+        },
+        {
+          "text": "Saturday, 2016-03-19",
+          "source": "tool:weekly_active_minutes"
+        }
+      ],
+      "tools_called": [
+        "weekly_active_minutes"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "act-09",
+      "repeat": 1,
+      "category": "activity",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": null,
+      "refusal_correct": null,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 6,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 4,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "7",
+          "source": "weekly_summary:.(days)"
+        },
+        {
+          "text": "74,092",
+          "source": "weekly_summary:total"
+        },
+        {
+          "text": "10,585",
+          "source": "weekly_summary:mean"
+        },
+        {
+          "text": "12,912",
+          "source": "weekly_summary:highest.value"
+        },
+        {
+          "text": "5,454",
+          "source": "weekly_summary:lowest.value"
+        },
+        {
+          "text": "10,762",
+          "source": "weekly_summary:median"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "2016-04-28",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-04",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-02",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-05-01",
+          "source": "tool:weekly_summary"
+        }
+      ],
+      "tools_called": [
+        "weekly_summary"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "slp-07",
+      "repeat": 1,
+      "category": "sleep",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": null,
+      "refusal_correct": null,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 6,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 5,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "6 h 05 min",
+          "source": "weekly_summary:daily.4.value_text(text)"
+        },
+        {
+          "text": "365",
+          "source": "weekly_summary:daily.4.value"
+        },
+        {
+          "text": "6 h 29 min",
+          "source": "weekly_summary:daily.4.value_text(text)"
+        },
+        {
+          "text": "389",
+          "source": "weekly_summary:daily.1.value"
+        },
+        {
+          "text": "7",
+          "source": "weekly_summary:.(days)"
+        },
+        {
+          "text": "7",
+          "source": "weekly_summary:.(days)"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "March 31, 2016",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-04-01",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-04-01",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-03-28",
+          "source": "tool:weekly_summary"
+        },
+        {
+          "text": "2016-04-03",
+          "source": "tool:weekly_summary"
+        }
+      ],
+      "tools_called": [
+        "weekly_summary",
+        "weekly_summary"
+      ],
+      "call_validity": [
+        "valid",
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "slp-08",
+      "repeat": 1,
+      "category": "sleep",
+      "status": "answered",
+      "tool_result_correct": false,
+      "answer_correct": true,
+      "verdict_correct": null,
+      "refusal_correct": null,
+      "coverage_mentioned": null,
+      "end_to_end": false,
+      "numbers": 5,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 2,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "7.25 hours",
+          "source": "compare_periods:period_a.mean_hours"
+        },
+        {
+          "text": "7 h 15 min",
+          "source": "compare_periods:period_a.mean_text(text)"
+        },
+        {
+          "text": "7",
+          "source": "compare_periods:period_a(days)"
+        },
+        {
+          "text": "7",
+          "source": "compare_periods:period_a(days)"
+        },
+        {
+          "text": "7",
+          "source": "compare_periods:period_a(days)"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "March 22",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "March 28, 2016",
+          "source": "tool:compare_periods"
+        }
+      ],
+      "tools_called": [
+        "compare_periods"
+      ],
+      "call_validity": [
+        "off_route"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "trd-04",
+      "repeat": 1,
+      "category": "trend",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": null,
+      "refusal_correct": null,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 6,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 3,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "30",
+          "source": "correlation:.(days)"
+        },
+        {
+          "text": "0.301",
+          "source": "correlation:r"
+        },
+        {
+          "text": "95",
+          "source": "correlation:significance_test(text)"
+        },
+        {
+          "text": "-0.075",
+          "source": "correlation:ci_95.0"
+        },
+        {
+          "text": "0.602",
+          "source": "correlation:ci_95.1"
+        },
+        {
+          "text": "0",
+          "source": "correlation:lag_days"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "April 2016",
+          "source": "month"
+        },
+        {
+          "text": "2016-04-01",
+          "source": "tool:correlation"
+        },
+        {
+          "text": "2016-04-30",
+          "source": "tool:correlation"
+        }
+      ],
+      "tools_called": [
+        "correlation"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "cmp-03",
+      "repeat": 1,
+      "category": "comparison",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": true,
+      "refusal_correct": null,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 6,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 10,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "10,585",
+          "source": "compare_periods:period_a.mean"
+        },
+        {
+          "text": "7",
+          "source": "compare_periods:period_a(days)"
+        },
+        {
+          "text": "8,850",
+          "source": "compare_periods:period_b.mean"
+        },
+        {
+          "text": "7",
+          "source": "compare_periods:period_a(days)"
+        },
+        {
+          "text": "1,735",
+          "source": "compare_periods:difference_b_minus_a"
+        },
+        {
+          "text": "−16.4",
+          "source": "compare_periods:percent_change"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "May 5 to 11",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "May 5 to 11",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "April 28",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "May 4",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "April 28",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "May 4",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "May 5 to 11",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "May 5 to 11",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "May 5 to 11",
+          "source": "tool:compare_periods"
+        },
+        {
+          "text": "May 5 to 11",
+          "source": "tool:compare_periods"
+        }
+      ],
+      "tools_called": [
+        "compare_periods"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    }
+  ]
+}

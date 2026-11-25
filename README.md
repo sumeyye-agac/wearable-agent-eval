@@ -2,9 +2,9 @@
 
 > **Status: in progress** (updated 2026-11-25)
 >
-> ✅ **Last done:** scorer v1.1 and question set v1.4, the last changes before the runs: yes/no and direction checks, the sign of r, counts next to their noun, and no numbers in refusals.
+> ✅ **Last done:** the Claude Haiku 5.5 runs (thinking off x3, thinking on x1), scored with scorer v1.1 and saved in `runs/final/`.
 >
-> 🔜 **Next:** the Claude Haiku 5.5 runs (thinking off x3, thinking on x1), then the Gemma run.
+> 🔜 **Next:** the Gemma-4-E2B-it main run on my Mac, then the first results table.
 
 <details>
 <summary><b>Plan and progress</b></summary>
@@ -23,7 +23,7 @@
 - [x] Scorer v1.1 with validation: null baseline, mutation test, labeling policy, and decision rules written before any Gemma output is read
 
 **B. Runs on the frozen inputs**
-- [ ] Claude Haiku 5.5: thinking off x3 (main), thinking on x1
+- [x] Claude Haiku 5.5: thinking off x3 (main), thinking on x1
 - [ ] Gemma-4-E2B-it on my Mac: main run x1; determinism checked on 3 questions
 - [ ] Blind labeling of 60 answers
 - [ ] First comparison table and failure taxonomy
