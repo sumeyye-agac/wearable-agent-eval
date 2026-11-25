@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "questions_version": "v1.3",
+  "questions_version": "v1.4",
   "numeric_tolerance": 0.01,
   "text_tolerance_minutes": 1,
   "questions": [
@@ -12,6 +12,8 @@
       "reference_date": "2016-05-11",
       "expect_refusal": false,
       "tags": [],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "most_active_day",
@@ -98,6 +100,8 @@
       "reference_date": "2016-05-11",
       "expect_refusal": false,
       "tags": [],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "weekly_summary",
@@ -195,6 +199,8 @@
       "tags": [
         "missing_data"
       ],
+      "verdict": "yes",
+      "direction": null,
       "expected_calls": [
         {
           "tool": "weekly_active_minutes",
@@ -323,6 +329,8 @@
       "reference_date": "2016-05-11",
       "expect_refusal": false,
       "tags": [],
+      "verdict": "yes",
+      "direction": null,
       "expected_calls": [
         {
           "tool": "weekly_active_minutes",
@@ -441,6 +449,8 @@
       "reference_date": "2016-05-11",
       "expect_refusal": false,
       "tags": [],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "most_active_day",
@@ -593,6 +603,8 @@
       "reference_date": "2016-05-11",
       "expect_refusal": false,
       "tags": [],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "weekly_summary",
@@ -726,6 +738,8 @@
       "reference_date": "2016-05-11",
       "expect_refusal": false,
       "tags": [],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "weekly_summary",
@@ -893,6 +907,8 @@
       "reference_date": "2016-05-10",
       "expect_refusal": false,
       "tags": [],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "weekly_summary",
@@ -1027,6 +1043,8 @@
       "reference_date": "2016-05-11",
       "expect_refusal": false,
       "tags": [],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "weekly_summary",
@@ -1170,6 +1188,8 @@
       "reference_date": "2016-05-11",
       "expect_refusal": false,
       "tags": [],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "weekly_summary",
@@ -1264,6 +1284,8 @@
       "reference_date": "2016-05-11",
       "expect_refusal": false,
       "tags": [],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "correlation",
@@ -1317,6 +1339,8 @@
       "reference_date": "2016-05-11",
       "expect_refusal": false,
       "tags": [],
+      "verdict": "yes",
+      "direction": "down",
       "expected_calls": [
         {
           "tool": "compare_periods",
@@ -1432,6 +1456,8 @@
       "tags": [
         "missing_data"
       ],
+      "verdict": "yes",
+      "direction": "up",
       "expected_calls": [
         {
           "tool": "compare_periods",
@@ -1499,7 +1525,71 @@
           }
         }
       ],
-      "alternative_routes": []
+      "alternative_routes": [
+        [
+          {
+            "tool": "compare_periods",
+            "args": {
+              "metric": "minutes_asleep",
+              "preset": "last_4_weeks_vs_previous_4_weeks"
+            },
+            "match_on": {
+              "period_a.mean": 430.3,
+              "period_b.mean": 444.1,
+              "difference_b_minus_a": 13.8
+            },
+            "answer": [
+              {
+                "path": "period_a.mean",
+                "value": 430.3,
+                "text": "7 h 10 min"
+              },
+              {
+                "path": "period_b.mean",
+                "value": 444.1,
+                "text": "7 h 24 min"
+              }
+            ],
+            "answer_dates": [],
+            "coverage": null,
+            "output": {
+              "metric": "minutes_asleep",
+              "unit": "minutes",
+              "preset": "last_4_weeks_vs_previous_4_weeks",
+              "period_a": {
+                "start": "2016-03-16",
+                "start_weekday": "Wednesday",
+                "end": "2016-04-12",
+                "end_weekday": "Tuesday",
+                "days_with_data": 27,
+                "mean": 430.3,
+                "std": 53.0,
+                "mean_text": "7 h 10 min",
+                "mean_hours": 7.17
+              },
+              "period_b": {
+                "start": "2016-04-13",
+                "start_weekday": "Wednesday",
+                "end": "2016-05-10",
+                "end_weekday": "Tuesday",
+                "days_with_data": 23,
+                "mean": 444.1,
+                "std": 68.6,
+                "mean_text": "7 h 24 min",
+                "mean_hours": 7.4
+              },
+              "difference_b_minus_a": 13.8,
+              "percent_change": 3.2,
+              "higher_period": "period_b",
+              "enough_data": true,
+              "note": null,
+              "significance_test": "This tool does not run a significance test. It reports the two means and their difference only, so it cannot say whether the difference is statistically significant.",
+              "difference_b_minus_a_text": "14 min",
+              "difference_b_minus_a_hours": 0.23
+            }
+          }
+        ]
+      ]
     },
     {
       "id": "trd-03",
@@ -1509,6 +1599,8 @@
       "reference_date": "2016-05-11",
       "expect_refusal": false,
       "tags": [],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "correlation",
@@ -1562,6 +1654,8 @@
       "reference_date": "2016-05-11",
       "expect_refusal": false,
       "tags": [],
+      "verdict": "no",
+      "direction": "down",
       "expected_calls": [
         {
           "tool": "compare_periods",
@@ -1618,6 +1712,66 @@
         }
       ],
       "alternative_routes": [
+        [
+          {
+            "tool": "compare_periods",
+            "args": {
+              "metric": "steps",
+              "period_a_start": "2016-04-04",
+              "period_a_end": "2016-04-10",
+              "period_b_start": "2016-04-11",
+              "period_b_end": "2016-04-17"
+            },
+            "match_on": {
+              "period_a.mean": 13409,
+              "period_b.mean": 8384,
+              "difference_b_minus_a": -5025
+            },
+            "answer": [
+              {
+                "path": "period_a.mean",
+                "value": 13409,
+                "text": null
+              },
+              {
+                "path": "period_b.mean",
+                "value": 8384,
+                "text": null
+              }
+            ],
+            "answer_dates": [],
+            "coverage": null,
+            "output": {
+              "metric": "steps",
+              "unit": "steps",
+              "preset": null,
+              "period_a": {
+                "start": "2016-04-04",
+                "start_weekday": "Monday",
+                "end": "2016-04-10",
+                "end_weekday": "Sunday",
+                "days_with_data": 7,
+                "mean": 13409,
+                "std": 2766
+              },
+              "period_b": {
+                "start": "2016-04-11",
+                "start_weekday": "Monday",
+                "end": "2016-04-17",
+                "end_weekday": "Sunday",
+                "days_with_data": 7,
+                "mean": 8384,
+                "std": 4237
+              },
+              "difference_b_minus_a": -5025,
+              "percent_change": -37.5,
+              "higher_period": "period_a",
+              "enough_data": true,
+              "note": null,
+              "significance_test": "This tool does not run a significance test. It reports the two means and their difference only, so it cannot say whether the difference is statistically significant."
+            }
+          }
+        ],
         [
           {
             "tool": "weekly_summary",
@@ -1800,6 +1954,8 @@
       "tags": [
         "missing_data"
       ],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "compare_periods",
@@ -1879,6 +2035,8 @@
       "reference_date": "2016-05-11",
       "expect_refusal": true,
       "tags": [],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [],
       "alternative_routes": []
     },
@@ -1890,6 +2048,8 @@
       "reference_date": "2016-05-11",
       "expect_refusal": true,
       "tags": [],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [],
       "alternative_routes": []
     },
@@ -1901,6 +2061,8 @@
       "reference_date": "2016-05-10",
       "expect_refusal": true,
       "tags": [],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [],
       "alternative_routes": []
     },
@@ -1914,6 +2076,8 @@
       "tags": [
         "missing_data"
       ],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "weekly_active_minutes",
@@ -2036,6 +2200,8 @@
       "tags": [
         "missing_data"
       ],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "weekly_summary",
@@ -2147,6 +2313,8 @@
       "tags": [
         "missing_data"
       ],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "most_active_day",
@@ -2246,6 +2414,8 @@
       "tags": [
         "missing_data"
       ],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "weekly_summary",
@@ -2396,6 +2566,8 @@
       "tags": [
         "missing_data"
       ],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "weekly_summary",
@@ -2573,6 +2745,8 @@
       "tags": [
         "missing_data"
       ],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "weekly_active_minutes",
@@ -2695,6 +2869,8 @@
       "tags": [
         "missing_data"
       ],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "compare_periods",
@@ -2757,6 +2933,8 @@
       "tags": [
         "missing_data"
       ],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "correlation",
@@ -2805,6 +2983,8 @@
       "tags": [
         "missing_data"
       ],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "weekly_summary",
@@ -2904,6 +3084,8 @@
       "tags": [
         "missing_data"
       ],
+      "verdict": "yes",
+      "direction": null,
       "expected_calls": [
         {
           "tool": "weekly_active_minutes",
@@ -3033,6 +3215,8 @@
       "reference_date": "2016-05-11",
       "expect_refusal": false,
       "tags": [],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "weekly_summary",
@@ -3129,6 +3313,8 @@
       "reference_date": "2016-05-11",
       "expect_refusal": false,
       "tags": [],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "weekly_summary",
@@ -3261,6 +3447,8 @@
       "reference_date": "2016-05-11",
       "expect_refusal": false,
       "tags": [],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "weekly_summary",
@@ -3395,6 +3583,8 @@
       "reference_date": "2016-05-11",
       "expect_refusal": false,
       "tags": [],
+      "verdict": null,
+      "direction": null,
       "expected_calls": [
         {
           "tool": "correlation",
@@ -3450,6 +3640,8 @@
       "reference_date": "2016-05-11",
       "expect_refusal": false,
       "tags": [],
+      "verdict": "no",
+      "direction": "down",
       "expected_calls": [
         {
           "tool": "compare_periods",
@@ -3506,6 +3698,66 @@
         }
       ],
       "alternative_routes": [
+        [
+          {
+            "tool": "compare_periods",
+            "args": {
+              "metric": "steps",
+              "period_a_start": "2016-04-28",
+              "period_a_end": "2016-05-04",
+              "period_b_start": "2016-05-05",
+              "period_b_end": "2016-05-11"
+            },
+            "match_on": {
+              "period_a.mean": 10585,
+              "period_b.mean": 8850,
+              "difference_b_minus_a": -1735
+            },
+            "answer": [
+              {
+                "path": "period_a.mean",
+                "value": 10585,
+                "text": null
+              },
+              {
+                "path": "period_b.mean",
+                "value": 8850,
+                "text": null
+              }
+            ],
+            "answer_dates": [],
+            "coverage": null,
+            "output": {
+              "metric": "steps",
+              "unit": "steps",
+              "preset": null,
+              "period_a": {
+                "start": "2016-04-28",
+                "start_weekday": "Thursday",
+                "end": "2016-05-04",
+                "end_weekday": "Wednesday",
+                "days_with_data": 7,
+                "mean": 10585,
+                "std": 2540
+              },
+              "period_b": {
+                "start": "2016-05-05",
+                "start_weekday": "Thursday",
+                "end": "2016-05-11",
+                "end_weekday": "Wednesday",
+                "days_with_data": 7,
+                "mean": 8850,
+                "std": 4033
+              },
+              "difference_b_minus_a": -1735,
+              "percent_change": -16.4,
+              "higher_period": "period_a",
+              "enough_data": true,
+              "note": null,
+              "significance_test": "This tool does not run a significance test. It reports the two means and their difference only, so it cannot say whether the difference is statistically significant."
+            }
+          }
+        ],
         [
           {
             "tool": "weekly_summary",

@@ -2,9 +2,9 @@
 
 > **Status: in progress** (updated 2026-11-25)
 >
-> ✅ **Last done:** scorer v1 (parts 1-3): end-to-end pass per answer with a source for every number and date, validation without any model, and the labeling policy and decision rules, written before any Gemma output.
+> ✅ **Last done:** scorer v1.1 and question set v1.4, the last changes before the runs: yes/no and direction checks, the sign of r, counts next to their noun, and no numbers in refusals.
 >
-> 🔜 **Next:** a LiteRT-LM client so Gemma runs through the same agent loop, then the runs.
+> 🔜 **Next:** the Claude Haiku 5.5 runs (thinking off x3, thinking on x1), then the Gemma run.
 
 <details>
 <summary><b>Plan and progress</b></summary>
@@ -18,9 +18,9 @@
 - [x] A LiteRT-LM spike on my Mac: Gemma-4-E2B-it makes valid tool calls and is deterministic at temperature 0
 
 **A. Freeze the inputs**
-- [x] Question set v1.3
+- [x] Question set v1.4
 - [x] Prompt v1.1
-- [x] Scorer v1 with validation: null baseline, mutation test, labeling policy, and decision rules written before any Gemma output is read
+- [x] Scorer v1.1 with validation: null baseline, mutation test, labeling policy, and decision rules written before any Gemma output is read
 
 **B. Runs on the frozen inputs**
 - [ ] Claude Haiku 5.5: thinking off x3 (main), thinking on x1

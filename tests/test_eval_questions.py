@@ -100,10 +100,11 @@ def test_resolve_picks_a_list_item_by_key():
 
 
 def test_alternative_routes_are_built_like_expected_calls(questions, users):
-    # cmp-03 can be answered by one compare_periods call or by two weekly_summary calls.
-    gt = {q["id"]: q for q in build(questions, users, "v1.1")["questions"]}
-    (route,) = gt["cmp-03"]["alternative_routes"]
-    assert [c["match_on"]["total"] for c in route] == [74092, 61947]
+    # cmp-03: the difference (route A), the two means (same call), or two weekly totals.
+    gt = {q["id"]: q for q in build(questions, users, "v1.4")["questions"]}
+    means, totals = gt["cmp-03"]["alternative_routes"]
+    assert [a["value"] for a in means[0]["answer"]] == [10585, 8850]
+    assert [c["match_on"]["total"] for c in totals] == [74092, 61947]
     assert gt["cmp-03"]["expected_calls"][0]["match_on"]["difference_b_minus_a"] == -1735
     assert gt["act-01"]["alternative_routes"] == []
 
@@ -156,6 +157,15 @@ def _one(**overrides):
       "alternative_routes": [[
         {"tool": "weekly_summary", "args": {"metric": "steps"}, "answer": ["total"]}]]},
      "refusal question cannot require numbers"),
+    ({"expected_calls": [{"tool": "weekly_summary", "args": {"metric": "steps"},
+                          "answer": ["total"], "verdict": {"path": "total", "yes_when": "big"}}]},
+     "yes_when one of"),
+    ({"expect_refusal": True, "expected_calls": [
+        {"tool": "weekly_summary", "args": {"metric": "steps"}, "match_on": ["total"],
+         "direction": "total"}]}, "refusal question cannot have a verdict"),
+    ({"alternative_routes": [[
+        {"tool": "weekly_summary", "args": {"metric": "steps"}, "answer": ["total"],
+         "direction": "total"}]]}, "go on expected_calls"),
 ])
 def test_parse_rejects_invalid_questions(overrides, message):
     with pytest.raises(ValueError, match=message):
@@ -180,7 +190,7 @@ def test_ground_truth_file_is_valid_json():
     data = json.loads((REPO / "eval/ground_truth.json").read_text(encoding="utf-8"))
     assert data["numeric_tolerance"] == 0.01
     assert data["text_tolerance_minutes"] == 1
-    assert data["questions_version"] == "v1.3"
+    assert data["questions_version"] == "v1.4"
 
 
 @pytest.mark.parametrize("version", [None, 1, "1", "v0", "v1.0", "v1.1.1", "V1"])
@@ -235,3 +245,11 @@ def test_coverage_questions_carry_the_day_count_in_the_tool_output(questions, us
     for qid, counts in expected.items():
         call = gt[qid]["expected_calls"][0]
         assert [resolve(call["output"], x["path"]) for x in call["coverage"]] == counts
+
+
+def test_verdict_and_direction_are_read_from_the_tool_output(questions, users):
+    gt = {q["id"]: q for q in build(questions, users, "v1.4")["questions"]}
+    assert (gt["cmp-01"]["verdict"], gt["cmp-01"]["direction"]) == ("no", "down")  # -5,025
+    assert (gt["trd-02"]["verdict"], gt["trd-02"]["direction"]) == ("yes", "up")   # +13.8
+    assert (gt["act-03"]["verdict"], gt["act-03"]["direction"]) == ("yes", None)
+    assert (gt["act-01"]["verdict"], gt["act-01"]["direction"]) == (None, None)

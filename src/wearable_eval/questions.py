@@ -24,6 +24,9 @@ _ARGUMENTS = {s["name"]: set(s["input_schema"]["properties"]) for s in TOOL_SPEC
 _ISO_DATE = re.compile(r"\d{4}-\d{2}-\d{2}")
 _REQUIRED = {s["name"]: set(s["input_schema"]["required"]) for s in TOOL_SPECS}
 _VERSION = re.compile(r"v[1-9]\d*(?:\.[1-9]\d*)?")
+# When a yes/no question's answer is yes, by the value at the verdict path: "positive"
+# (above 0), "nonzero" (any change) or "true" (a boolean that is true).
+YES_WHEN = ("positive", "nonzero", "true")
 
 
 @dataclass(frozen=True)
@@ -34,6 +37,10 @@ class ExpectedCall:
     match_on: list[str]    # output paths a model's call must reproduce to count as this call
     coverage: list[str] = field(default_factory=list)  # paths of day counts the answer must mention
     answer_dates: list[str] = field(default_factory=list)  # paths of dates the answer must state
+    # Yes/no questions: the output path and rule that give the verdict ({"path", "yes_when"}).
+    verdict: dict[str, str] | None = None
+    # Comparisons: the output path whose sign gives the direction (up when above 0).
+    direction: str | None = None
 
 
 @dataclass(frozen=True)
@@ -57,7 +64,8 @@ def _fail(qid: str, message: str) -> None:
 
 
 def _call(qid: str, raw: dict[str, Any]) -> ExpectedCall:
-    unknown = set(raw) - {"tool", "args", "answer", "match_on", "coverage", "answer_dates"}
+    unknown = set(raw) - {"tool", "args", "answer", "match_on", "coverage", "answer_dates",
+                          "verdict", "direction"}
     if unknown:
         _fail(qid, f"unknown key(s) in expected call: {', '.join(sorted(unknown))}")
     tool = raw.get("tool")
@@ -82,7 +90,18 @@ def _call(qid: str, raw: dict[str, Any]) -> ExpectedCall:
     answer_dates = raw.get("answer_dates") or []
     if not isinstance(answer_dates, list) or not all(isinstance(d, str) and d for d in answer_dates):
         _fail(qid, f"answer_dates in expected call {tool} must be a list of output paths")
-    return ExpectedCall(tool, dict(args), answer, match_on, list(coverage), list(answer_dates))
+    verdict = raw.get("verdict")
+    if verdict is not None and not (isinstance(verdict, dict)
+                                    and set(verdict) == {"path", "yes_when"}
+                                    and isinstance(verdict["path"], str) and verdict["path"]
+                                    and verdict["yes_when"] in YES_WHEN):
+        _fail(qid, f"verdict in expected call {tool} must be {{path, yes_when}} with yes_when "
+                   f"one of {', '.join(YES_WHEN)}")
+    direction = raw.get("direction")
+    if direction is not None and not (isinstance(direction, str) and direction):
+        _fail(qid, f"direction in expected call {tool} must be an output path")
+    return ExpectedCall(tool, dict(args), answer, match_on, list(coverage), list(answer_dates),
+                        dict(verdict) if verdict else None, direction)
 
 
 def question_set_version(data: dict[str, Any]) -> str:
@@ -143,6 +162,10 @@ def parse_questions(data: dict[str, Any], users: set[str] | None = None) -> list
             _fail(qid, "tags must be a list of non-empty strings")
         if refusal and any(c.coverage for c in every_call):
             _fail(qid, "a refusal question cannot require a day count")
+        if refusal and any(c.verdict or c.direction for c in every_call):
+            _fail(qid, "a refusal question cannot have a verdict or a direction")
+        if any(c.verdict or c.direction for r in routes for c in r):
+            _fail(qid, "verdict and direction go on expected_calls (the first route) only")
         out.append(Question(qid, user_id, raw["category"], raw["question"].strip(),
                             reference_dates[user_id], calls, refusal, raw.get("note"),
                             list(tags), routes))

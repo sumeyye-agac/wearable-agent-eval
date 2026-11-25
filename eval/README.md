@@ -8,7 +8,7 @@
 
 ```yaml
 schema_version: 1                 # the file format
-version: v1.3                     # the question set; required, see below
+version: v1.4                     # the question set; required, see below
 reference_dates:                  # the pinned "today" per user, required for every user
   "5553957443": "2016-05-11"
 questions:
@@ -31,7 +31,7 @@ questions:
 ```
 
 **Version:** the question set is frozen per version and tagged in git (`questions-v1` to
-`questions-v1.3`). Any change to a question, an expected call or a reference date makes a
+`questions-v1.4`). Any change to a question, an expected call or a reference date makes a
 new version (`v1.1`, `v2`, ...); results are compared only within one version. The ground
 truth copies it as `questions_version`. Changes are listed under "Changelog" below.
 
@@ -67,11 +67,16 @@ A `key=value` part picks the first list item with that key and value
 - **answer_dates:** output paths holding dates (YYYY-MM-DD) the answer must state. The
   ground truth lists the accepted forms: the date itself, and for a sleep metric also the
   evening before, because sleep is dated by the wake-up day ("the night of 6 May" is the
-  2016-05-07 row). Not scored yet; it is part of scorer v1.
+  2016-05-07 row). Scored since scorer v1.
+- **verdict:** for a yes/no question, `{path, yes_when}`: the output value that settles it
+  and when the answer is yes (`positive`, `nonzero` or `true`). The ground truth stores the
+  expected `yes` or `no`. Scored since scorer v1.1 (`verdict_correct`).
+- **direction:** for a comparison, the output path whose sign gives the direction; the
+  ground truth stores `up` or `down`. Scored since scorer v1.1 (`verdict_correct`).
+  `verdict` and `direction` go on `expected_calls` only.
 - **alternative_routes:** other ways to answer the question with the tools, each a list of
   calls written like `expected_calls` (which is the first route). The ground truth builds
-  every route. `tool_result_correct` checks only `expected_calls` for now; accepting any
-  route is part of scorer v1.
+  every route, and `tool_result_correct` accepts any of them (since scorer v1).
 - Refusal questions may list expected calls (to check that the model looked) but no
   `answer`, no `answer_dates` and no `coverage`.
 
@@ -122,7 +127,7 @@ date's weekday. The data range the system prompt states ("the data covers 2016-0
 The refusal phrase list was written for the 8 pilot refusal questions and may miss other
 wordings; refusal answers are checked by eye after each run.
 
-## Question set v1.3 (34 questions)
+## Question set v1.4 (34 questions)
 
 | Category | n | tagged missing_data |
 | --- | --- | --- |
@@ -149,7 +154,16 @@ questions, no medical-advice or off-topic questions. They are planned for the fu
 
 ## Changelog
 
-**v1.3** (34 questions; final for phase A)
+**v1.4** (34 questions; final for phase A)
+
+- Yes/no and comparison questions state their expected verdict and direction, read from
+  the tool output: act-03, act-04, act-08 (`reaches_recommendation` true: yes), trd-01
+  (changed: yes, down), trd-02 (yes, up), cmp-01 and cmp-03 (no, down). Wrong-direction
+  answers passed before.
+- cmp-01, cmp-03 and trd-02 accept the two means as the answer, through a second route with
+  the same `compare_periods` call (as trd-01 accepts percent).
+
+**v1.3** (34 questions)
 
 - `answer` now holds only what the question literally asks; values that only confirm the
   call stay in `match_on`. An answer that left out an extra value was scored wrong.

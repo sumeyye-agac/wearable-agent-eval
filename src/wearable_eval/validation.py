@@ -44,9 +44,17 @@ def oracle_record(truth: dict[str, Any], df: pd.DataFrame) -> dict[str, Any]:
     if truth["expect_refusal"]:
         answer = ORACLE_REFUSAL
     else:
-        parts = [_fmt(a["value"]) for e in truth["expected_calls"] for a in e["answer"]]
+        how_many = re.search(r"\bhow many (\w+)", truth["question"], re.IGNORECASE)
+        parts = [_fmt(a["value"]) + (f" {how_many.group(1)}" if how_many
+                                     and float(a["value"]).is_integer()
+                                     and 0 <= a["value"] < 13 else "")
+                 for e in truth["expected_calls"] for a in e["answer"]]
         parts += [d["value"] for e in truth["expected_calls"] for d in e["answer_dates"]]
         answer = "Result: " + "; ".join(parts) + "."
+        if truth.get("direction"):
+            answer = f"It went {truth['direction']}. " + answer
+        if truth.get("verdict"):
+            answer = f"{truth['verdict'].capitalize()}. " + answer
         counts = [_fmt(c["value"]) for e in truth["expected_calls"]
                   for c in e.get("coverage") or []]
         if counts:

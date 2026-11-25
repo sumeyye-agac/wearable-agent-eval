@@ -4,7 +4,7 @@ Written before any Gemma output exists. It does not change after the first label
 
 ## 1. Purpose
 
-I label a sample of answers by hand, blind, to measure how often scorer v1 agrees with a
+I label a sample of answers by hand, blind, to measure how often scorer v1.1 agrees with a
 human (precision and recall) before any result is reported. The scorer is regular
 expressions and rules, not an LLM judge, so it needs a human check.
 
@@ -12,11 +12,10 @@ expressions and rules, not an LLM judge, so it needs a human check.
 
 Frozen now, before any Gemma output exists.
 
-- 60 answers: 40 from Gemma-4-E2B-it (constrained decoding on, main run, 1 run) and 20
+- 60 answers: 34 from Gemma-4-E2B-it (constrained decoding on, main run, 1 run) and 26
   from Claude Haiku 5.5 (thinking off, main run, 3 repeats).
-- Every question appears at least once: the 40 Gemma answers cover each of the 34
-  questions once, plus 6 more questions drawn at random. The 20 Haiku answers are 20
-  different questions drawn at random.
+- Every question appears at least once: the 34 Gemma answers are the 34 questions, once
+  each. The 26 Haiku answers are 26 different questions drawn at random.
 - Gemma has one answer per question, so there is no repeat to draw. For each sampled Haiku
   question, one of its 3 repeats is drawn at random.
 - Seed: `20261125`. All draws (questions, repeats, order) use Python's
@@ -34,18 +33,22 @@ Frozen now, before any Gemma output exists.
 
 ## 4. Labels per answer
 
-- **end_to_end:** correct / wrong, defined exactly as scorer v1 decides it. Correct means
+- **end_to_end:** correct / wrong, defined exactly as scorer v1.1 decides it. Correct means
   all of these hold:
   - the model gave an answer;
+  - for a yes/no or comparison question, it does not contradict the expected verdict or
+    direction (a leading "Yes"/"No" that is wrong, or only words of the wrong direction);
   - where the question has expected tool calls, it called the tools of an accepted route
     and got the expected results;
-  - the answer states what the question asks (its values and dates);
-  - for a refusal question, it says the data cannot answer; where a coverage check
-    applies, it states the day count;
+  - the answer states what the question asks (its values and dates): a negative r with its
+    minus sign, and for a "how many" question the count it gives first for that noun;
+  - for a refusal question, it says the data cannot answer and states no invented or
+    self_computed number, small whole numbers included; where a coverage check applies,
+    it states the day count;
   - no number or date in it is invented or self_computed, with three exceptions that do not
     make an answer wrong on their own: a unit conversion of a value the tools gave
     (minutes as hours and minutes, or as decimal hours), the evening before a wake-up date
-    the tools gave, and a whole number below 13.
+    the tools gave, and a whole number below 13 (outside refusal questions).
 
   The number-level labels below still mark those exceptions as self_computed or invented.
 - **refusal_correct:** only for questions where the right answer says the data cannot

@@ -247,7 +247,7 @@ def test_end_to_end_and_pass_all_repeats(users, truth, prompt):
     assert scores["pass_all_repeats"] == {"k": 0, "n": 1, "rate": 0.0, "repeats": 3}
     assert scores["summary"]["end_to_end"]["all"] == {"k": 2, "n": 3, "rate": 0.6667}
     assert scores["call_validity"]["valid"] == {"k": 3, "n": 3, "rate": 1.0}
-    assert scores["scorer_version"] == "v1"
+    assert scores["scorer_version"] == "v1.1"
 
 
 def test_a_refusal_with_an_invented_number_fails_end_to_end(truth, prompt):

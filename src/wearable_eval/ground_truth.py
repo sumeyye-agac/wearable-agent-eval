@@ -93,11 +93,51 @@ def _answer_date(q: Question, tool: str, args: dict[str, Any], output: Any, path
 
 
 def build_question(q: Question, df: pd.DataFrame) -> dict[str, Any]:
+    expected = _build_calls(q, df, q.expected_calls)
+    verdict, direction = _verdict_and_direction(q, expected)
     return {"id": q.id, "user_id": q.user_id, "category": q.category,
             "question": q.question, "reference_date": q.reference_date,
             "expect_refusal": q.expect_refusal, "tags": q.tags,
-            "expected_calls": _build_calls(q, df, q.expected_calls),
+            "verdict": verdict, "direction": direction,
+            "expected_calls": expected,
             "alternative_routes": [_build_calls(q, df, r) for r in q.alternative_routes]}
+
+
+def _verdict_and_direction(q: Question, built: list[dict[str, Any]]
+                           ) -> tuple[str | None, str | None]:
+    """The expected yes/no and up/down of a question, read from its expected calls'
+    outputs (see ExpectedCall.verdict and .direction)."""
+    verdict = direction = None
+    for call, out in zip(q.expected_calls, built):
+        if call.verdict:
+            try:
+                value = resolve(out["output"], call.verdict["path"])
+            except KeyError:
+                raise ValueError(f"Question {q.id}: verdict path {call.verdict['path']} is not "
+                                 f"in the output of {call.tool}.") from None
+            rule = call.verdict["yes_when"]
+            if rule == "true":
+                if not isinstance(value, bool):
+                    raise ValueError(f"Question {q.id}: verdict value {value!r} is not true "
+                                     f"or false.")
+                yes = value
+            else:
+                if not _is_number(value):
+                    raise ValueError(f"Question {q.id}: verdict value {value!r} is not a "
+                                     f"number.")
+                yes = value > 0 if rule == "positive" else value != 0
+            verdict = "yes" if yes else "no"
+        if call.direction:
+            try:
+                value = resolve(out["output"], call.direction)
+            except KeyError:
+                raise ValueError(f"Question {q.id}: direction path {call.direction} is not in "
+                                 f"the output of {call.tool}.") from None
+            if not _is_number(value) or value == 0:
+                raise ValueError(f"Question {q.id}: direction value {value!r} is not a "
+                                 f"nonzero number.")
+            direction = "up" if value > 0 else "down"
+    return verdict, direction
 
 
 def _build_calls(q: Question, df: pd.DataFrame, route: list) -> list[dict[str, Any]]:

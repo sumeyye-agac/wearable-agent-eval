@@ -8,10 +8,10 @@
 #   5577150313  steps missing 2016-05-07..08, sleep missing 2016-05-05..09
 schema_version: 1
 
-# Frozen per version (git tags questions-v1 to questions-v1.3; v1.3 is final for phase A).
+# Frozen per version (git tags questions-v1 to questions-v1.4; v1.4 is final for phase A).
 # Any change to a question, an expected call or a reference date needs a new version;
 # results are only compared within one version. Changes between versions: eval/README.md.
-version: v1.3
+version: v1.4
 
 # The pinned "today" per user. "This week" is the 7 days ending on it, "last 4 weeks" the 28
 # days ending on it. It is each user's last complete day; the build fails if it is not,
@@ -56,6 +56,7 @@ questions:
         answer: [combined.moderate_equivalent_minutes]
         coverage: days_with_data
         match_on: [start, end, combined.moderate_equivalent_minutes]
+        verdict: {path: combined.reaches_recommendation, yes_when: "true"}
 
   - id: act-04
     user_id: "6962181067"
@@ -66,6 +67,7 @@ questions:
         args: {end_date: "2016-04-17"}
         answer: [combined.moderate_equivalent_minutes]
         match_on: [start, end, combined.moderate_equivalent_minutes]
+        verdict: {path: combined.reaches_recommendation, yes_when: "true"}
 
   - id: act-05
     user_id: "5553957443"
@@ -157,6 +159,8 @@ questions:
         args: {metric: steps, preset: first_half_vs_second_half}
         answer: [difference_b_minus_a]
         match_on: [difference_b_minus_a, percent_change]
+        verdict: {path: difference_b_minus_a, yes_when: nonzero}
+        direction: difference_b_minus_a
     # Same call; the change may be stated in percent instead of steps.
     alternative_routes:
       - - tool: compare_periods
@@ -176,6 +180,14 @@ questions:
         answer: [difference_b_minus_a]
         coverage: [period_a.days_with_data, period_b.days_with_data]
         match_on: [period_a.mean, period_b.mean, difference_b_minus_a]
+        verdict: {path: difference_b_minus_a, yes_when: positive}
+        direction: difference_b_minus_a
+    # Same call; the answer may give the two means instead of their difference.
+    alternative_routes:
+      - - tool: compare_periods
+          args: {metric: minutes_asleep, preset: last_4_weeks_vs_previous_4_weeks}
+          answer: [period_a.mean, period_b.mean]
+          match_on: [period_a.mean, period_b.mean, difference_b_minus_a]
 
   - id: trd-03
     user_id: "5553957443"
@@ -199,7 +211,14 @@ questions:
                period_b_start: "2016-04-11", period_b_end: "2016-04-17"}
         answer: [difference_b_minus_a]
         match_on: [period_a.mean, period_b.mean, difference_b_minus_a]
+        verdict: {path: difference_b_minus_a, yes_when: positive}
+        direction: difference_b_minus_a
     alternative_routes:
+      - - tool: compare_periods
+          args: {metric: steps, period_a_start: "2016-04-04", period_a_end: "2016-04-10",
+                 period_b_start: "2016-04-11", period_b_end: "2016-04-17"}
+          answer: [period_a.mean, period_b.mean]
+          match_on: [period_a.mean, period_b.mean, difference_b_minus_a]
       - - tool: weekly_summary
           args: {metric: steps, end_date: "2016-04-10"}
           answer: [total]
@@ -377,6 +396,7 @@ questions:
         answer: [combined.moderate_equivalent_minutes]
         coverage: days_with_data
         match_on: [start, end, days_with_data, combined.moderate_equivalent_minutes]
+        verdict: {path: combined.reaches_recommendation, yes_when: "true"}
 
   - id: act-09
     user_id: "6962181067"
@@ -436,7 +456,14 @@ questions:
                period_b_start: "2016-05-05", period_b_end: "2016-05-11"}
         answer: [difference_b_minus_a]
         match_on: [period_a.mean, period_b.mean, difference_b_minus_a]
+        verdict: {path: difference_b_minus_a, yes_when: positive}
+        direction: difference_b_minus_a
     alternative_routes:
+      - - tool: compare_periods
+          args: {metric: steps, period_a_start: "2016-04-28", period_a_end: "2016-05-04",
+                 period_b_start: "2016-05-05", period_b_end: "2016-05-11"}
+          answer: [period_a.mean, period_b.mean]
+          match_on: [period_a.mean, period_b.mean, difference_b_minus_a]
       - - tool: weekly_summary
           args: {metric: steps, end_date: "2016-05-04"}
           answer: [total]

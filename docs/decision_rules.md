@@ -14,7 +14,7 @@ holds:
 - for any one of `end_to_end`, `refusal_correct`, `unsupported_numbers` or
   `unsupported_dates`: 2 or more errors I label that the scorer misses.
 
-If scorer v2 is built, both models are scored again with it. The scorer v1 numbers stay in
+If scorer v2 is built, both models are scored again with it. The scorer v1.1 numbers stay in
 the repo, next to the v2 numbers.
 
 Limit: the samples are small, so the intervals are wide. With n = 40 and a point estimate
@@ -33,8 +33,10 @@ An ablation with dates as enums in the tool schemas is run if, in the Gemma main
 
 ## 3. Runs and repeats
 
+- Headline: the per-run `end_to_end` pass rate. For Haiku it is the mean of its 3 main
+  runs (with their min and max); for Gemma it is its 1 main run.
 - Haiku main run: thinking off, 3 repeats; `pass_all_repeats` (every repeat passes
-  `end_to_end`) is reported.
+  `end_to_end`) is reported for Haiku only, since Gemma has 1 run.
 - Haiku with thinking on: 1 run, as a side comparison.
 - Gemma main run: 1 run (temperature 0, top_k 1). Gemma's determinism is checked by running
   3 questions again, and reported; it is not assumed for the other questions (a stated
@@ -42,9 +44,11 @@ An ablation with dates as enums in the tool schemas is run if, in the Gemma main
 
 ## 4. Freeze
 
-After the first Gemma output is read, the questions (v1.3), the prompt (v1.1), the tools
-and scorer v1 do not change because of what a model answered. Any change makes a new
-version: both models are run again, and the old results are kept.
+The questions (v1.4), the prompt (v1.1), the tools and scorer v1.1 do not change because of
+what a model answered. Any change makes a new version: both models are run again, and the
+old results are kept. Questions v1.4 and scorer v1.1 come from an audit made before any
+Gemma output was read (2026-11-25 19:24); scorer v1.1 is the last scorer change before
+blind labeling.
 
 ## 5. Reporting
 

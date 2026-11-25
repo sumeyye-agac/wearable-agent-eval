@@ -8,7 +8,12 @@ Per answer (one question, one repeat):
   when the question has no expected calls.
 - answer_correct: the answer states every answer value of a matched route (within 1%, or
   as hours and minutes within 1 minute, or as decimal hours) and one accepted form of
-  every answer date. None when the question has no answer values or dates.
+  every answer date. None when the question has no answer values or dates. A negative r
+  must be written with its minus sign. For a "how many <noun>" question with a small
+  count, the first count written next to that noun must be the answer value.
+- verdict_correct: for yes/no and comparison questions with a verdict or direction in the
+  ground truth. False when the answer starts with the wrong "Yes"/"No", or uses words of
+  the wrong direction ("more", "fewer", ...) and none of the right one. None otherwise.
 - numbers / unsupported_numbers: the numbers in the answer, and those no source supports
   (rules at number_sources and support). Unsupported whole numbers below 13 are kept apart
   as low_confidence_numbers: they are counted, but not in unsupported_numbers or the
@@ -20,7 +25,7 @@ Per answer (one question, one repeat):
   date the tools already give). Accepted as supported, but counted: each is a number or
   date the model worked out itself.
 - refusal_correct: for expect_refusal questions only. The answer says the data cannot
-  answer (REFUSAL phrases) and has no unsupported number.
+  answer (REFUSAL phrases) and has no unsupported number, small whole numbers included.
 - coverage_mentioned: for expected calls with a coverage path only. The answer states
   that day count (metrics.coverage_mentioned).
 - call_validity: one label per tool call (tool_calls.py); no_call: the question has
@@ -46,10 +51,10 @@ from wearable_eval.ground_truth import NUMERIC_TOLERANCE, TEXT_TOLERANCE_MINUTES
 from wearable_eval.metrics import coverage_mentioned
 from wearable_eval.tool_calls import LABELS, classify
 
-SCORER_VERSION = "v1"
+SCORER_VERSION = "v1.1"
 
-METRICS = ("tool_result_correct", "answer_correct", "refusal_correct", "coverage_mentioned",
-           "end_to_end")
+METRICS = ("tool_result_correct", "answer_correct", "verdict_correct", "refusal_correct",
+           "coverage_mentioned", "end_to_end")
 
 # Unsupported whole numbers below this are low-confidence: "2 vigorous minutes", "1 of 7"
 # and list words are too often harmless to count against the headline.
@@ -296,12 +301,16 @@ def _is_small_integer(number: Number) -> bool:
 _MINUTES_AFTER = re.compile(rf"^\s*(?:{_MINUTES})\b", re.IGNORECASE)
 
 
-def _states_value(numbers: list[Number], value: float, has_text: bool, answer: str) -> bool:
+def _states_value(numbers: list[Number], value: float, has_text: bool, answer: str,
+                  signed: bool = False) -> bool:
     """Whether the answer states one answer value. has_text: the value is in minutes and
     the tool also gave it as hours and minutes, so the minute forms ("7 h 31 min",
     "14 minutes") are accepted within TEXT_TOLERANCE_MINUTES, and decimal hours at the
     decimals written. A whole count up to ten may be written as a word ("four of the
-    seven nights"), as in coverage_mentioned."""
+    seven nights"), as in coverage_mentioned. signed: the sign is the meaning (r), so a
+    negative value must be written with its minus sign."""
+    if signed and value < 0:
+        return any(n.kind == "number" and n.signed and _close(n.value, value) for n in numbers)
     for n in numbers:
         if n.kind == "number" and _close(abs(n.value), abs(value)):
             return True
@@ -321,15 +330,76 @@ def _states_date(mentions: list[dates.Mention], accepted: list[str]) -> bool:
     return any(item.day in wanted for m in mentions for item in m.items)
 
 
+_COUNT_WORDS = {w: i for i, w in enumerate(
+    ("zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+     "eleven", "twelve"))}
+# A count followed by one of these counts something else ("7 hours on 3 nights").
+_OTHER_UNITS = {"hour", "hours", "h", "hr", "hrs", "minute", "minutes", "min", "mins",
+                "step", "steps", "bpm", "percent"}
+_HOW_MANY = re.compile(r"\bhow many (\w+)", re.IGNORECASE)
+
+
+def first_count(answer: str, noun: str, reference: date) -> int | None:
+    """The first count the answer gives for a noun ("nights"): at the first mention of the
+    noun that has one, the earliest whole number or number word in the 4 words before it,
+    skipping numbers of another unit. Dates are taken out first."""
+    text = _blank(answer, [(m.start, m.end) for m in dates.find_dates(answer, reference)])
+    tokens = re.findall(r"[a-z]+|\d+(?:[.,]\d+)*", text.lower())
+    singular = noun.lower().rstrip("s")
+    for i, token in enumerate(tokens):
+        if token.rstrip("s") != singular:
+            continue
+        for j in range(max(0, i - 4), i):
+            value = int(tokens[j]) if tokens[j].isdigit() else _COUNT_WORDS.get(tokens[j])
+            if value is not None and tokens[j + 1] not in _OTHER_UNITS:
+                return value
+    return None
+
+
 def _route_stated(route: list[dict[str, Any]], numbers: list[Number],
-                  mentions: list[dates.Mention], answer: str) -> bool | None:
+                  mentions: list[dates.Mention], answer: str, question: str,
+                  reference: date) -> bool | None:
     answers = [a for call in route for a in call["answer"]]
     answer_dates = [d for call in route for d in call.get("answer_dates") or []]
     if not answers and not answer_dates:
         return None
-    return (all(_states_value(numbers, a["value"], a["text"] is not None, answer)
-                for a in answers)
+    how_many = _HOW_MANY.search(question)
+
+    def stated(a: dict[str, Any]) -> bool:
+        value = a["value"]
+        if how_many and float(value).is_integer() and 0 <= value < SMALL_INTEGER:
+            return first_count(answer, how_many.group(1), reference) == value
+        signed = a["path"] == "r" or a["path"].endswith(".r")
+        return _states_value(numbers, value, a["text"] is not None, answer, signed)
+
+    return (all(stated(a) for a in answers)
             and all(_states_date(mentions, d["accepted"]) for d in answer_dates))
+
+
+_UP = re.compile(r"\b(?:more|higher|increase[ds]?|increasing|rose|risen|up|gain(?:ed|s)?)\b",
+                 re.IGNORECASE)
+_DOWN = re.compile(r"\b(?:less|fewer|lower|decrease[ds]?|decreasing|fell|fallen|down|drop"
+                   r"(?:ped|s)?|decline[ds]?|reduced?|reduction)\b", re.IGNORECASE)
+_YES_NO = re.compile(r"^\W*(yes|no)\b", re.IGNORECASE)
+
+
+def verdict_correct(answer: str | None, truth: dict[str, Any]) -> bool | None:
+    """The yes/no and the direction of an answer against the ground truth's verdict and
+    direction. Only clear contradictions count: a leading "Yes"/"No" that is wrong, or
+    words of the wrong direction with none of the right one. None when the question has
+    neither."""
+    verdict, direction = truth.get("verdict"), truth.get("direction")
+    if verdict is None and direction is None:
+        return None
+    text = answer or ""
+    said = _YES_NO.match(text)
+    if verdict and said and said.group(1).lower() != verdict:
+        return False
+    if direction:
+        right, wrong = (_UP, _DOWN) if direction == "up" else (_DOWN, _UP)
+        if wrong.search(text) and not right.search(text):
+            return False
+    return True
 
 
 def _call_matches(expected: dict[str, Any], call: dict[str, Any]) -> bool:
@@ -389,26 +459,30 @@ def score_answer(record: dict[str, Any], truth: dict[str, Any],
 
     matched = [r for r in routes if all(any(_call_matches(e, c) for c in calls) for e in r)]
     tool_result_correct = bool(matched) if routes else None
-    stated = [_route_stated(r, numbers, mentions, answer or "") for r in (matched or routes)]
+    stated = [_route_stated(r, numbers, mentions, answer or "", question, reference)
+              for r in (matched or routes)]
     answer_correct = None if all(s is None for s in stated) else any(s for s in stated)
 
     refusal = None
     if truth["expect_refusal"]:
-        refusal = bool(answer) and REFUSAL.search(answer) is not None and not unsupported
+        refusal = (bool(answer) and REFUSAL.search(answer) is not None and not unsupported
+                   and not low_confidence)
     coverage = [coverage_mentioned(answer, c["value"])
                 for e in truth["expected_calls"] for c in e.get("coverage") or []]
     coverage_ok = all(coverage) if coverage else None
 
     route_tools = {c["tool"] for r in routes for c in r}
     validity = [classify(c, route_tools) for c in calls]
+    verdict = verdict_correct(answer, truth)
     end_to_end = (record["status"] == "answered" and not unsupported and not unsupported_dates
                   and all(v is not False for v in (tool_result_correct, answer_correct,
-                                                    refusal, coverage_ok)))
+                                                    verdict, refusal, coverage_ok)))
     return {
         "question_id": record["question_id"], "repeat": record["repeat"],
         "category": truth["category"], "status": record["status"],
         "tool_result_correct": tool_result_correct,
         "answer_correct": answer_correct,
+        "verdict_correct": verdict,
         "refusal_correct": refusal,
         "coverage_mentioned": coverage_ok,
         "end_to_end": end_to_end,
