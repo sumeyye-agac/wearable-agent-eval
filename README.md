@@ -1,10 +1,10 @@
 # wearable-agent-eval
 
-> **Status: in progress** (updated 2026-11-24)
+> **Status: in progress** (updated 2026-11-25)
 >
-> ✅ **Last done:** scorer v1 parts 1-2: end-to-end pass per answer with a source for every number and date, then validation without any model (oracle 34/34, empty 0/34, null baseline, mutation test).
+> ✅ **Last done:** scorer v1 (parts 1-3): end-to-end pass per answer with a source for every number and date, validation without any model, and the labeling policy and decision rules, written before any Gemma output.
 >
-> 🔜 **Next:** scorer v1 part 3: labeling policy and decision rules, then the scorer-v1 tag.
+> 🔜 **Next:** a LiteRT-LM client so Gemma runs through the same agent loop, then the runs.
 
 <details>
 <summary><b>Plan and progress</b></summary>
@@ -20,11 +20,11 @@
 **A. Freeze the inputs**
 - [x] Question set v1.3
 - [x] Prompt v1.1
-- [ ] Scorer v1 with validation: null baseline, mutation test, labeling policy, and decision rules written before any Gemma output is read
+- [x] Scorer v1 with validation: null baseline, mutation test, labeling policy, and decision rules written before any Gemma output is read
 
 **B. Runs on the frozen inputs**
-- [ ] Claude Haiku 5.5 with thinking on and with thinking off
-- [ ] Gemma-4-E2B-it on my Mac
+- [ ] Claude Haiku 5.5: thinking off x3 (main), thinking on x1
+- [ ] Gemma-4-E2B-it on my Mac: main run x1; determinism checked on 3 questions
 - [ ] Blind labeling of 60 answers
 - [ ] First comparison table and failure taxonomy
 
