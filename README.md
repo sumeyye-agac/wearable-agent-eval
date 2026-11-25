@@ -2,9 +2,9 @@
 
 > **Status: in progress** (updated 2026-11-25)
 >
-> ✅ **Last done:** the Claude Haiku 5.5 runs (thinking off x3, thinking on x1), scored with scorer v1.1 and saved in `runs/final/`.
+> ✅ **Last done:** the Gemma-4-E2B-it main run on my Mac (x1, constrained decoding) and a 3-question determinism rerun, scored with scorer v1.1 and saved in `runs/final/`.
 >
-> 🔜 **Next:** the Gemma-4-E2B-it main run on my Mac, then the first results table.
+> 🔜 **Next:** the first results table, written by a script from the saved scores.
 
 <details>
 <summary><b>Plan and progress</b></summary>
@@ -24,7 +24,7 @@
 
 **B. Runs on the frozen inputs**
 - [x] Claude Haiku 5.5: thinking off x3 (main), thinking on x1
-- [ ] Gemma-4-E2B-it on my Mac: main run x1; determinism checked on 3 questions
+- [x] Gemma-4-E2B-it on my Mac: main run x1; determinism checked on 3 questions
 - [ ] Blind labeling of 60 answers
 - [ ] First comparison table and failure taxonomy
 

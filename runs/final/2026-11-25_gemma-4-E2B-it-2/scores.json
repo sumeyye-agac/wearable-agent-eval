@@ -1,0 +1,725 @@
+{
+  "scorer_version": "v1.1",
+  "model": "gemma-4-E2B-it",
+  "questions_version": "v1.4",
+  "answers": 3,
+  "repeats": [
+    1
+  ],
+  "statuses": {
+    "answered": 3
+  },
+  "summary": {
+    "tool_result_correct": {
+      "per_repeat": [
+        {
+          "k": 1,
+          "n": 2,
+          "rate": 0.5
+        }
+      ],
+      "all": {
+        "k": 1,
+        "n": 2,
+        "rate": 0.5
+      },
+      "min_rate": 0.5,
+      "max_rate": 0.5,
+      "n_questions": 2
+    },
+    "answer_correct": {
+      "per_repeat": [
+        {
+          "k": 1,
+          "n": 2,
+          "rate": 0.5
+        }
+      ],
+      "all": {
+        "k": 1,
+        "n": 2,
+        "rate": 0.5
+      },
+      "min_rate": 0.5,
+      "max_rate": 0.5,
+      "n_questions": 2
+    },
+    "verdict_correct": {
+      "per_repeat": [
+        {
+          "k": 1,
+          "n": 1,
+          "rate": 1.0
+        }
+      ],
+      "all": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "min_rate": 1.0,
+      "max_rate": 1.0,
+      "n_questions": 1
+    },
+    "refusal_correct": {
+      "per_repeat": [
+        {
+          "k": 1,
+          "n": 1,
+          "rate": 1.0
+        }
+      ],
+      "all": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "min_rate": 1.0,
+      "max_rate": 1.0,
+      "n_questions": 1
+    },
+    "coverage_mentioned": {
+      "per_repeat": [
+        {
+          "k": 0,
+          "n": 0,
+          "rate": null
+        }
+      ],
+      "all": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "min_rate": null,
+      "max_rate": null,
+      "n_questions": 0
+    },
+    "end_to_end": {
+      "per_repeat": [
+        {
+          "k": 2,
+          "n": 3,
+          "rate": 0.6667
+        }
+      ],
+      "all": {
+        "k": 2,
+        "n": 3,
+        "rate": 0.6667
+      },
+      "min_rate": 0.6667,
+      "max_rate": 0.6667,
+      "n_questions": 3
+    },
+    "unsupported_numbers": {
+      "per_repeat": [
+        {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0
+        }
+      ],
+      "all": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "min_rate": 0.0,
+      "max_rate": 0.0
+    },
+    "answers_with_unsupported_number": {
+      "per_repeat": [
+        {
+          "k": 0,
+          "n": 3,
+          "rate": 0.0
+        }
+      ],
+      "all": {
+        "k": 0,
+        "n": 3,
+        "rate": 0.0
+      },
+      "min_rate": 0.0,
+      "max_rate": 0.0
+    },
+    "unsupported_dates": {
+      "per_repeat": [
+        {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0
+        }
+      ],
+      "all": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "min_rate": 0.0,
+      "max_rate": 0.0
+    },
+    "answers_with_unsupported_date": {
+      "per_repeat": [
+        {
+          "k": 0,
+          "n": 3,
+          "rate": 0.0
+        }
+      ],
+      "all": {
+        "k": 0,
+        "n": 3,
+        "rate": 0.0
+      },
+      "min_rate": 0.0,
+      "max_rate": 0.0
+    },
+    "low_confidence_numbers": {
+      "per_repeat": [
+        {
+          "k": 0,
+          "n": 1,
+          "rate": 0.0
+        }
+      ],
+      "all": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "min_rate": 0.0,
+      "max_rate": 0.0
+    },
+    "model_computed": {
+      "per_repeat": [
+        {
+          "k": 0,
+          "n": 2,
+          "rate": 0.0
+        }
+      ],
+      "all": {
+        "k": 0,
+        "n": 2,
+        "rate": 0.0
+      },
+      "min_rate": 0.0,
+      "max_rate": 0.0
+    },
+    "answers_with_model_computed": {
+      "per_repeat": [
+        {
+          "k": 0,
+          "n": 3,
+          "rate": 0.0
+        }
+      ],
+      "all": {
+        "k": 0,
+        "n": 3,
+        "rate": 0.0
+      },
+      "min_rate": 0.0,
+      "max_rate": 0.0
+    },
+    "no_call": {
+      "per_repeat": [
+        {
+          "k": 0,
+          "n": 2,
+          "rate": 0.0
+        }
+      ],
+      "all": {
+        "k": 0,
+        "n": 2,
+        "rate": 0.0
+      },
+      "min_rate": 0.0,
+      "max_rate": 0.0
+    }
+  },
+  "by_category": {
+    "activity": {
+      "tool_result_correct": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "answer_correct": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "verdict_correct": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "refusal_correct": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "coverage_mentioned": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "end_to_end": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "unsupported_numbers": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "answers_with_unsupported_number": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "unsupported_dates": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "answers_with_unsupported_date": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "low_confidence_numbers": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "model_computed": {
+        "k": 0,
+        "n": 2,
+        "rate": 0.0
+      },
+      "answers_with_model_computed": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "no_call": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      }
+    },
+    "comparison": {
+      "tool_result_correct": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "answer_correct": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "verdict_correct": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "refusal_correct": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "coverage_mentioned": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "end_to_end": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "unsupported_numbers": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "answers_with_unsupported_number": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "unsupported_dates": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "answers_with_unsupported_date": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "low_confidence_numbers": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "model_computed": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "answers_with_model_computed": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "no_call": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      }
+    },
+    "unanswerable": {
+      "tool_result_correct": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "answer_correct": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "verdict_correct": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "refusal_correct": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "coverage_mentioned": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "end_to_end": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "unsupported_numbers": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "answers_with_unsupported_number": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "unsupported_dates": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "answers_with_unsupported_date": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "low_confidence_numbers": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "model_computed": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "answers_with_model_computed": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "no_call": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      }
+    }
+  },
+  "pass_all_repeats": {
+    "k": 2,
+    "n": 3,
+    "rate": 0.6667,
+    "repeats": 1
+  },
+  "call_validity": {
+    "valid": {
+      "k": 2,
+      "n": 2,
+      "rate": 1.0
+    },
+    "off_route": {
+      "k": 0,
+      "n": 2,
+      "rate": 0.0
+    },
+    "schema_invalid": {
+      "k": 0,
+      "n": 2,
+      "rate": 0.0
+    },
+    "malformed_args": {
+      "k": 0,
+      "n": 2,
+      "rate": 0.0
+    }
+  },
+  "consistency": {
+    "k": 3,
+    "n": 3,
+    "rate": 1.0
+  },
+  "usage": {
+    "attempts": 3,
+    "cost_usd": 0.0,
+    "requests": 5,
+    "input_tokens": 11148,
+    "output_tokens": 137,
+    "thinking_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "seconds_per_answer_median": 13.276
+  },
+  "per_question": {
+    "act-01": {
+      "category": "activity",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        true
+      ],
+      "answer_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "most_active_day"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "cmp-01": {
+      "category": "comparison",
+      "status": [
+        "answered"
+      ],
+      "tool_result_correct": [
+        false
+      ],
+      "answer_correct": [
+        false
+      ],
+      "verdict_correct": [
+        true
+      ],
+      "end_to_end": [
+        false
+      ],
+      "pass_rate": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "pass_all_repeats": false,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        [
+          "compare_periods"
+        ]
+      ],
+      "call_validity": [
+        [
+          "valid"
+        ]
+      ],
+      "consistent": true
+    },
+    "una-01": {
+      "category": "unanswerable",
+      "status": [
+        "answered"
+      ],
+      "refusal_correct": [
+        true
+      ],
+      "end_to_end": [
+        true
+      ],
+      "pass_rate": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "pass_all_repeats": true,
+      "unsupported_numbers": [
+        []
+      ],
+      "low_confidence_numbers": [
+        []
+      ],
+      "unsupported_dates": [
+        []
+      ],
+      "model_computed": [
+        []
+      ],
+      "tools_called": [
+        []
+      ],
+      "call_validity": [
+        []
+      ],
+      "consistent": true
+    }
+  },
+  "answers_scored": [
+    {
+      "question_id": "act-01",
+      "repeat": 1,
+      "category": "activity",
+      "status": "answered",
+      "tool_result_correct": true,
+      "answer_correct": true,
+      "verdict_correct": null,
+      "refusal_correct": null,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 1,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 1,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [
+        {
+          "text": "26100",
+          "source": "most_active_day:most_active.steps"
+        }
+      ],
+      "date_sources": [
+        {
+          "text": "2016-03-17",
+          "source": "tool:most_active_day"
+        }
+      ],
+      "tools_called": [
+        "most_active_day"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "cmp-01",
+      "repeat": 1,
+      "category": "comparison",
+      "status": "answered",
+      "tool_result_correct": false,
+      "answer_correct": false,
+      "verdict_correct": true,
+      "refusal_correct": null,
+      "coverage_mentioned": null,
+      "end_to_end": false,
+      "numbers": 0,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 0,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [],
+      "date_sources": [],
+      "tools_called": [
+        "compare_periods"
+      ],
+      "call_validity": [
+        "valid"
+      ],
+      "no_call": false
+    },
+    {
+      "question_id": "una-01",
+      "repeat": 1,
+      "category": "unanswerable",
+      "status": "answered",
+      "tool_result_correct": null,
+      "answer_correct": null,
+      "verdict_correct": null,
+      "refusal_correct": true,
+      "coverage_mentioned": null,
+      "end_to_end": true,
+      "numbers": 0,
+      "unsupported_numbers": [],
+      "low_confidence_numbers": [],
+      "dates": 0,
+      "unsupported_dates": [],
+      "model_computed": [],
+      "number_sources": [],
+      "date_sources": [],
+      "tools_called": [],
+      "call_validity": [],
+      "no_call": null
+    }
+  ]
+}
