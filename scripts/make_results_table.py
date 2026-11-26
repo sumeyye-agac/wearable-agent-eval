@@ -1,7 +1,7 @@
 """Write the results table and 3 failure examples into README.md from the saved runs.
 
 Reads only runs/final/*/scores.json, transcripts.jsonl and eval/ground_truth.json; never calls
-a model. Every number in the README block comes from this script.
+a model. Edit the README block only by rerunning this script.
 
     .venv/bin/python scripts/make_results_table.py           # rewrite the README block
     .venv/bin/python scripts/make_results_table.py --check   # exit 1 if the README is stale
@@ -227,8 +227,7 @@ def build_block() -> str:
         START,
         f"*Draft: scorer {scorer}, before blind labeling. Questions {questions}: "
         f"{n_questions} questions, {n_refusal} of them should be refused. "
-        "Written by `scripts/make_results_table.py` from `runs/final/`; no number here is "
-        "typed by hand.*",
+        "Written by `scripts/make_results_table.py` from `runs/final/`.*",
         "",
         table(runs),
         "",

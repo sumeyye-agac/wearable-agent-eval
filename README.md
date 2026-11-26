@@ -52,7 +52,7 @@ Gemma-4-E2B-it.
 ## Results
 
 <!-- results:start -->
-*Draft: scorer v1.1, before blind labeling. Questions v1.4: 34 questions, 8 of them should be refused. Written by `scripts/make_results_table.py` from `runs/final/`; no number here is typed by hand.*
+*Draft: scorer v1.1, before blind labeling. Questions v1.4: 34 questions, 8 of them should be refused. Written by `scripts/make_results_table.py` from `runs/final/`.*
 
 | Run | Repeats | End-to-end pass | Refusal correct | Valid tool calls |
 | --- | --- | --- | --- | --- |
