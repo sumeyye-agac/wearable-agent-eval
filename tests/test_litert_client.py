@@ -165,6 +165,50 @@ def test_a_malformed_call_reaches_the_record_as_is(monkeypatch, users):
     assert error["what"].startswith("arguments are not valid JSON")
 
 
+# The error litert-lm 0.19.2 raised on hr-02 with constrained decoding off (shortened).
+REJECTED_CALL = "<|tool_call>call:correlation{lag_days:0,metric_x:steps,metric_y:mean_hr}<tool_call|>"
+LIBRARY_ERROR = (
+    "litert_lm_conversation_send_message failed with status INVALID_ARGUMENT (3): "
+    "INVALID_ARGUMENT: Failed to parse tool calls from code block: "
+    "call:correlation{lag_days:0,metric_x:steps,metric_y:mean_hr}\n"
+    f"full response: {REJECTED_CALL}\n"
+    "error: Failed to parse FC tool calls: FallThrough(ParseCancelledError(...))")
+
+
+def test_a_call_the_library_cannot_parse_reaches_the_record_as_text(monkeypatch, users):
+    client, _ = fake_client(monkeypatch, [])
+
+    def send_raw(conv, message, max_output_tokens):
+        raise RuntimeError(LIBRARY_ERROR)
+
+    monkeypatch.setattr(lc, "_send_raw", send_raw)
+    record = run_litert(client, users["6962181067"], "Do I walk more on days with a "
+                        "higher heart rate?", lc.MODEL_NAME)
+    # Same rule as a malformed call: answered, not repaired, no tool ran.
+    assert record["status"] == "answered" and record["tool_calls"] == []
+    assert record["answer"] == REJECTED_CALL
+    litert = record["requests"][0]["response"]["litert"]
+    (error,) = litert["parse_errors"]
+    assert error["raw"] == REJECTED_CALL and error["library_error"] == LIBRARY_ERROR
+    assert litert["benchmark"]["last_decode_token_count"] is None
+
+
+def test_other_library_errors_are_not_caught(monkeypatch):
+    client, _ = fake_client(monkeypatch, [])
+
+    def send_raw(conv, message, max_output_tokens):
+        raise RuntimeError("litert_lm_conversation_send_message failed: out of memory")
+
+    monkeypatch.setattr(lc, "_send_raw", send_raw)
+    with pytest.raises(RuntimeError, match="out of memory"):
+        client.messages.create(model="m", max_tokens=10, system="s", tools=[],
+                               messages=[{"role": "user", "content": "q"}])
+
+
+def test_rejected_reply_without_a_quoted_reply_keeps_the_whole_error():
+    assert lc.rejected_reply("Failed to parse tool calls: x") == "Failed to parse tool calls: x"
+
+
 def test_a_changed_history_is_refused(monkeypatch):
     client, _ = fake_client(monkeypatch, [json.dumps(VALID)])
     client.messages.create(model="m", max_tokens=10, system="s", tools=[],

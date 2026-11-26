@@ -13,7 +13,10 @@ and is saved by RecordingClient with the request.
 Conversion rules, in both directions, are format conversion only. A tool call whose
 arguments are not a JSON object is not repaired: it comes back as a text block holding the
 call as the library returned it, with a parse_error. The library's own Message.from_json is
-not used, because it turns arguments that do not parse into {} without saying so.
+not used, because it turns arguments that do not parse into {} without saying so. When
+the library's own tool-call parser rejects the reply (it raises "Failed to parse tool
+calls"), the same rule applies: the reply text it quotes comes back as text, with a
+parse_error.
 
 LiteRT-LM keeps the conversation in its KV cache, while the Anthropic API is stateless and
 gets the whole history every time. So the client sends only the new message of each
@@ -216,6 +219,23 @@ def _spec_tool_class() -> type:
     return SpecTool
 
 
+TOOL_CALL_PARSE_FAILED = "Failed to parse tool calls"
+BENCHMARK_FIELDS = ("time_to_first_token_in_second", "last_prefill_token_count",
+                    "last_prefill_tokens_per_second", "last_decode_token_count",
+                    "last_decode_tokens_per_second")
+
+
+def rejected_reply(error: str) -> str:
+    """The model's reply quoted in the library's "Failed to parse tool calls" error, or the
+    whole error if it quotes none."""
+    start = error.find("full response: ")
+    if start < 0:
+        return error
+    start += len("full response: ")
+    end = error.find("\nerror: ", start)
+    return error[start:end if end >= 0 else None]
+
+
 def _send_raw(conversation: Any, message: Any, max_output_tokens: int) -> str:
     """send_message() of litert-lm 0.19.2 without automatic tool calling, stopped before
     Message.from_json: returns the reply JSON exactly as the library produced it."""
@@ -304,21 +324,32 @@ class LiteRTClient:
         message = to_litert_message(messages[-1], tool_names_by_id(messages))
         turn = len(self._history) // 2 + 1
         start = time.perf_counter()
-        raw = _send_raw(self._conversation, message, max_tokens)
-        seconds = round(time.perf_counter() - start, 3)
-        b = self._conversation.get_benchmark_info()
-        bench = {k: getattr(b, k) for k in (
-            "time_to_first_token_in_second", "last_prefill_token_count",
-            "last_prefill_tokens_per_second", "last_decode_token_count",
-            "last_decode_tokens_per_second")}
         try:
-            reply = json.loads(raw) if raw else {}
-            if not isinstance(reply, dict):
-                raise ValueError(f"reply is {type(reply).__name__}, not an object")
-            blocks, errors = from_litert_reply(reply, turn)
-        except ValueError as err:  # the library's own JSON did not parse: keep it as text
+            raw = _send_raw(self._conversation, message, max_tokens)
+            rejected = None
+        except RuntimeError as err:
+            if TOOL_CALL_PARSE_FAILED not in str(err):
+                raise
+            raw, rejected = rejected_reply(str(err)), str(err)
+        seconds = round(time.perf_counter() - start, 3)
+        if rejected is None:
+            b = self._conversation.get_benchmark_info()
+            bench = {k: getattr(b, k) for k in BENCHMARK_FIELDS}
+        else:  # not known whether the library updated them for a rejected reply
+            bench = dict.fromkeys(BENCHMARK_FIELDS)
+        if rejected is not None:  # the library's tool-call parser refused it: keep it as text
             blocks = [SimpleNamespace(type="text", text=raw)]
-            errors = [{"what": f"reply is not a JSON object: {err}", "raw": raw}]
+            errors = [{"what": "LiteRT-LM could not parse the tool call", "raw": raw,
+                       "library_error": rejected}]
+        else:
+            try:
+                reply = json.loads(raw) if raw else {}
+                if not isinstance(reply, dict):
+                    raise ValueError(f"reply is {type(reply).__name__}, not an object")
+                blocks, errors = from_litert_reply(reply, turn)
+            except ValueError as err:  # the library's own JSON did not parse: keep it as text
+                blocks = [SimpleNamespace(type="text", text=raw)]
+                errors = [{"what": f"reply is not a JSON object: {err}", "raw": raw}]
         decode = bench["last_decode_token_count"] or 0
         response = SimpleNamespace(
             content=blocks,

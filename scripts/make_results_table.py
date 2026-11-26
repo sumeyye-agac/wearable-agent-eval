@@ -17,7 +17,7 @@ from pathlib import Path
 from typing import Any
 
 from wearable_eval.ground_truth import resolve
-from wearable_eval.scoring import REFUSAL
+from wearable_eval.scoring import REFUSAL, latest_lines
 
 REPO = Path(__file__).resolve().parents[1]
 README = REPO / "README.md"
@@ -51,14 +51,28 @@ def wilson(k: float, n: float, z: float = 1.96) -> tuple[float, float]:
     return max(0.0, centre - half), min(1.0, centre + half)
 
 
-def per_repeat(scores: dict[str, Any], metric: str) -> list[tuple[int, int]]:
-    """(k, n) for each repeat of a run."""
+def parse_errors_by_repeat(transcript: list[dict[str, Any]]) -> dict[int, int]:
+    """LiteRT parse errors per repeat: calls the client could not read, so they are not in
+    tool_calls and the scorer does not see them. Counted on the lines the scorer kept."""
+    out: dict[int, int] = {}
+    for record in latest_lines(transcript):
+        n = sum(len(((r.get("response") or {}).get("litert") or {}).get("parse_errors") or [])
+                for r in record["requests"])
+        out[record["repeat"]] = out.get(record["repeat"], 0) + n
+    return out
+
+
+def per_repeat(scores: dict[str, Any], metric: str,
+               parse_errors: dict[int, int] | None = None) -> list[tuple[int, int]]:
+    """(k, n) for each repeat of a run. Valid tool calls: a parse error counts as one
+    invalid call, as in decision rule 2."""
     if metric == "valid_calls":
         out = []
         for repeat in scores["repeats"]:
             labels = [label for a in scores["answers_scored"] if a["repeat"] == repeat
                       for label in a["call_validity"]]
-            out.append((labels.count("valid"), len(labels)))
+            unread = (parse_errors or {}).get(repeat, 0)
+            out.append((labels.count("valid"), len(labels) + unread))
         return out
     return [(c["k"], c["n"]) for c in scores["summary"][metric]["per_repeat"]]
 
@@ -88,9 +102,10 @@ def interval(counts: list[tuple[int, int]]) -> tuple[float, float]:
     return wilson(mean_rate * mean_n, mean_n)
 
 
-def refusal_note(runs: list[tuple[str, dict[str, Any]]], n_refusal: int) -> str:
+def refusal_note(runs: list[tuple[str, dict[str, Any], dict[int, int]]],
+                 n_refusal: int) -> str:
     """Whether the refusal intervals of the first two rows (Haiku off, Gemma) overlap."""
-    (lo_a, hi_a), (lo_b, hi_b) = (interval(per_repeat(s, "refusal_correct")) for _, s in runs[:2])
+    (lo_a, hi_a), (lo_b, hi_b) = (interval(per_repeat(s, "refusal_correct")) for _, s, _ in runs[:2])
     if lo_a <= hi_b and lo_b <= hi_a:
         return (f"- Refusal has only {n_refusal} questions per run, so its intervals are wide; "
                 "the Haiku (thinking off) and Gemma intervals overlap, so the refusal gap is "
@@ -99,11 +114,11 @@ def refusal_note(runs: list[tuple[str, dict[str, Any]]], n_refusal: int) -> str:
             "Gemma intervals do not overlap.")
 
 
-def table(runs: list[tuple[str, dict[str, Any]]]) -> str:
+def table(runs: list[tuple[str, dict[str, Any], dict[int, int]]]) -> str:
     lines = ["| Run | Repeats | End-to-end pass | Refusal correct | Valid tool calls |",
              "| --- | --- | --- | --- | --- |"]
-    for label, scores in runs:
-        cells = [cell(per_repeat(scores, m))
+    for label, scores, unread in runs:
+        cells = [cell(per_repeat(scores, m, unread))
                  for m in ("end_to_end", "refusal_correct", "valid_calls")]
         lines.append(f"| {label} | {len(scores['repeats'])} | " + " | ".join(cells) + " |")
     return "\n".join(lines)
@@ -211,9 +226,11 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
 
 
 def build_block() -> str:
-    runs = [(label, json.loads((REPO / d / "scores.json").read_text(encoding="utf-8")))
+    runs = [(label, json.loads((REPO / d / "scores.json").read_text(encoding="utf-8")),
+             parse_errors_by_repeat(read_jsonl(REPO / d / "transcripts.jsonl")))
             for label, d in RUNS]
-    versions = {(s["scorer_version"], s["questions_version"]) for _, s in runs}
+    versions = {(s["scorer_version"], s["questions_version"]) for _, s, _ in runs}
+    n_parse_errors = sum(n for _, _, unread in runs for n in unread.values())
     if len(versions) != 1:
         raise SystemExit(f"runs were scored with different scorer/question versions: {versions}")
     scorer, questions = versions.pop()
@@ -237,7 +254,8 @@ def build_block() -> str:
         "as 102 answers would make the interval too narrow.",
         "- Valid tool calls count calls, not questions (n differs per run); the Haiku CI uses "
         "the mean number of calls per run. Calls are not independent either: one answer can "
-        "make several.",
+        "make several. A call the client could not read (a parse error) counts as one "
+        f"invalid call; there are {n_parse_errors} in these runs.",
         refusal_note(runs, n_refusal),
         "- Gemma ran once at temperature 0; a rerun of 3 questions gave identical calls and "
         "answers.",

@@ -57,3 +57,22 @@ def test_why_names_the_failed_check():
     assert mrt.why("wrong_tool_result", a, q, {**record, "tool_calls": []}) == (
         "no successful `most_active_day` call")
     assert mrt.why("missing_coverage", a, q, record).startswith("the tool result covers 5 days")
+
+
+def test_a_parse_error_counts_as_an_invalid_call():
+    scores = {"repeats": [1], "answers_scored": [
+        {"repeat": 1, "call_validity": ["valid", "off_route"]},
+        {"repeat": 1, "call_validity": []}]}
+    unread = {"parse_errors": [{"what": "LiteRT-LM could not parse the tool call"}]}
+    transcript = [
+        {"question_id": "q1", "repeat": 1, "status": "answered",
+         "requests": [{"response": {"litert": {"parse_errors": []}}}]},
+        {"question_id": "q2", "repeat": 1, "status": "answered",
+         "requests": [{"response": {"litert": unread}}]},
+        {"question_id": "q3", "repeat": 1, "status": "answered",   # Haiku: no litert
+         "requests": [{"response": {}}]},
+    ]
+    parse_errors = mrt.parse_errors_by_repeat(transcript)
+    assert parse_errors == {1: 1}
+    assert mrt.per_repeat(scores, "valid_calls", parse_errors) == [(1, 3)]
+    assert mrt.per_repeat(scores, "valid_calls") == [(1, 2)]
