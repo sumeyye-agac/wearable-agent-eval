@@ -1,9 +1,5 @@
 # wearable-agent-eval
 
-**LLM agents · tool calling · eval design · on-device AI (Gemma, LiteRT-LM) · Claude API**
-
-> 🚧 **Work in progress**: first results below (draft); blind hand-check pending.
-
 <details>
 <summary><b>👋 New to LLM agents or evals? 30-second version</b></summary>
 
