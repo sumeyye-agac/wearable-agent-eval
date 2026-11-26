@@ -25,11 +25,14 @@ GROUND_TRUTH = REPO / "eval/ground_truth.json"
 START = "<!-- results:start -->"
 END = "<!-- results:end -->"
 
-# Rows in table order. The Gemma determinism rerun (gemma-4-E2B-it-2, 3 questions) is left out.
+# Rows in table order. The Gemma determinism rerun (2026-11-25_gemma-4-E2B-it-2, 3 questions)
+# is left out.
 RUNS = (
     ("Claude Haiku 5.5, thinking off", "runs/final/2026-11-25_claude-haiku-5-5"),
     ("Gemma-4-E2B-it, Mac CPU, constrained decoding", "runs/final/2026-11-25_gemma-4-E2B-it"),
     ("Claude Haiku 5.5, thinking on (side row)", "runs/final/2026-11-25_claude-haiku-5-5-2"),
+    ("Gemma-4-E2B-it, constrained decoding off (side row)",
+     "runs/final/2026-11-26_gemma-4-E2B-it-2"),
 )
 EXAMPLES_RUN = "runs/final/2026-11-25_gemma-4-E2B-it"
 
