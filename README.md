@@ -1,5 +1,30 @@
 # wearable-agent-eval
 
+**LLM agents · tool calling · eval design · on-device AI (Gemma, LiteRT-LM) · Claude API**
+
+> 🚧 **Work in progress**: first results below (draft); blind hand-check pending.
+
+<details>
+<summary><b>👋 New to LLM agents or evals? 30-second version</b></summary>
+
+**The question:** can a small AI on your phone answer questions about
+fitness data as well as a big AI in the cloud? (Accuracy is measured on a
+Mac; the phone is used for latency and RAM.)
+
+- ☁️ **Claude Haiku 5.5**: big, in the cloud. Costs money, data leaves your device.
+- 📱 **Gemma-4-E2B-it**: small, on-device. Free and private.
+
+**The models don't do math.** They pick a *tool* (a function), fill in its
+inputs and report the result. Code does the calculation.
+
+**What's tested:** right tool, right tool result, right numbers, and saying
+"I can't tell" when data is missing instead of making something up.
+
+✅ **Scoring:** 34 questions, checked by a script; a blind hand-check of a
+sample is planned. No AI judges another AI.
+
+</details>
+
 > **Status: in progress** (updated 2026-11-26)
 >
 > ✅ **Last done:** a draft results table (scorer v1.1, before blind labeling) and 3 Gemma failure examples, written into this README by `scripts/make_results_table.py` from `runs/final/`.
