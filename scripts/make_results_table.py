@@ -29,9 +29,9 @@ END = "<!-- results:end -->"
 # is left out.
 RUNS = (
     ("Claude Haiku 5.5, thinking off", "runs/final/2026-11-25_claude-haiku-5-5"),
-    ("Gemma-4-E2B-it, Mac CPU, constrained decoding", "runs/final/2026-11-25_gemma-4-E2B-it"),
+    ("Gemma-4-E2B-it, Mac CPU, constrained decoding on", "runs/final/2026-11-25_gemma-4-E2B-it"),
     ("Claude Haiku 5.5, thinking on (side row)", "runs/final/2026-11-25_claude-haiku-5-5-2"),
-    ("Gemma-4-E2B-it, constrained decoding off (side row)",
+    ("Gemma-4-E2B-it, Mac CPU, constrained decoding off (side row)",
      "runs/final/2026-11-26_gemma-4-E2B-it-2"),
 )
 EXAMPLES_RUN = "runs/final/2026-11-25_gemma-4-E2B-it"
@@ -260,10 +260,10 @@ def build_block() -> str:
         "make several. A call the client could not read (a parse error) counts as one "
         f"invalid call; there are {n_parse_errors} in these runs.",
         refusal_note(runs, n_refusal),
-        "- Gemma ran once at temperature 0; a rerun of 3 questions gave identical calls and "
-        "answers.",
+        "- Each Gemma run is a single run at temperature 0; a rerun of 3 questions "
+        "(constrained decoding on) gave identical calls and answers.",
         "",
-        "**Gemma failure examples.** Each failed answer is put in the first kind it fits, in "
+        "**Gemma failure examples (constrained decoding on).** Each failed answer is put in the first kind it fits, in "
         "this order; the example is the first such answer by question id.",
         "",
         examples(gemma, transcript, truth),

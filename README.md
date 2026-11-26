@@ -23,9 +23,9 @@ sample is planned. No AI judges another AI.
 
 > **Status: in progress** (updated 2026-11-26)
 >
-> ✅ **Last done:** a draft results table (scorer v1.1, before blind labeling) and 3 Gemma failure examples, written into this README by `scripts/make_results_table.py` from `runs/final/`.
+> ✅ **Last done:** Gemma with constrained decoding off (x1), added to the draft results table as a side row; tool calls LiteRT cannot parse now count as invalid calls.
 >
-> 🔜 **Next:** Gemma with constrained decoding off (x1), then blind labeling of 60 answers.
+> 🔜 **Next:** blind labeling of 60 answers.
 
 <details>
 <summary><b>Plan and progress</b></summary>
@@ -78,16 +78,16 @@ Gemma-4-E2B-it.
 | Run | Repeats | End-to-end pass | Refusal correct | Valid tool calls |
 | --- | --- | --- | --- | --- |
 | Claude Haiku 5.5, thinking off | 3 | mean 93.1%, runs 85.3%–97.1%<br>CI 79.6%–97.9% | mean 91.7%, runs 75.0%–100.0%<br>CI 57.4%–98.9% | mean 89.7%, runs 87.8%–90.7%<br>CI 76.9%–95.8% |
-| Gemma-4-E2B-it, Mac CPU, constrained decoding | 1 | 13/34 = 38.2%<br>CI 23.9%–55.0% | 3/8 = 37.5%<br>CI 13.7%–69.4% | 29/32 = 90.6%<br>CI 75.8%–96.8% |
+| Gemma-4-E2B-it, Mac CPU, constrained decoding on | 1 | 13/34 = 38.2%<br>CI 23.9%–55.0% | 3/8 = 37.5%<br>CI 13.7%–69.4% | 29/32 = 90.6%<br>CI 75.8%–96.8% |
 | Claude Haiku 5.5, thinking on (side row) | 1 | 32/34 = 94.1%<br>CI 80.9%–98.4% | 7/8 = 87.5%<br>CI 52.9%–97.8% | 34/40 = 85.0%<br>CI 70.9%–92.9% |
-| Gemma-4-E2B-it, constrained decoding off (side row) | 1 | 14/34 = 41.2%<br>CI 26.4%–57.8% | 4/8 = 50.0%<br>CI 21.5%–78.5% | 27/32 = 84.4%<br>CI 68.2%–93.1% |
+| Gemma-4-E2B-it, Mac CPU, constrained decoding off (side row) | 1 | 14/34 = 41.2%<br>CI 26.4%–57.8% | 4/8 = 50.0%<br>CI 21.5%–78.5% | 27/32 = 84.4%<br>CI 68.2%–93.1% |
 
 - CI is a 95% Wilson interval. For one run it uses that run's k/n. For Haiku thinking off it uses the mean over the 3 runs with n = 34 questions (8 for refusal), because the 3 runs repeat the same questions and are not independent; pooling them as 102 answers would make the interval too narrow.
 - Valid tool calls count calls, not questions (n differs per run); the Haiku CI uses the mean number of calls per run. Calls are not independent either: one answer can make several. A call the client could not read (a parse error) counts as one invalid call; there are 2 in these runs.
 - Refusal has only 8 questions per run, so its intervals are wide; the Haiku (thinking off) and Gemma intervals overlap, so the refusal gap is not clear yet.
-- Gemma ran once at temperature 0; a rerun of 3 questions gave identical calls and answers.
+- Each Gemma run is a single run at temperature 0; a rerun of 3 questions (constrained decoding on) gave identical calls and answers.
 
-**Gemma failure examples.** Each failed answer is put in the first kind it fits, in this order; the example is the first such answer by question id.
+**Gemma failure examples (constrained decoding on).** Each failed answer is put in the first kind it fits, in this order; the example is the first such answer by question id.
 
 **Failed refusal: answered a question it should have refused** (5 of 34 answers). Example: `una-04`, "Was I active enough in the week ending 22 March 2016?"
 
